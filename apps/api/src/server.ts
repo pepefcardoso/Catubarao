@@ -1,4 +1,4 @@
-
+import { env } from "./lib/env";
 import Fastify from "fastify";
 import cors from "@fastify/cors";
 import swagger from "@fastify/swagger";
@@ -41,7 +41,7 @@ fastify.setErrorHandler(errorHandler);
 
 // Plugins
 fastify.register(cors, {
-  origin: process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000",
+  origin: env.NEXT_PUBLIC_APP_URL || "http://localhost:3000",
   credentials: true,
 });
 

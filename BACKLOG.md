@@ -195,11 +195,11 @@ Task backlog from zero to production. Each task is sized for a single AI agent s
 
 **Acceptance criteria:**
 
-- [ ] `pnpm --filter api dev` starts without errors
-- [ ] `GET /health` returns `200`
-- [ ] Swagger UI is accessible at `/docs`
-- [ ] An unhandled `ConflictError` thrown in a test handler returns `409`
-- [ ] `pnpm --filter api typecheck` passes
+- [x] `pnpm --filter api dev` starts without errors
+- [x] `GET /health` returns `200`
+- [x] Swagger UI is accessible at `/docs`
+- [x] An unhandled `ConflictError` thrown in a test handler returns `409`
+- [x] `pnpm --filter api typecheck` passes
 
 ---
 
@@ -225,9 +225,9 @@ Task backlog from zero to production. Each task is sized for a single AI agent s
 
 **Acceptance criteria:**
 
-- [ ] `import { } from "@repo/schemas"` resolves without error in both apps
-- [ ] `import { prisma } from "@repo/db"` resolves without error in `apps/api`
-- [ ] `pnpm typecheck` passes across all workspaces
+- [x] `import { } from "@repo/schemas"` resolves without error in both apps
+- [x] `import { prisma } from "@repo/db"` resolves without error in `apps/api`
+- [x] `pnpm typecheck` passes across all workspaces
 
 ---
 
@@ -251,10 +251,10 @@ Task backlog from zero to production. Each task is sized for a single AI agent s
 
 **Acceptance criteria:**
 
-- [ ] `docker compose up postgres pgbouncer redis -d` starts all three services
-- [ ] PostgreSQL is reachable on `localhost:5432` (direct) and via PgBouncer on `localhost:6432`
-- [ ] Redis is reachable on `localhost:6379`
-- [ ] `make reset-db` drops and recreates the database without error
+- [x] `docker compose up postgres pgbouncer redis -d` starts all three services
+- [x] PostgreSQL is reachable on `localhost:5432` (direct) and via PgBouncer on `localhost:6432`
+- [x] Redis is reachable on `localhost:6379`
+- [x] `make reset-db` drops and recreates the database without error
 
 ---
 
@@ -279,10 +279,10 @@ Task backlog from zero to production. Each task is sized for a single AI agent s
 
 **Acceptance criteria:**
 
-- [ ] `pnpm db:migrate` runs successfully against the local PostgreSQL
-- [ ] `pnpm db:generate` regenerates the client without error
-- [ ] Starting `apps/api` with a missing env var exits with a message listing exactly which variable is missing
-- [ ] `prisma.$connect()` succeeds via PgBouncer connection string
+- [x] `pnpm db:migrate` runs successfully against the local PostgreSQL
+- [x] `pnpm db:generate` regenerates the client without error
+- [x] Starting `apps/api` with a missing env var exits with a message listing exactly which variable is missing
+- [x] `prisma.$connect()` succeeds via PgBouncer connection string
 
 ---
 

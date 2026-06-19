@@ -10,13 +10,24 @@
   "scripts": {
     "build": "echo 'db build'",
     "lint": "echo 'db lint'",
-    "typecheck": "echo 'db typecheck'",
+    "typecheck": "tsc --noEmit",
     "test": "echo 'db test'",
-    "migrate": "echo 'db migrate'",
-    "migrate:prod": "echo 'db migrate:prod'",
-    "seed": "echo 'db seed'",
-    "studio": "echo 'db studio'",
-    "generate": "echo 'db generate'",
-    "reset": "echo 'db reset'"
+    "migrate": "prisma migrate dev",
+    "migrate:prod": "prisma migrate deploy",
+    "seed": "prisma db seed",
+    "studio": "prisma studio",
+    "generate": "prisma generate",
+    "reset": "prisma migrate reset"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.0.0"
+  },
+  "devDependencies": {
+    "prisma": "^6.0.0",
+    "tsx": "^4.0.0",
+    "typescript": "^5.0.0"
+  },
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
   }
 }
