@@ -1,0 +1,11 @@
+{
+  "name": "@repo/config",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "build": "echo 'config build'",
+    "lint": "echo 'config lint'",
+    "typecheck": "echo 'config typecheck'",
+    "test": "echo 'config test'"
+  }
+}

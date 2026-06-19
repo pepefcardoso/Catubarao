@@ -1,0 +1,11 @@
+{
+  "name": "@repo/schemas",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "build": "echo 'schemas build'",
+    "lint": "echo 'schemas lint'",
+    "typecheck": "echo 'schemas typecheck'",
+    "test": "echo 'schemas test'"
+  }
+}

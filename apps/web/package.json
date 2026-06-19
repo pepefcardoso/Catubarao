@@ -1,0 +1,12 @@
+{
+  "name": "web",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "echo 'web dev'",
+    "build": "echo 'web build'",
+    "lint": "echo 'web lint'",
+    "typecheck": "echo 'web typecheck'",
+    "test": "echo 'web test'"
+  }
+}

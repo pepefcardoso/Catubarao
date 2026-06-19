@@ -1,0 +1,11 @@
+{
+  "name": "@repo/ui",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "build": "echo 'ui build'",
+    "lint": "echo 'ui lint'",
+    "typecheck": "echo 'ui typecheck'",
+    "test": "echo 'ui test'"
+  }
+}

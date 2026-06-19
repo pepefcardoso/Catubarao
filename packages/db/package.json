@@ -1,0 +1,17 @@
+{
+  "name": "@repo/db",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "build": "echo 'db build'",
+    "lint": "echo 'db lint'",
+    "typecheck": "echo 'db typecheck'",
+    "test": "echo 'db test'",
+    "migrate": "echo 'db migrate'",
+    "migrate:prod": "echo 'db migrate:prod'",
+    "seed": "echo 'db seed'",
+    "studio": "echo 'db studio'",
+    "generate": "echo 'db generate'",
+    "reset": "echo 'db reset'"
+  }
+}
