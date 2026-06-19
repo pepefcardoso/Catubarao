@@ -2,3 +2,5 @@ node_modules
 .turbo
 dist
 .next
+.env.local
+docker-compose.override.yml
