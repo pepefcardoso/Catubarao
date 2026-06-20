@@ -1,6 +1,7 @@
 import fp from "fastify-plugin";
 import { Queue, Worker, DefaultJobOptions } from "bullmq";
 import { createBullBoard } from "@bull-board/api";
+import { sendEmailJob } from "../jobs/send-email";
 import { BullMQAdapter } from "@bull-board/api/bullMQAdapter";
 import { FastifyAdapter } from "@bull-board/fastify";
 import { env } from "../lib/env";
@@ -49,9 +50,7 @@ export default fp(async (fastify) => {
     ),
     new Worker(
       "email",
-      async (job) => {
-        fastify.log.info({ jobId: job.id }, "Processing email job");
-      },
+      sendEmailJob,
       { connection }
     ),
     new Worker(

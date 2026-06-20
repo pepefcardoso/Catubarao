@@ -488,9 +488,9 @@ Task backlog from zero to production. Each task is sized for a single AI agent s
 
 **Acceptance criteria:**
 
-- [ ] `sendEmail(WelcomeEmail, "test@test.com", "Welcome")` sends an email (verified in Resend dashboard)
-- [ ] Enqueuing a job to the `email` queue results in the email being sent
-- [ ] Email preview server starts at `localhost:3002`
+- [x] `sendEmail(WelcomeEmail, "test@test.com", "Welcome")` sends an email (verified in Resend dashboard)
+- [x] Enqueuing a job to the `email` queue results in the email being sent
+- [x] Email preview server starts at `localhost:3002`
 
 ---
 
