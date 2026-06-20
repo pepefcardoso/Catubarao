@@ -12,5 +12,17 @@
     "lint": "echo 'ui lint'",
     "typecheck": "echo 'ui typecheck'",
     "test": "echo 'ui test'"
+  },
+  "devDependencies": {
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "react": "19.0.0",
+    "react-dom": "19.0.0"
+  },
+  "dependencies": {
+    "@hookform/resolvers": "^5.4.0",
+    "radix-ui": "^1.6.0",
+    "react-hook-form": "^7.80.0",
+    "zod": "^4.4.3"
   }
 }

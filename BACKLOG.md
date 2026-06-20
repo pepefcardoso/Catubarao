@@ -464,8 +464,8 @@ Task backlog from zero to production. Each task is sized for a single AI agent s
 
 **Acceptance criteria:**
 
-- [ ] A test page renders a `Button` imported from `@repo/ui` without error
-- [ ] `pnpm --filter web build` passes with Tailwind compiled
+- [x] A test page renders a `Button` imported from `@repo/ui` without error
+- [x] `pnpm --filter web build` passes with Tailwind compiled
 
 ---
 
