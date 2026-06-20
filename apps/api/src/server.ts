@@ -59,6 +59,9 @@ fastify.register(swaggerPlugin);
 import authPlugin from "./plugins/auth";
 fastify.register(authPlugin);
 
+import queuesPlugin from "./plugins/queues";
+fastify.register(queuesPlugin);
+
 // Health check endpoint
 fastify.get("/health", async (request, reply) => {
   return { status: "ok", timestamp: new Date().toISOString() };

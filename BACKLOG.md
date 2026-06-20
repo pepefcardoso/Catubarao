@@ -363,10 +363,10 @@ Task backlog from zero to production. Each task is sized for a single AI agent s
 
 **Acceptance criteria:**
 
-- [ ] All four queues connect to Redis without error at startup
-- [ ] A test job added to `email` queue is picked up by the worker and logged
-- [ ] Bull Board is accessible at `/admin/queues` with ADMIN token and returns `401` without one
-- [ ] Failed jobs (throwing an error) are retried 3 times before moving to failed state
+- [x] All four queues connect to Redis without error at startup
+- [x] A test job added to `email` queue is picked up by the worker and logged
+- [x] Bull Board is accessible at `/admin/queues` with ADMIN token and returns `401` without one
+- [x] Failed jobs (throwing an error) are retried 3 times before moving to failed state
 
 ---
 

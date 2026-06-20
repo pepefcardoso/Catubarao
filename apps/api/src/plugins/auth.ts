@@ -55,4 +55,4 @@ export default fp(async (fastify) => {
       }
     };
   });
-});
+}, { name: "auth" });
