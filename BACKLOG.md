@@ -308,11 +308,11 @@ Task backlog from zero to production. Each task is sized for a single AI agent s
 
 **Acceptance criteria:**
 
-- [ ] `POST /api/auth/sign-up` creates a member and returns a session
-- [ ] `POST /api/auth/sign-in` returns a valid session token
-- [ ] A route with `preHandler: [fastify.authenticate]` returns `401` without a valid token
-- [ ] A route with `fastify.requireRole("ADMIN")` returns `403` for a MEMBER role token
-- [ ] `useSession()` returns the correct user in a Next.js component
+- [x] `POST /api/auth/sign-up` creates a member and returns a session
+- [x] `POST /api/auth/sign-in` returns a valid session token
+- [x] A route with `preHandler: [fastify.authenticate]` returns `401` without a valid token
+- [x] A route with `fastify.requireRole("ADMIN")` returns `403` for a MEMBER role token
+- [x] `useSession()` returns the correct user in a Next.js component
 
 ---
 
@@ -336,10 +336,10 @@ Task backlog from zero to production. Each task is sized for a single AI agent s
 
 **Acceptance criteria:**
 
-- [ ] `fastify.redis.ping()` returns `PONG` at startup
-- [ ] Swagger UI at `/docs` shows all registered routes
-- [ ] Throwing `new NotFoundError("x")` in any handler returns `{ error: "NotFoundError", message: "x" }` with status `404`
-- [ ] `pnpm --filter api typecheck` passes
+- [x] `fastify.redis.ping()` returns `PONG` at startup
+- [x] Swagger UI at `/docs` shows all registered routes
+- [x] Throwing `new NotFoundError("x")` in any handler returns `{ error: "NotFoundError", message: "x" }` with status `404`
+- [x] `pnpm --filter api typecheck` passes
 
 ---
 

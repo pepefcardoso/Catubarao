@@ -1,12 +1,11 @@
 import { env } from "./lib/env";
 import Fastify from "fastify";
 import cors from "@fastify/cors";
-import swagger from "@fastify/swagger";
-import swaggerUi from "@fastify/swagger-ui";
+import rateLimit from "@fastify/rate-limit";
+import multipart from "@fastify/multipart";
 import {
   serializerCompiler,
   validatorCompiler,
-  jsonSchemaTransform,
 } from "fastify-type-provider-zod";
 import type { FastifyPluginAsyncZod } from "fastify-type-provider-zod";
 
@@ -45,20 +44,17 @@ fastify.register(cors, {
   credentials: true,
 });
 
-fastify.register(swagger, {
-  openapi: {
-    info: {
-      title: "Catubarao API",
-      description: "API for Clube Atlético Tubarão",
-      version: "1.0.0",
-    },
-  },
-  transform: jsonSchemaTransform,
+fastify.register(rateLimit, {
+  global: false,
 });
 
-fastify.register(swaggerUi, {
-  routePrefix: "/docs",
-});
+fastify.register(multipart);
+
+import redisPlugin from "./plugins/redis";
+fastify.register(redisPlugin);
+
+import swaggerPlugin from "./plugins/swagger";
+fastify.register(swaggerPlugin);
 
 import authPlugin from "./plugins/auth";
 fastify.register(authPlugin);
