@@ -649,10 +649,10 @@ Task backlog from zero to production. Each task is sized for a single AI agent s
 
 **Acceptance criteria:**
 
-- [ ] `CreateMemberSchema.parse({ cpf: "00000000000" })` throws
-- [ ] `CreateMemberSchema.parse({ cpf: "invalid" })` throws
-- [ ] A valid input passes all schemas without error
-- [ ] Types inferred from schemas match the Prisma model field types (verify manually)
+- [x] `CreateMemberSchema.parse({ cpf: "00000000000" })` throws
+- [x] `CreateMemberSchema.parse({ cpf: "invalid" })` throws
+- [x] A valid input passes all schemas without error
+- [x] Types inferred from schemas match the Prisma model field types (verify manually)
 
 ---
 
