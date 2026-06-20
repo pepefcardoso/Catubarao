@@ -29,6 +29,7 @@ model Member {
   marketingConsent Boolean @default(false)
   whatsappOptIn    Boolean @default(false)
   address       Json?
+  showOnMonument Boolean @default(false)
 
   referredById  String?
   referredBy    Member?   @relation("MemberReferrals", fields: [referredById], references: [id])

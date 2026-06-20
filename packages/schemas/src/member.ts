@@ -28,6 +28,8 @@ export const CreateMemberSchema = z.object({
   referralCode: z.string().optional(),
   marketingConsent: z.boolean().default(false),
   whatsappOptIn: z.boolean().default(false),
+  address: z.any().optional(),
+  showOnMonument: z.boolean().default(false),
 });
 
 export const UpdateMemberSchema = CreateMemberSchema.partial().extend({
@@ -63,8 +65,25 @@ export const MemberResponseSchema = z.object({
   birthDate: z.date().nullable(),
   referralCode: z.string().nullable(),
   isActive: z.boolean(),
+  marketingConsent: z.boolean(),
+  whatsappOptIn: z.boolean(),
+  showOnMonument: z.boolean(),
   address: z.any().nullable(),
   referredById: z.string().nullable(),
+});
+
+export const UpdateMemberProfileSchema = z.object({
+  name: z.string().min(2).max(100).optional(),
+  phone: z.string().min(10).max(20).transform(normalizePhone).refine(val => /^\+[1-9]\d{1,14}$/.test(val), { message: "Invalid phone number format" }).optional(),
+  address: z.any().optional(),
+  showOnMonument: z.boolean().optional(),
+}).passthrough(); // passthrough to detect if they send cpf/email and return 403
+
+export const SubscriptionStatusSchema = z.enum(["ACTIVE", "PENDING", "SUSPENDED", "CANCELLED"]);
+
+export const MeResponseSchema = MemberResponseSchema.extend({
+  subscriptionStatus: SubscriptionStatusSchema.nullable(),
+  adimplenciaStreak: z.number().int().nonnegative(),
 });
 
 export const SubscriptionIntervalSchema = z.enum(["MONTHLY", "ANNUAL"]);
@@ -90,8 +109,6 @@ export const MembershipPlanResponseSchema = z.object({
   isActive: z.boolean(),
   createdAt: z.date(),
 });
-
-export const SubscriptionStatusSchema = z.enum(["ACTIVE", "PENDING", "SUSPENDED", "CANCELLED"]);
 
 export const CreateSubscriptionSchema = z.object({
   memberId: z.string().uuid(),

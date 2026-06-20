@@ -70,6 +70,8 @@ fastify.register(queuesPlugin);
 import { authRoutes } from "./modules/auth/auth.routes";
 fastify.register(authRoutes, { prefix: "/auth" });
 
+import { membersRoutes } from "./modules/members/members.routes";
+fastify.register(membersRoutes, { prefix: "/members" });
 
 // Health check endpoint
 fastify.get("/health", async (request, reply) => {
