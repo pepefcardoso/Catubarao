@@ -60,6 +60,9 @@ fastify.register(swaggerUi, {
   routePrefix: "/docs",
 });
 
+import authPlugin from "./plugins/auth";
+fastify.register(authPlugin);
+
 // Health check endpoint
 fastify.get("/health", async (request, reply) => {
   return { status: "ok", timestamp: new Date().toISOString() };

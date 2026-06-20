@@ -16,6 +16,7 @@
     "@fastify/swagger-ui": "^6.0.0",
     "@repo/db": "workspace:*",
     "@repo/schemas": "workspace:*",
+    "better-auth": "^1.6.20",
     "fastify": "^5.8.5",
     "fastify-type-provider-zod": "^6.1.0",
     "pino": "^10.3.1",
