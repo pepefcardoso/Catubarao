@@ -34,6 +34,18 @@ export const UpdateMemberSchema = CreateMemberSchema.partial().extend({
   cpf: z.string().refine(isCpfValid, { message: "Invalid CPF. Must be 11 digits and not a repeated sequence." }).optional(),
 });
 
+export const RegisterMemberSchema = CreateMemberSchema.extend({
+  password: z.string().min(8, "Password must be at least 8 characters"),
+});
+export type RegisterMemberInput = z.infer<typeof RegisterMemberSchema>;
+
+export const LoginSchema = z.object({
+  email: z.string().email(),
+  password: z.string().min(1, "Password is required"),
+});
+export type LoginInput = z.infer<typeof LoginSchema>;
+
+
 export const MemberResponseSchema = z.object({
   id: z.string(),
   name: z.string(),

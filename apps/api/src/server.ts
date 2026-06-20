@@ -67,6 +67,10 @@ fastify.register(authPlugin);
 import queuesPlugin from "./plugins/queues";
 fastify.register(queuesPlugin);
 
+import { authRoutes } from "./modules/auth/auth.routes";
+fastify.register(authRoutes, { prefix: "/auth" });
+
+
 // Health check endpoint
 fastify.get("/health", async (request, reply) => {
   return { status: "ok", timestamp: new Date().toISOString() };

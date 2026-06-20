@@ -26,6 +26,8 @@ model Member {
   birthDate     DateTime?
   referralCode  String?
   isActive      Boolean   @default(true)
+  marketingConsent Boolean @default(false)
+  whatsappOptIn    Boolean @default(false)
   address       Json?
 
   referredById  String?

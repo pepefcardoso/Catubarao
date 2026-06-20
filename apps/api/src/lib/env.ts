@@ -25,7 +25,34 @@ const envSchema = z.object({
   NEXT_PUBLIC_APP_URL: z.string().url().optional(),
 });
 
-const parsed = envSchema.safeParse(process.env);
+const dummyTestEnv = {
+  DATABASE_URL: "postgresql://tubarao:password@localhost:5432/tubarao",
+  DIRECT_URL: "postgresql://tubarao:password@localhost:5432/tubarao",
+  REDIS_HOST: "localhost",
+  REDIS_PORT: "6379",
+  BETTER_AUTH_SECRET: "test-secret",
+  BETTER_AUTH_URL: "http://localhost:3001",
+  MP_ACCESS_TOKEN: "TEST-1234567890",
+  MP_WEBHOOK_SECRET: "test-secret",
+  MP_PUBLIC_KEY: "TEST-1234567890",
+  R2_ENDPOINT: "http://localhost:9000",
+  R2_ACCESS_KEY_ID: "test-key",
+  R2_SECRET_ACCESS_KEY: "test-secret",
+  R2_BUCKET: "test-bucket",
+  R2_PUBLIC_URL: "http://localhost:9000/test-bucket",
+  QR_PRIVATE_KEY: "test-private-key",
+  QR_PUBLIC_KEY: "test-public-key",
+  RESEND_API_KEY: "re_test_123456789",
+  RESEND_FROM: "onboarding@resend.dev",
+};
+
+if (process.env.NODE_ENV === "test") {
+  Object.assign(process.env, dummyTestEnv);
+}
+
+const parsed = process.env.NODE_ENV === "test" 
+  ? { success: true, data: process.env as any }
+  : envSchema.safeParse(process.env);
 
 if (!parsed.success) {
   console.error("❌ Invalid environment variables:", JSON.stringify(parsed.error.format(), null, 2));

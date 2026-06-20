@@ -12,9 +12,19 @@ export const auth = betterAuth({
   },
   user: {
     modelName: "Member",
+    additionalFields: {
+      cpf: { type: "string" },
+      phone: { type: "string" },
+      birthDate: { type: "date" },
+      referralCode: { type: "string", required: false },
+      isActive: { type: "boolean" },
+      marketingConsent: { type: "boolean", required: false },
+      whatsappOptIn: { type: "boolean", required: false },
+    },
   },
   plugins: [
     admin(),
     jwt(),
   ],
 });
+
