@@ -1,0 +1,17 @@
+name: Deploy
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  deploy:
+    name: Build and Deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Placeholder Deploy Step
+        run: echo "Building Docker images and deploying to VPS via SSH... (real deploy config in PROD-007)"

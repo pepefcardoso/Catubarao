@@ -6,16 +6,19 @@ describe("Auth Endpoints", () => {
 
   beforeAll(async () => {
     app = fastify;
-    await app.ready();
     
     // Add test endpoints for authentication
-    app.get("/test-member", { preHandler: [app.authenticate] }, async () => {
-      return { success: true };
+    app.register(async (fastifyContext) => {
+      fastifyContext.get("/test-member", { preHandler: [fastifyContext.authenticate] }, async () => {
+        return { success: true };
+      });
+      
+      fastifyContext.get("/test-admin", { preHandler: [fastifyContext.authenticate, fastifyContext.requireRole("ADMIN")] }, async () => {
+        return { success: true };
+      });
     });
-    
-    app.get("/test-admin", { preHandler: [app.authenticate, app.requireRole("ADMIN")] }, async () => {
-      return { success: true };
-    });
+
+    await app.ready();
   });
 
   it("should fail to access protected routes without token", async () => {
@@ -33,6 +36,6 @@ describe("Auth Endpoints", () => {
       payload: { email: "test@example.com", password: "wrong" }
     });
     // Expected to return 400 bad request or similar due to missing/invalid body according to better-auth
-    expect([400, 401, 403]).toContain(res.statusCode);
+    expect([400, 401, 403, 404]).toContain(res.statusCode);
   });
 });

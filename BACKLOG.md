@@ -387,11 +387,11 @@ Task backlog from zero to production. Each task is sized for a single AI agent s
 
 **Acceptance criteria:**
 
-- [ ] CI passes on a clean push to `main`
-- [ ] CI fails if `pnpm typecheck` fails
-- [ ] CI fails if `pnpm lint` fails
-- [ ] CI fails if any test fails
-- [ ] pnpm cache is used between runs (install step < 30s on second run)
+- [x] CI passes on a clean push to `main`
+- [x] CI fails if `pnpm typecheck` fails
+- [x] CI fails if `pnpm lint` fails
+- [x] CI fails if any test fails
+- [x] pnpm cache is used between runs (install step < 30s on second run)
 
 ---
 

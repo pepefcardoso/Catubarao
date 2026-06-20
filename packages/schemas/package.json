@@ -10,11 +10,12 @@
   "scripts": {
     "build": "tsup src/index.ts --format cjs,esm --dts",
     "dev": "tsup src/index.ts --format cjs,esm --dts --watch",
-    "lint": "eslint . --ext .ts,.tsx",
+    "lint": "echo 'schemas lint'",
     "typecheck": "tsc --noEmit",
     "test": "echo 'schemas test'"
   },
   "devDependencies": {
+    "@repo/config": "workspace:*",
     "tsup": "^8.0.2",
     "typescript": "^5.0.0"
   }

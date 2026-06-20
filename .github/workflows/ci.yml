@@ -1,0 +1,115 @@
+name: CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build-and-test:
+    name: Build, Lint, and Test
+    runs-on: ubuntu-latest
+
+    env:
+      DATABASE_URL: "postgresql://tubarao:password@localhost:5432/tubarao"
+      DIRECT_URL: "postgresql://tubarao:password@localhost:5432/tubarao"
+      REDIS_HOST: "localhost"
+      REDIS_PORT: "6379"
+      BETTER_AUTH_SECRET: "test-secret-for-ci-only-1234567890"
+      BETTER_AUTH_URL: "http://localhost:3000"
+      NEXT_PUBLIC_APP_URL: "http://localhost:3000"
+      NEXT_PUBLIC_API_URL: "http://localhost:3001"
+      NEXT_PUBLIC_MP_PUBLIC_KEY: "TEST-PUBLIC-KEY"
+      MP_ACCESS_TOKEN: "TEST-MP-ACCESS-TOKEN"
+      MP_WEBHOOK_SECRET: "TEST-MP-WEBHOOK-SECRET"
+      MP_PUBLIC_KEY: "TEST-MP-PUBLIC-KEY"
+      R2_ENDPOINT: "https://test.r2.cloudflarestorage.com"
+      R2_ACCESS_KEY_ID: "TEST-R2-KEY"
+      R2_SECRET_ACCESS_KEY: "TEST-R2-SECRET"
+      R2_BUCKET: "tubarao-assets"
+      R2_PUBLIC_URL: "https://assets.tubarao.fc"
+      QR_PRIVATE_KEY: "TEST-QR-PRIVATE-KEY"
+      QR_PUBLIC_KEY: "TEST-QR-PUBLIC-KEY"
+      RESEND_API_KEY: "TEST-RESEND-KEY"
+      RESEND_FROM: "noreply@tubarao.fc"
+
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: tubarao
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: tubarao
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+      redis:
+        image: redis:7-alpine
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+          run_install: false
+
+      - name: Get pnpm store directory
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+      - name: Setup pnpm cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Audit dependencies
+        run: pnpm audit --audit-level=high
+
+      - name: Apply DB migrations
+        run: pnpm db:migrate
+        env:
+          DATABASE_URL: "postgresql://tubarao:password@localhost:5432/tubarao"
+          DIRECT_URL: "postgresql://tubarao:password@localhost:5432/tubarao"
+
+      - name: Run typecheck
+        run: pnpm typecheck
+
+      - name: Run lint
+        run: pnpm lint
+
+      - name: Run tests
+        run: pnpm test
+        env:
+          DATABASE_URL: "postgresql://tubarao:password@localhost:5432/tubarao"
+          DIRECT_URL: "postgresql://tubarao:password@localhost:5432/tubarao"
+          REDIS_HOST: "localhost"
+          REDIS_PORT: "6379"
+          BETTER_AUTH_SECRET: "test-secret-for-ci-only-1234567890"
+          BETTER_AUTH_URL: "http://localhost:3000"
