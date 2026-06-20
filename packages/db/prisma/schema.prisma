@@ -26,9 +26,18 @@ model Member {
   birthDate     DateTime?
   referralCode  String?
   isActive      Boolean   @default(true)
+  address       Json?
 
-  sessions      Session[]
-  accounts      Account[]
+  referredById  String?
+  referredBy    Member?   @relation("MemberReferrals", fields: [referredById], references: [id])
+  referrals     Member[]  @relation("MemberReferrals")
+
+  sessions           Session[]
+  accounts           Account[]
+  subscriptions      Subscription[]
+  gamificationEvents GamificationEvent[]
+  membershipCards    MembershipCard[]
+  pollVotes          PollVote[]
 
   @@unique([email])
   @@map("members")
@@ -91,4 +100,155 @@ model Jwks {
   expiresAt  DateTime?
 
   @@map("jwks")
+}
+
+enum SubscriptionInterval {
+  MONTHLY
+  ANNUAL
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  PENDING
+  SUSPENDED
+  CANCELLED
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  FAILED
+  REFUNDED
+}
+
+enum PaymentMethod {
+  CREDIT_CARD
+  PIX
+}
+
+enum GamificationEventType {
+  CHECKIN
+  REFERRAL
+  ANNIVERSARY
+  STREAK_6M
+  STREAK_12M
+}
+
+enum PollStatus {
+  DRAFT
+  OPEN
+  CLOSED
+}
+
+model MembershipPlan {
+  id          String               @id @default(uuid())
+  name        String
+  price       Decimal
+  interval    SubscriptionInterval
+  benefits    String[]
+  isCorporate Boolean              @default(false)
+  maxCards    Int?
+  isActive    Boolean              @default(true)
+  createdAt   DateTime             @default(now())
+
+  subscriptions Subscription[]
+
+  @@map("membership_plans")
+}
+
+model Subscription {
+  id                    String             @id @default(uuid())
+  memberId              String
+  planId                String
+  status                SubscriptionStatus
+  currentPeriodStart    DateTime
+  currentPeriodEnd      DateTime
+  gatewaySubscriptionId String?
+  cancelledAt           DateTime?
+  createdAt             DateTime           @default(now())
+
+  member          Member           @relation(fields: [memberId], references: [id], onDelete: Cascade)
+  plan            MembershipPlan   @relation(fields: [planId], references: [id])
+  payments        Payment[]
+  membershipCards MembershipCard[]
+
+  @@index([memberId, status])
+  @@map("subscriptions")
+}
+
+model Payment {
+  id               String        @id @default(uuid())
+  subscriptionId   String?
+  orderId          String?
+  gatewayPaymentId String?
+  amount           Decimal
+  status           PaymentStatus
+  method           PaymentMethod
+  paidAt           DateTime?
+  createdAt        DateTime      @default(now())
+
+  subscription Subscription? @relation(fields: [subscriptionId], references: [id])
+
+  @@index([subscriptionId])
+  @@map("payments")
+}
+
+model MembershipCard {
+  id             String   @id @default(uuid())
+  memberId       String
+  subscriptionId String
+  qrToken        String   @unique
+  validUntil     DateTime
+  isActive       Boolean  @default(true)
+  createdAt      DateTime @default(now())
+
+  member       Member       @relation(fields: [memberId], references: [id], onDelete: Cascade)
+  subscription Subscription @relation(fields: [subscriptionId], references: [id])
+
+  @@index([memberId, isActive])
+  @@map("membership_cards")
+}
+
+model GamificationEvent {
+  id        String                @id @default(uuid())
+  memberId  String
+  type      GamificationEventType
+  points    Int
+  metadata  Json?
+  createdAt DateTime              @default(now())
+
+  member Member @relation(fields: [memberId], references: [id], onDelete: Cascade)
+
+  @@map("gamification_events")
+}
+
+model Poll {
+  id                String     @id @default(uuid())
+  title             String
+  description       String
+  options           Json
+  opensAt           DateTime
+  closesAt          DateTime
+  quorumMinimum     Int
+  requiresSeniority Boolean    @default(false)
+  status            PollStatus @default(DRAFT)
+  createdAt         DateTime   @default(now())
+
+  votes PollVote[]
+
+  @@map("polls")
+}
+
+model PollVote {
+  id        String   @id @default(uuid())
+  pollId    String
+  memberId  String
+  optionId  String
+  createdAt DateTime @default(now())
+
+  poll   Poll   @relation(fields: [pollId], references: [id])
+  member Member @relation(fields: [memberId], references: [id], onDelete: Cascade)
+
+  @@unique([pollId, memberId])
+  @@map("poll_votes")
 }

@@ -620,9 +620,9 @@ Task backlog from zero to production. Each task is sized for a single AI agent s
 
 **Acceptance criteria:**
 
-- [ ] Migration applies cleanly to a fresh database
-- [ ] All models are introspectable via `pnpm db:studio`
-- [ ] `db.subscription.findMany({ where: { memberId: x, status: "ACTIVE" } })` is type-safe with no TypeScript errors
+- [x] Migration applies cleanly to a fresh database
+- [x] All models are introspectable via `pnpm db:studio`
+- [x] `db.subscription.findMany({ where: { memberId: x, status: "ACTIVE" } })` is type-safe with no TypeScript errors
 
 ---
 
