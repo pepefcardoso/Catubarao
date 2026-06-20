@@ -532,8 +532,8 @@ Task backlog from zero to production. Each task is sized for a single AI agent s
 
 **Acceptance criteria:**
 
-- [ ] Responsive behavior is fully functional
-- [ ] Header, footer, and navigation are present
+- [x] Responsive behavior is fully functional
+- [x] Header, footer, and navigation are present
 
 ---
 
