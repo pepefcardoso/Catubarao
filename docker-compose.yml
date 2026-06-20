@@ -39,6 +39,23 @@ services:
       timeout: 5s
       retries: 5
 
+  caddy:
+    image: caddy:2-alpine
+    container_name: tubarao_caddy
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    extra_hosts:
+      - "web:host-gateway"
+      - "api:host-gateway"
+    restart: unless-stopped
+
 volumes:
   postgres_data:
   redis_data:
+  caddy_data:
+  caddy_config:

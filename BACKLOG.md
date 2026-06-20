@@ -413,10 +413,10 @@ Task backlog from zero to production. Each task is sized for a single AI agent s
 
 **Acceptance criteria:**
 
-- [ ] `https://tubarao.localhost` serves Next.js app in local dev
-- [ ] `https://api.tubarao.localhost/health` returns `200`
-- [ ] HTTP requests are redirected to HTTPS
-- [ ] No browser certificate warning in local dev (Caddy CA trusted)
+- [x] `https://tubarao.localhost` serves Next.js app in local dev
+- [x] `https://api.tubarao.localhost/health` returns `200`
+- [x] HTTP requests are redirected to HTTPS
+- [x] No browser certificate warning in local dev (Caddy CA trusted)
 
 ---
 

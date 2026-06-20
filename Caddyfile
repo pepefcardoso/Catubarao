@@ -1,0 +1,9 @@
+tubarao.fc, tubarao.localhost {
+	reverse_proxy web:3000
+	tls internal
+}
+
+api.tubarao.fc, api.tubarao.localhost {
+	reverse_proxy api:3001
+	tls internal
+}
