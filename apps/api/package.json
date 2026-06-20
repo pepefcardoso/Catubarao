@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "tsx watch src/server.ts",
-    "build": "tsc",
+    "build": "tsc && (if [ -n \"$SENTRY_AUTH_TOKEN\" ]; then pnpx @sentry/cli sourcemaps inject dist && pnpx @sentry/cli sourcemaps upload dist; fi)",
     "start": "node dist/server.js",
     "lint": "echo 'api lint'",
     "typecheck": "tsc --noEmit",
@@ -20,6 +20,8 @@
     "@fastify/swagger-ui": "^6.0.0",
     "@repo/db": "workspace:*",
     "@repo/schemas": "workspace:*",
+    "@sentry/node": "^10.59.0",
+    "@sentry/profiling-node": "^10.59.0",
     "better-auth": "^1.6.20",
     "bullmq": "^5.79.0",
     "fastify": "^5.8.5",

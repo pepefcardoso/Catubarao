@@ -439,9 +439,9 @@ Task backlog from zero to production. Each task is sized for a single AI agent s
 
 **Acceptance criteria:**
 
-- [ ] Manually throwing an error in a Next.js page is captured in Sentry
-- [ ] Manually throwing an error in a Fastify route is captured in Sentry
-- [ ] Source maps resolve to original TypeScript lines in Sentry
+- [x] Manually throwing an error in a Next.js page is captured in Sentry
+- [x] Manually throwing an error in a Fastify route is captured in Sentry
+- [x] Source maps resolve to original TypeScript lines in Sentry
 
 ---
 

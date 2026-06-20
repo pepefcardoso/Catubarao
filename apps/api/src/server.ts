@@ -1,5 +1,7 @@
+import "./instrument";
 import { env } from "./lib/env";
 import Fastify from "fastify";
+import * as Sentry from "@sentry/node";
 import cors from "@fastify/cors";
 import rateLimit from "@fastify/rate-limit";
 import multipart from "@fastify/multipart";
@@ -34,6 +36,9 @@ const fastify = Fastify({
 // Zod type provider configuration
 fastify.setValidatorCompiler(validatorCompiler);
 fastify.setSerializerCompiler(serializerCompiler);
+
+// Sentry error handler setup
+Sentry.setupFastifyErrorHandler(fastify);
 
 // Global Error Handler
 fastify.setErrorHandler(errorHandler);

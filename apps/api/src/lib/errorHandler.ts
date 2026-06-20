@@ -1,3 +1,4 @@
+import * as Sentry from "@sentry/node";
 import type { FastifyError, FastifyRequest, FastifyReply } from "fastify";
 import {
   ValidationError,
@@ -35,6 +36,7 @@ export function errorHandler(
   }
 
   request.log.error(error);
+  Sentry.captureException(error);
   
   return reply.status(500).send({
     error: "InternalServerError",

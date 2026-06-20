@@ -20,6 +20,8 @@ const envSchema = z.object({
   RESEND_API_KEY: z.string(),
   RESEND_FROM: z.string(),
   SENTRY_DSN: z.string().url().optional(),
+  SENTRY_ENVIRONMENT: z.string().optional(),
+  SENTRY_AUTH_TOKEN: z.string().optional(),
   NEXT_PUBLIC_APP_URL: z.string().url().optional(),
 });
 

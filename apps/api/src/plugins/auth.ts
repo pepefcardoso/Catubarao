@@ -2,6 +2,7 @@ import fp from "fastify-plugin";
 import { fromNodeHeaders } from "better-auth/node";
 import { auth } from "../lib/auth";
 import type { FastifyRequest, FastifyReply } from "fastify";
+import * as Sentry from "@sentry/node";
 
 declare module "fastify" {
   interface FastifyInstance {
@@ -42,6 +43,8 @@ export default fp(async (fastify) => {
 
     request.user = session.user;
     request.session = session.session;
+    
+    Sentry.setUser({ id: session.user.id, email: session.user.email });
   });
 
   fastify.decorate("requireRole", (role: string) => {
