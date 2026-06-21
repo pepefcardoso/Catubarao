@@ -21,6 +21,7 @@ conflict between spec.md and this file, ask the developer before proceeding.
 If there is a conflict between spec.md and BACKLOG.md, spec.md wins; document the resolution in `docs/adr/`.
 
 **Product modules (in priority order):**
+
 1. Sócio-Torcedor (membership)
 2. Portal de Transparência (transparency portal)
 3. CRM de Parceiros/Permutas (partner CRM)
@@ -84,31 +85,31 @@ If there is a conflict between spec.md and BACKLOG.md, spec.md wins; document th
 
 ## 3. Tech Stack
 
-| Layer | Technology | Version |
-|---|---|---|
-| Runtime | Node.js | 22 LTS |
-| Language | TypeScript | 5.x (strict mode) |
-| Package manager | pnpm | 9.x |
-| Monorepo | Turborepo | 2.x |
-| Frontend | Next.js (App Router) | 15.x |
-| UI | Tailwind CSS + shadcn/ui | 4.x / latest |
-| API | Fastify | 5.x |
-| Validation | Zod | 3.x |
-| ORM | Prisma | 6.x |
-| Database | PostgreSQL | 16 |
-| Connection pool | PgBouncer | latest |
-| Cache | Redis | 7 (Alpine) |
-| Queue | BullMQ | 5.x |
-| Auth | Better Auth | latest |
-| File storage | Cloudflare R2 (S3-compatible) | — |
-| Email | Resend + React Email | latest |
-| PDF generation | @react-pdf/renderer | 4.x |
-| Payment gateway | Mercado Pago SDK | latest |
-| Error tracking | Sentry | latest |
-| Logging | Pino (Fastify built-in) | — |
-| Testing | Vitest + Supertest | 2.x / latest |
-| Reverse proxy | Caddy | 2.x |
-| CI/CD | GitHub Actions | — |
+| Layer           | Technology                    | Version           |
+| --------------- | ----------------------------- | ----------------- |
+| Runtime         | Node.js                       | 22 LTS            |
+| Language        | TypeScript                    | 5.x (strict mode) |
+| Package manager | pnpm                          | 9.x               |
+| Monorepo        | Turborepo                     | 2.x               |
+| Frontend        | Next.js (App Router)          | 15.x              |
+| UI              | Tailwind CSS + shadcn/ui      | 4.x / latest      |
+| API             | Fastify                       | 5.x               |
+| Validation      | Zod                           | 3.x               |
+| ORM             | Prisma                        | 6.x               |
+| Database        | PostgreSQL                    | 16                |
+| Connection pool | PgBouncer                     | latest            |
+| Cache           | Redis                         | 7 (Alpine)        |
+| Queue           | BullMQ                        | 5.x               |
+| Auth            | Better Auth                   | latest            |
+| File storage    | Cloudflare R2 (S3-compatible) | —                 |
+| Email           | Resend + React Email          | latest            |
+| PDF generation  | @react-pdf/renderer           | 4.x               |
+| Payment gateway | Mercado Pago SDK              | latest            |
+| Error tracking  | Sentry                        | latest            |
+| Logging         | Pino (Fastify built-in)       | —                 |
+| Testing         | Vitest + Supertest            | 2.x / latest      |
+| Reverse proxy   | Caddy                         | 2.x               |
+| CI/CD           | GitHub Actions                | —                 |
 
 ---
 
@@ -259,7 +260,7 @@ export const membersRoutes: FastifyPluginAsyncZod = async (fastify) => {
     async (request, reply) => {
       const member = await createMember(request.body, fastify.prisma);
       return reply.status(201).send(member);
-    }
+    },
   );
 };
 ```
@@ -275,10 +276,7 @@ import type { CreateMemberInput } from "@repo/schemas/member";
 import { validateCpf } from "../../lib/cpf";
 import { ConflictError } from "../../lib/errors";
 
-export async function createMember(
-  input: CreateMemberInput,
-  db: PrismaClient
-) {
+export async function createMember(input: CreateMemberInput, db: PrismaClient) {
   if (!validateCpf(input.cpf)) {
     throw new ValidationError("Invalid CPF");
   }
@@ -462,23 +460,38 @@ Fastify's error handler maps them to HTTP responses.
 // apps/api/src/lib/errors.ts
 export class ValidationError extends Error {
   statusCode = 422;
-  constructor(message: string) { super(message); this.name = "ValidationError"; }
+  constructor(message: string) {
+    super(message);
+    this.name = "ValidationError";
+  }
 }
 export class ConflictError extends Error {
   statusCode = 409;
-  constructor(message: string) { super(message); this.name = "ConflictError"; }
+  constructor(message: string) {
+    super(message);
+    this.name = "ConflictError";
+  }
 }
 export class NotFoundError extends Error {
   statusCode = 404;
-  constructor(message: string) { super(message); this.name = "NotFoundError"; }
+  constructor(message: string) {
+    super(message);
+    this.name = "NotFoundError";
+  }
 }
 export class UnauthorizedError extends Error {
   statusCode = 401;
-  constructor(message: string) { super(message); this.name = "UnauthorizedError"; }
+  constructor(message: string) {
+    super(message);
+    this.name = "UnauthorizedError";
+  }
 }
 export class ForbiddenError extends Error {
   statusCode = 403;
-  constructor(message: string) { super(message); this.name = "ForbiddenError"; }
+  constructor(message: string) {
+    super(message);
+    this.name = "ForbiddenError";
+  }
 }
 ```
 
@@ -507,16 +520,21 @@ export const r2 = new S3Client({
 
 // Generate presigned upload URL — client uploads directly to R2
 export async function getUploadUrl(key: string, contentType: string) {
-  return getSignedUrl(r2, new PutObjectCommand({
-    Bucket: process.env.R2_BUCKET!,
-    Key: key,
-    ContentType: contentType,
-  }), { expiresIn: 300 });
+  return getSignedUrl(
+    r2,
+    new PutObjectCommand({
+      Bucket: process.env.R2_BUCKET!,
+      Key: key,
+      ContentType: contentType,
+    }),
+    { expiresIn: 300 },
+  );
 }
 ```
 
 File key convention: `{module}/{entityId}/{timestamp}-{filename}`
 Examples:
+
 - `transparency/post-uuid/1720000000-balanco-jan-2025.pdf`
 - `partners/proof-uuid/1720000000-placa-foto.jpg`
 
@@ -554,6 +572,7 @@ export async function verifyCardToken(token: string) {
 ```
 
 A new QR token must be generated in these exact situations (see RN-S08 in spec.md):
+
 - Member activates a new plan
 - Member upgrades or downgrades plan
 - Member reactivates after suspension
@@ -617,6 +636,7 @@ not the other way around.
 ## 8. Naming Conventions
 
 ### Files
+
 ```
 members.routes.ts       ← Fastify route plugin
 members.service.ts      ← business logic
@@ -625,12 +645,14 @@ members.test.ts         ← Vitest tests
 ```
 
 ### Database (Prisma)
+
 - Models: `PascalCase` singular (`Member`, `SponsorshipDeal`)
 - Fields: `camelCase` (`createdAt`, `validUntil`)
 - Enums: `SCREAMING_SNAKE_CASE` values (`ACTIVE`, `IN_NEGOTIATION`)
 - Relations: explicit `@relation` names on both sides
 
 ### API routes
+
 ```
 GET    /members           → list
 GET    /members/:id       → get one
@@ -640,6 +662,7 @@ DELETE /members/:id       → soft delete (set isActive: false — never hard de
 ```
 
 ### TypeScript
+
 ```typescript
 // Types from Zod inference — always infer, never duplicate
 type CreateMemberInput = z.infer<typeof CreateMemberSchema>;
@@ -654,6 +677,7 @@ const canAccessStore = ...
 ```
 
 ### Frontend components
+
 ```
 MemberCard.tsx          ← PascalCase, one component per file
 useMemberStatus.ts      ← hooks: use prefix
@@ -810,13 +834,16 @@ NEXT_PUBLIC_MP_PUBLIC_KEY=""    # Mercado Pago public key for frontend SDK
 ## 11. Testing
 
 ### Test file location
+
 Colocate tests next to the file they test:
+
 ```
 members.service.ts
 members.service.test.ts   ← same folder
 ```
 
 ### What to test
+
 - Every service function that contains business logic
 - Every webhook handler (mock the queue)
 - Every route that has auth or role requirements
@@ -834,20 +861,21 @@ describe("createMember", () => {
   it("throws ConflictError when CPF is already registered", async () => {
     prismaMock.member.findUnique.mockResolvedValue({ id: "existing" } as any);
 
-    await expect(
-      createMember({ cpf: "12345678900", ...validInput }, prismaMock)
-    ).rejects.toThrow(ConflictError);
+    await expect(createMember({ cpf: "12345678900", ...validInput }, prismaMock)).rejects.toThrow(
+      ConflictError,
+    );
   });
 
   it("throws ValidationError for invalid CPF", async () => {
-    await expect(
-      createMember({ cpf: "00000000000", ...validInput }, prismaMock)
-    ).rejects.toThrow(ValidationError);
+    await expect(createMember({ cpf: "00000000000", ...validInput }, prismaMock)).rejects.toThrow(
+      ValidationError,
+    );
   });
 });
 ```
 
 ### Running tests before committing
+
 ```bash
 pnpm test        # must pass with no failures
 pnpm typecheck   # must pass with no errors
@@ -876,6 +904,7 @@ Before marking any task complete, verify:
 ## 13. Common Tasks (Cookbook)
 
 ### Add a new API endpoint
+
 1. Add/update Zod schema in `packages/schemas/src/{module}.ts`
 2. Run `pnpm --filter @repo/schemas build` to verify types
 3. Add handler in `apps/api/src/modules/{module}/{module}.service.ts`
@@ -884,23 +913,27 @@ Before marking any task complete, verify:
 6. Verify OpenAPI is auto-generated correctly via Fastify Swagger at `/docs`
 
 ### Add a new database field
+
 1. Edit `packages/db/prisma/schema.prisma`
 2. Run `pnpm db:migrate` — enter a descriptive migration name
 3. Run `pnpm db:generate` — regenerates Prisma client
 4. TypeScript errors in the codebase now show you what needs updating — fix them all
 
 ### Add a new background job
+
 1. Create `apps/api/src/jobs/{job-name}.ts` with the processor function
 2. Register the queue and worker in `apps/api/src/plugins/queues.ts`
 3. Export the queue from the plugin so route handlers can enqueue via `fastify.queues.{name}`
 4. Add retry and backoff config to the worker (default: 3 retries, exponential backoff)
 
 ### Add a new email template
+
 1. Create `apps/api/src/emails/{TemplateName}.tsx` using React Email components
 2. Add a send function in `apps/api/src/lib/email.ts`
 3. Call the send function from a BullMQ job processor — never directly from a route handler
 
 ### Add a new environment variable
+
 1. Add to `.env.example` with a comment explaining what it is and where to get it
 2. Add to `.env.local` with the real value
 3. Access via `process.env.VAR_NAME` — validate at startup using Zod env schema in
@@ -908,5 +941,5 @@ Before marking any task complete, verify:
 
 ---
 
-*Last updated: 2026-06. Review and update this file whenever the stack, conventions, or
-hard rules change. An outdated AGENTS.md is worse than no AGENTS.md.*
+_Last updated: 2026-06. Review and update this file whenever the stack, conventions, or
+hard rules change. An outdated AGENTS.md is worse than no AGENTS.md._

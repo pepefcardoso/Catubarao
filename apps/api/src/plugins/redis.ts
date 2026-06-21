@@ -32,5 +32,5 @@ export default fp(
       await instance.redis.quit();
     });
   },
-  { name: "redis" }
+  { name: "redis" },
 );

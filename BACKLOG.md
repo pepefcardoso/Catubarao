@@ -9,104 +9,104 @@ Task backlog from zero to production. Each task is sized for a single AI agent s
 
 ## Summary Table
 
-| ID | Title | Phase | Size | Depends on |
-|---|---|---|---|---|
-| FOUND-001 | Initialize Turborepo monorepo | 0 | S | — |
-| FOUND-002 | Next.js 15 app bootstrap | 0 | S | FOUND-001 |
-| FOUND-003 | Fastify 5 app bootstrap | 0 | S | FOUND-001 |
-| FOUND-004 | Shared packages (schemas, db, ui, config) | 0 | S | FOUND-001 |
-| FOUND-005 | Docker Compose infrastructure | 0 | S | FOUND-001 |
-| FOUND-006 | Prisma setup + env validation | 0 | S | FOUND-004, FOUND-005 |
-| FOUND-007 | Better Auth configuration | 0 | M | FOUND-003, FOUND-006 |
-| FOUND-008 | Fastify plugins (auth, redis, swagger, errors) | 0 | M | FOUND-003, FOUND-007 |
-| FOUND-009 | BullMQ plugin + queue definitions | 0 | S | FOUND-008 |
-| FOUND-010 | GitHub Actions CI pipeline | 0 | S | FOUND-001 |
-| FOUND-011 | Caddy reverse proxy config | 0 | S | FOUND-002, FOUND-003 |
-| FOUND-012 | Sentry setup (web + api) | 0 | S | FOUND-002, FOUND-003 |
-| FOUND-013 | Tailwind CSS + shadcn/ui setup | 0 | S | FOUND-002 |
-| FOUND-014 | React Email + Resend setup | 0 | S | FOUND-003 |
-| FOUND-015 | Cloudflare R2 storage utility | 0 | S | FOUND-003 |
-| FOUND-016 | Layout shell — `(public)` | 0 | S | FOUND-013 |
-| FOUND-017 | Layout shell — `(member)` | 0 | S | FOUND-013 |
-| FOUND-018 | Layout shell — `(admin)` | 0 | S | FOUND-013 |
-| FOUND-019 | Layout shell — `(store)` | 0 | S | FOUND-013 |
-| MEMBER-001 | Prisma schema — member module | 1 | M | FOUND-006 |
-| MEMBER-002 | Zod schemas — member module | 1 | M | FOUND-004 |
-| MEMBER-003 | Auth routes (register, login, logout, refresh) | 1 | M | FOUND-007, FOUND-008, MEMBER-001, MEMBER-002 |
-| MEMBER-004 | Member profile routes (GET /me, PATCH /me) | 1 | S | MEMBER-003 |
-| MEMBER-005 | MembershipPlan CRUD (admin) | 1 | S | MEMBER-003 |
-| MEMBER-006 | Subscription creation + Mercado Pago checkout | 1 | L | MEMBER-005 |
-| MEMBER-007 | Mercado Pago webhook handler + BullMQ job | 1 | M | FOUND-009, MEMBER-006 |
-| MEMBER-008 | Subscription status management service | 1 | M | MEMBER-007 |
-| MEMBER-009 | Delinquency flow (scheduled jobs D+1/7/15/30) | 1 | M | MEMBER-008, FOUND-014 |
-| MEMBER-010 | Membership card + QR JWT generation | 1 | M | MEMBER-008 |
-| MEMBER-011 | Gamification events service | 1 | M | MEMBER-008 |
-| MEMBER-012 | Poll and voting system | 1 | M | MEMBER-003 |
-| MEMBER-013 | Referral system | 1 | S | MEMBER-006 |
-| MEMBER-014 | Email templates (all member lifecycle events) | 1 | M | FOUND-014, MEMBER-001 |
-| MEMBER-015 | Public goals dashboard data endpoint | 1 | S | MEMBER-001 |
-| MEMBER-016 | Frontend — signup flow | 1 | M | FOUND-013, FOUND-016, MEMBER-003 |
-| MEMBER-017 | Frontend — plan selection page | 1 | S | MEMBER-016, MEMBER-005 |
-| MEMBER-018 | Frontend — checkout (Mercado Pago Brick) | 1 | M | MEMBER-017, MEMBER-006 |
-| MEMBER-019 | Frontend — member dashboard | 1 | M | MEMBER-016, MEMBER-010, FOUND-017 |
-| MEMBER-020 | Frontend — membership card display + QR | 1 | S | MEMBER-010, MEMBER-019 |
-| MEMBER-021 | Frontend — payment history | 1 | S | MEMBER-019 |
-| MEMBER-022 | Frontend — public goals counter | 1 | S | FOUND-013, MEMBER-015 |
-| MEMBER-023 | Frontend — admin members list + search | 1 | M | FOUND-013, FOUND-018, MEMBER-003 |
-| MEMBER-024 | Frontend — admin member detail + actions | 1 | M | MEMBER-023 |
-| MEMBER-025 | Frontend — admin plan management | 1 | S | MEMBER-005, FOUND-013 |
-| MEMBER-026 | Monthly streak increment job | 1 | S | MEMBER-008, MEMBER-011 |
-| MEMBER-027 | Offline PWA / Service Worker for check-in | 1 | M | MEMBER-010, MEMBER-011 |
-| MEMBER-028 | MatchEvent CRUD API (admin stub) | 1 | S | MEMBER-003 |
-| TRANS-001 | Prisma schema — transparency module | 2 | S | FOUND-006 |
-| TRANS-002 | Zod schemas — transparency module | 2 | S | FOUND-004 |
-| TRANS-003 | TransparencyPost CRUD API | 2 | M | FOUND-008, TRANS-001, TRANS-002 |
-| TRANS-004 | DebtRecord + DebtSnapshot API | 2 | M | FOUND-008, TRANS-001, TRANS-002 |
-| TRANS-005 | Monthly debt snapshot scheduled job | 2 | S | FOUND-009, TRANS-004 |
-| TRANS-006 | RSS feed endpoint | 2 | S | TRANS-003 |
-| TRANS-007 | Scheduled publishing BullMQ job | 2 | S | FOUND-009, TRANS-003 |
-| TRANS-008 | Frontend — transparency portal homepage | 2 | M | FOUND-013, TRANS-003, TRANS-004 |
-| TRANS-009 | Frontend — post list + category filter | 2 | S | TRANS-008 |
-| TRANS-010 | Frontend — post detail (markdown render) | 2 | S | TRANS-009 |
-| TRANS-011 | Frontend — debt dashboard (cards + chart) | 2 | M | TRANS-008 |
-| TRANS-012 | Frontend — document repository + search | 2 | S | FOUND-015, TRANS-008 |
-| TRANS-013 | Frontend — admin transparency panel | 2 | M | MEMBER-023, TRANS-003 |
-| TRANS-014 | Frontend — admin debt records management | 2 | M | TRANS-013, TRANS-004 |
-| TRANS-015 | SEO metadata + XML sitemap | 2 | S | TRANS-008, TRANS-010 |
-| PARTNER-001 | Prisma schema — partners module | 3 | S | FOUND-006 |
-| PARTNER-002 | Zod schemas — partners module | 3 | S | FOUND-004 |
-| PARTNER-003 | Partner CRUD API | 3 | S | FOUND-008, PARTNER-001, PARTNER-002 |
-| PARTNER-004 | SponsorshipDeal CRUD API | 3 | M | PARTNER-003 |
-| PARTNER-005 | Deliverable management API | 3 | M | PARTNER-004 |
-| PARTNER-006 | DeliveryProof upload (R2 presigned URL) | 3 | M | FOUND-015, PARTNER-005 |
-| PARTNER-007 | PDF delivery proof report generation | 3 | M | PARTNER-006 |
-| PARTNER-008 | Deal expiration alert jobs (D-30/15/7) | 3 | S | FOUND-009, FOUND-014, PARTNER-004 |
-| PARTNER-009 | Frontend — admin partner list | 3 | S | FOUND-013, PARTNER-003 |
-| PARTNER-010 | Frontend — admin deal management | 3 | M | PARTNER-009, PARTNER-004 |
-| PARTNER-011 | Frontend — admin deliverable tracker | 3 | M | PARTNER-010, PARTNER-005 |
-| PARTNER-012 | Frontend — proof upload + PDF export | 3 | M | PARTNER-011, PARTNER-006, PARTNER-007 |
-| STORE-001 | Prisma schema — store module | 4 | S | FOUND-006 |
-| STORE-002 | Zod schemas — store module | 4 | S | FOUND-004 |
-| STORE-003 | Product CRUD API (admin) | 4 | M | FOUND-008, STORE-001, STORE-002 |
-| STORE-004 | Stock management service | 4 | M | STORE-003 |
-| STORE-005 | Order creation + Mercado Pago one-time checkout | 4 | L | STORE-004, MEMBER-007 |
-| STORE-006 | Order webhook handler + fulfillment flow | 4 | M | STORE-005 |
-| STORE-007 | Frontend — product catalog | 4 | M | FOUND-013, FOUND-019, STORE-003 |
-| STORE-008 | Frontend — product detail page | 4 | S | STORE-007 |
-| STORE-009 | Frontend — checkout flow | 4 | M | STORE-008, STORE-005 |
-| STORE-010 | Frontend — order confirmation + history | 4 | S | STORE-009 |
-| STORE-011 | Frontend — admin product management | 4 | M | FOUND-013, STORE-003 |
-| STORE-012 | Frontend — admin order management | 4 | M | STORE-006, STORE-011 |
-| PROD-001 | Rate limiting on all public endpoints | 5 | S | FOUND-008 |
-| PROD-002 | Security headers (CSP, HSTS, CORS) | 5 | S | FOUND-002, FOUND-003 |
-| PROD-003 | LGPD compliance (anonymization, data export) | 5 | M | MEMBER-001, MEMBER-003 |
-| PROD-004 | Cookie consent banner | 5 | S | FOUND-013 |
-| PROD-005 | Database backup strategy + restore test | 5 | S | FOUND-005 |
-| PROD-006 | VPS hardening (firewall, SSH, fail2ban) | 5 | S | FOUND-011 |
-| PROD-007 | Staging environment + deploy pipeline | 5 | M | FOUND-010 |
-| PROD-008 | Load test — matchday simulation | 5 | M | All modules |
-| PROD-009 | Monitoring + alerting (Sentry + uptime) | 5 | S | FOUND-012 |
-| PROD-010 | Production deployment runbook | 5 | S | All PROD tasks |
+| ID          | Title                                           | Phase | Size | Depends on                                   |
+| ----------- | ----------------------------------------------- | ----- | ---- | -------------------------------------------- |
+| FOUND-001   | Initialize Turborepo monorepo                   | 0     | S    | —                                            |
+| FOUND-002   | Next.js 15 app bootstrap                        | 0     | S    | FOUND-001                                    |
+| FOUND-003   | Fastify 5 app bootstrap                         | 0     | S    | FOUND-001                                    |
+| FOUND-004   | Shared packages (schemas, db, ui, config)       | 0     | S    | FOUND-001                                    |
+| FOUND-005   | Docker Compose infrastructure                   | 0     | S    | FOUND-001                                    |
+| FOUND-006   | Prisma setup + env validation                   | 0     | S    | FOUND-004, FOUND-005                         |
+| FOUND-007   | Better Auth configuration                       | 0     | M    | FOUND-003, FOUND-006                         |
+| FOUND-008   | Fastify plugins (auth, redis, swagger, errors)  | 0     | M    | FOUND-003, FOUND-007                         |
+| FOUND-009   | BullMQ plugin + queue definitions               | 0     | S    | FOUND-008                                    |
+| FOUND-010   | GitHub Actions CI pipeline                      | 0     | S    | FOUND-001                                    |
+| FOUND-011   | Caddy reverse proxy config                      | 0     | S    | FOUND-002, FOUND-003                         |
+| FOUND-012   | Sentry setup (web + api)                        | 0     | S    | FOUND-002, FOUND-003                         |
+| FOUND-013   | Tailwind CSS + shadcn/ui setup                  | 0     | S    | FOUND-002                                    |
+| FOUND-014   | React Email + Resend setup                      | 0     | S    | FOUND-003                                    |
+| FOUND-015   | Cloudflare R2 storage utility                   | 0     | S    | FOUND-003                                    |
+| FOUND-016   | Layout shell — `(public)`                       | 0     | S    | FOUND-013                                    |
+| FOUND-017   | Layout shell — `(member)`                       | 0     | S    | FOUND-013                                    |
+| FOUND-018   | Layout shell — `(admin)`                        | 0     | S    | FOUND-013                                    |
+| FOUND-019   | Layout shell — `(store)`                        | 0     | S    | FOUND-013                                    |
+| MEMBER-001  | Prisma schema — member module                   | 1     | M    | FOUND-006                                    |
+| MEMBER-002  | Zod schemas — member module                     | 1     | M    | FOUND-004                                    |
+| MEMBER-003  | Auth routes (register, login, logout, refresh)  | 1     | M    | FOUND-007, FOUND-008, MEMBER-001, MEMBER-002 |
+| MEMBER-004  | Member profile routes (GET /me, PATCH /me)      | 1     | S    | MEMBER-003                                   |
+| MEMBER-005  | MembershipPlan CRUD (admin)                     | 1     | S    | MEMBER-003                                   |
+| MEMBER-006  | Subscription creation + Mercado Pago checkout   | 1     | L    | MEMBER-005                                   |
+| MEMBER-007  | Mercado Pago webhook handler + BullMQ job       | 1     | M    | FOUND-009, MEMBER-006                        |
+| MEMBER-008  | Subscription status management service          | 1     | M    | MEMBER-007                                   |
+| MEMBER-009  | Delinquency flow (scheduled jobs D+1/7/15/30)   | 1     | M    | MEMBER-008, FOUND-014                        |
+| MEMBER-010  | Membership card + QR JWT generation             | 1     | M    | MEMBER-008                                   |
+| MEMBER-011  | Gamification events service                     | 1     | M    | MEMBER-008                                   |
+| MEMBER-012  | Poll and voting system                          | 1     | M    | MEMBER-003                                   |
+| MEMBER-013  | Referral system                                 | 1     | S    | MEMBER-006                                   |
+| MEMBER-014  | Email templates (all member lifecycle events)   | 1     | M    | FOUND-014, MEMBER-001                        |
+| MEMBER-015  | Public goals dashboard data endpoint            | 1     | S    | MEMBER-001                                   |
+| MEMBER-016  | Frontend — signup flow                          | 1     | M    | FOUND-013, FOUND-016, MEMBER-003             |
+| MEMBER-017  | Frontend — plan selection page                  | 1     | S    | MEMBER-016, MEMBER-005                       |
+| MEMBER-018  | Frontend — checkout (Mercado Pago Brick)        | 1     | M    | MEMBER-017, MEMBER-006                       |
+| MEMBER-019  | Frontend — member dashboard                     | 1     | M    | MEMBER-016, MEMBER-010, FOUND-017            |
+| MEMBER-020  | Frontend — membership card display + QR         | 1     | S    | MEMBER-010, MEMBER-019                       |
+| MEMBER-021  | Frontend — payment history                      | 1     | S    | MEMBER-019                                   |
+| MEMBER-022  | Frontend — public goals counter                 | 1     | S    | FOUND-013, MEMBER-015                        |
+| MEMBER-023  | Frontend — admin members list + search          | 1     | M    | FOUND-013, FOUND-018, MEMBER-003             |
+| MEMBER-024  | Frontend — admin member detail + actions        | 1     | M    | MEMBER-023                                   |
+| MEMBER-025  | Frontend — admin plan management                | 1     | S    | MEMBER-005, FOUND-013                        |
+| MEMBER-026  | Monthly streak increment job                    | 1     | S    | MEMBER-008, MEMBER-011                       |
+| MEMBER-027  | Offline PWA / Service Worker for check-in       | 1     | M    | MEMBER-010, MEMBER-011                       |
+| MEMBER-028  | MatchEvent CRUD API (admin stub)                | 1     | S    | MEMBER-003                                   |
+| TRANS-001   | Prisma schema — transparency module             | 2     | S    | FOUND-006                                    |
+| TRANS-002   | Zod schemas — transparency module               | 2     | S    | FOUND-004                                    |
+| TRANS-003   | TransparencyPost CRUD API                       | 2     | M    | FOUND-008, TRANS-001, TRANS-002              |
+| TRANS-004   | DebtRecord + DebtSnapshot API                   | 2     | M    | FOUND-008, TRANS-001, TRANS-002              |
+| TRANS-005   | Monthly debt snapshot scheduled job             | 2     | S    | FOUND-009, TRANS-004                         |
+| TRANS-006   | RSS feed endpoint                               | 2     | S    | TRANS-003                                    |
+| TRANS-007   | Scheduled publishing BullMQ job                 | 2     | S    | FOUND-009, TRANS-003                         |
+| TRANS-008   | Frontend — transparency portal homepage         | 2     | M    | FOUND-013, TRANS-003, TRANS-004              |
+| TRANS-009   | Frontend — post list + category filter          | 2     | S    | TRANS-008                                    |
+| TRANS-010   | Frontend — post detail (markdown render)        | 2     | S    | TRANS-009                                    |
+| TRANS-011   | Frontend — debt dashboard (cards + chart)       | 2     | M    | TRANS-008                                    |
+| TRANS-012   | Frontend — document repository + search         | 2     | S    | FOUND-015, TRANS-008                         |
+| TRANS-013   | Frontend — admin transparency panel             | 2     | M    | MEMBER-023, TRANS-003                        |
+| TRANS-014   | Frontend — admin debt records management        | 2     | M    | TRANS-013, TRANS-004                         |
+| TRANS-015   | SEO metadata + XML sitemap                      | 2     | S    | TRANS-008, TRANS-010                         |
+| PARTNER-001 | Prisma schema — partners module                 | 3     | S    | FOUND-006                                    |
+| PARTNER-002 | Zod schemas — partners module                   | 3     | S    | FOUND-004                                    |
+| PARTNER-003 | Partner CRUD API                                | 3     | S    | FOUND-008, PARTNER-001, PARTNER-002          |
+| PARTNER-004 | SponsorshipDeal CRUD API                        | 3     | M    | PARTNER-003                                  |
+| PARTNER-005 | Deliverable management API                      | 3     | M    | PARTNER-004                                  |
+| PARTNER-006 | DeliveryProof upload (R2 presigned URL)         | 3     | M    | FOUND-015, PARTNER-005                       |
+| PARTNER-007 | PDF delivery proof report generation            | 3     | M    | PARTNER-006                                  |
+| PARTNER-008 | Deal expiration alert jobs (D-30/15/7)          | 3     | S    | FOUND-009, FOUND-014, PARTNER-004            |
+| PARTNER-009 | Frontend — admin partner list                   | 3     | S    | FOUND-013, PARTNER-003                       |
+| PARTNER-010 | Frontend — admin deal management                | 3     | M    | PARTNER-009, PARTNER-004                     |
+| PARTNER-011 | Frontend — admin deliverable tracker            | 3     | M    | PARTNER-010, PARTNER-005                     |
+| PARTNER-012 | Frontend — proof upload + PDF export            | 3     | M    | PARTNER-011, PARTNER-006, PARTNER-007        |
+| STORE-001   | Prisma schema — store module                    | 4     | S    | FOUND-006                                    |
+| STORE-002   | Zod schemas — store module                      | 4     | S    | FOUND-004                                    |
+| STORE-003   | Product CRUD API (admin)                        | 4     | M    | FOUND-008, STORE-001, STORE-002              |
+| STORE-004   | Stock management service                        | 4     | M    | STORE-003                                    |
+| STORE-005   | Order creation + Mercado Pago one-time checkout | 4     | L    | STORE-004, MEMBER-007                        |
+| STORE-006   | Order webhook handler + fulfillment flow        | 4     | M    | STORE-005                                    |
+| STORE-007   | Frontend — product catalog                      | 4     | M    | FOUND-013, FOUND-019, STORE-003              |
+| STORE-008   | Frontend — product detail page                  | 4     | S    | STORE-007                                    |
+| STORE-009   | Frontend — checkout flow                        | 4     | M    | STORE-008, STORE-005                         |
+| STORE-010   | Frontend — order confirmation + history         | 4     | S    | STORE-009                                    |
+| STORE-011   | Frontend — admin product management             | 4     | M    | FOUND-013, STORE-003                         |
+| STORE-012   | Frontend — admin order management               | 4     | M    | STORE-006, STORE-011                         |
+| PROD-001    | Rate limiting on all public endpoints           | 5     | S    | FOUND-008                                    |
+| PROD-002    | Security headers (CSP, HSTS, CORS)              | 5     | S    | FOUND-002, FOUND-003                         |
+| PROD-003    | LGPD compliance (anonymization, data export)    | 5     | M    | MEMBER-001, MEMBER-003                       |
+| PROD-004    | Cookie consent banner                           | 5     | S    | FOUND-013                                    |
+| PROD-005    | Database backup strategy + restore test         | 5     | S    | FOUND-005                                    |
+| PROD-006    | VPS hardening (firewall, SSH, fail2ban)         | 5     | S    | FOUND-011                                    |
+| PROD-007    | Staging environment + deploy pipeline           | 5     | M    | FOUND-010                                    |
+| PROD-008    | Load test — matchday simulation                 | 5     | M    | All modules                                  |
+| PROD-009    | Monitoring + alerting (Sentry + uptime)         | 5     | S    | FOUND-012                                    |
+| PROD-010    | Production deployment runbook                   | 5     | S    | All PROD tasks                               |
 
 ---
 

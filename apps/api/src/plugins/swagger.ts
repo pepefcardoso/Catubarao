@@ -20,5 +20,5 @@ export default fp(
       routePrefix: "/docs",
     });
   },
-  { name: "swagger" }
+  { name: "swagger" },
 );

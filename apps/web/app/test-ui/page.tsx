@@ -1,4 +1,4 @@
-import { Button } from "@repo/ui/components/button"
+import { Button } from "@repo/ui/components/button";
 
 export default function TestUIPage() {
   return (
@@ -14,5 +14,5 @@ export default function TestUIPage() {
         </div>
       </div>
     </div>
-  )
+  );
 }

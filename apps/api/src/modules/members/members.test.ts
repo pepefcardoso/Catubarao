@@ -11,17 +11,19 @@ describe("Members Profile Routes", () => {
 
   beforeAll(async () => {
     await fastifyApp.ready();
-    
+
     // Create a dummy user
     const memberData = {
       name: "Test Member",
       email: `test.profile.${Date.now()}@example.com`,
       password: "password123",
-      cpf: Math.floor(10000000000 + Math.random() * 90000000000).toString().substring(0, 11),
+      cpf: Math.floor(10000000000 + Math.random() * 90000000000)
+        .toString()
+        .substring(0, 11),
       phone: "+5511999999999",
       birthDate: "1990-01-01",
     };
-    
+
     // Register the user
     await fastifyApp.inject({
       method: "POST",
@@ -38,7 +40,7 @@ describe("Members Profile Routes", () => {
         password: memberData.password,
       },
     });
-    
+
     const body = JSON.parse(loginRes.payload);
     memberId = body.user.id;
 
@@ -48,8 +50,8 @@ describe("Members Profile Routes", () => {
 
   afterAll(async () => {
     // cleanup
-    await prisma.session.deleteMany({ where: { userId: memberId }});
-    await prisma.member.delete({ where: { id: memberId }});
+    await prisma.session.deleteMany({ where: { userId: memberId } });
+    await prisma.member.delete({ where: { id: memberId } });
     await fastifyApp.close();
   });
 
@@ -59,9 +61,8 @@ describe("Members Profile Routes", () => {
   });
 
   it("GET /members/me returns member profile and calculated streak", async () => {
-    const res = await request.get("/members/me")
-      .set("Cookie", memberToken);
-      
+    const res = await request.get("/members/me").set("Cookie", memberToken);
+
     expect(res.status).toBe(200);
     expect(res.body).toHaveProperty("id", memberId);
     expect(res.body).toHaveProperty("name", "Test Member");
@@ -74,27 +75,26 @@ describe("Members Profile Routes", () => {
   });
 
   it("PATCH /members/me with { cpf: '...' } returns 403", async () => {
-    const res = await request.patch("/members/me")
+    const res = await request
+      .patch("/members/me")
       .set("Cookie", memberToken)
       .send({ cpf: "22222222222" });
-      
+
     expect(res.status).toBe(403);
   });
 
   it("PATCH /members/me with valid fields updates and returns updated profile", async () => {
-    const res = await request.patch("/members/me")
-      .set("Cookie", memberToken)
-      .send({ 
-        name: "Updated Member", 
-        phone: "5511999999999", 
-        showOnMonument: true 
-      });
-      
+    const res = await request.patch("/members/me").set("Cookie", memberToken).send({
+      name: "Updated Member",
+      phone: "5511999999999",
+      showOnMonument: true,
+    });
+
     expect(res.status).toBe(200);
     expect(res.body).toHaveProperty("name", "Updated Member");
     expect(res.body).toHaveProperty("showOnMonument", true);
 
-    const dbMember = await prisma.member.findUnique({ where: { id: memberId }});
+    const dbMember = await prisma.member.findUnique({ where: { id: memberId } });
     expect(dbMember?.name).toBe("Updated Member");
     expect(dbMember?.showOnMonument).toBe(true);
   });

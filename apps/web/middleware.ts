@@ -3,19 +3,16 @@ import { NextResponse, type NextRequest } from "next/server";
 
 export async function middleware(request: NextRequest) {
   const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3333";
-  
-  const { data: session } = await betterFetch<any>(
-    "/api/auth/get-session",
-    {
-      baseURL: apiUrl,
-      headers: {
-        cookie: request.headers.get("cookie") || "",
-      },
+
+  const { data: session } = await betterFetch<any>("/api/auth/get-session", {
+    baseURL: apiUrl,
+    headers: {
+      cookie: request.headers.get("cookie") || "",
     },
-  );
+  });
 
   const url = request.nextUrl.clone();
-  
+
   // Protect member routes
   if (url.pathname.startsWith("/dashboard")) {
     if (!session) {

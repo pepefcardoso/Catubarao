@@ -5,10 +5,7 @@ import * as Sentry from "@sentry/node";
 import cors from "@fastify/cors";
 import rateLimit from "@fastify/rate-limit";
 import multipart from "@fastify/multipart";
-import {
-  serializerCompiler,
-  validatorCompiler,
-} from "fastify-type-provider-zod";
+import { serializerCompiler, validatorCompiler } from "fastify-type-provider-zod";
 import type { FastifyPluginAsyncZod } from "fastify-type-provider-zod";
 
 import { errorHandler } from "./lib/errorHandler";
@@ -72,6 +69,9 @@ fastify.register(authRoutes, { prefix: "/auth" });
 
 import { membersRoutes } from "./modules/members/members.routes";
 fastify.register(membersRoutes, { prefix: "/members" });
+
+import { plansRoutes } from "./modules/members/plans.routes";
+fastify.register(plansRoutes);
 
 // Health check endpoint
 fastify.get("/health", async (request, reply) => {

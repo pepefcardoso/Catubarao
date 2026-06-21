@@ -19,7 +19,7 @@ export const membersRoutes: FastifyPluginAsyncZod = async (fastify) => {
       const memberId = request.user.id;
       const me = await getMe(memberId, prisma);
       return reply.status(200).send(me);
-    }
+    },
   );
 
   fastify.patch(
@@ -40,7 +40,6 @@ export const membersRoutes: FastifyPluginAsyncZod = async (fastify) => {
       // Fetch the updated profile with adimplencia calculation
       const me = await getMe(memberId, prisma);
       return reply.status(200).send(me);
-    }
+    },
   );
 };
-

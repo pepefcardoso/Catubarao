@@ -9,7 +9,7 @@ describe("Fastify API Bootstrap", () => {
     fastify.get("/test-error", async () => {
       throw new ConflictError("Test conflict error");
     });
-    
+
     await fastify.ready();
   });
 

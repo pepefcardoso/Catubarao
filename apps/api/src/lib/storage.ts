@@ -1,4 +1,9 @@
-import { S3Client, PutObjectCommand, GetObjectCommand, DeleteObjectCommand } from "@aws-sdk/client-s3";
+import {
+  S3Client,
+  PutObjectCommand,
+  GetObjectCommand,
+  DeleteObjectCommand,
+} from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { env } from "./env";
 
@@ -19,7 +24,7 @@ export async function getUploadUrl(key: string, contentType: string, expiresIn =
       Key: key,
       ContentType: contentType,
     }),
-    { expiresIn }
+    { expiresIn },
   );
 }
 
@@ -30,7 +35,7 @@ export async function getDownloadUrl(key: string, expiresIn = 3600) {
       Bucket: env.R2_BUCKET,
       Key: key,
     }),
-    { expiresIn }
+    { expiresIn },
   );
 }
 
@@ -39,7 +44,7 @@ export async function deleteObject(key: string) {
     new DeleteObjectCommand({
       Bucket: env.R2_BUCKET,
       Key: key,
-    })
+    }),
   );
 }
 

@@ -8,7 +8,7 @@ const isCpfValid = (cpf: string) => {
 
 const normalizePhone = (phone: string) => {
   if (phone.startsWith("+")) return phone;
-  
+
   const digits = phone.replace(/\D/g, "");
   if (digits.length === 10 || digits.length === 11) {
     return `+55${digits}`;
@@ -22,8 +22,15 @@ const normalizePhone = (phone: string) => {
 export const CreateMemberSchema = z.object({
   name: z.string().min(2).max(100),
   email: z.string().email(),
-  cpf: z.string().refine(isCpfValid, { message: "Invalid CPF. Must be 11 digits and not a repeated sequence." }),
-  phone: z.string().min(10).max(20).transform(normalizePhone).refine(val => /^\+[1-9]\d{1,14}$/.test(val), { message: "Invalid phone number format" }),
+  cpf: z
+    .string()
+    .refine(isCpfValid, { message: "Invalid CPF. Must be 11 digits and not a repeated sequence." }),
+  phone: z
+    .string()
+    .min(10)
+    .max(20)
+    .transform(normalizePhone)
+    .refine((val) => /^\+[1-9]\d{1,14}$/.test(val), { message: "Invalid phone number format" }),
   birthDate: z.coerce.date(),
   referralCode: z.string().optional(),
   marketingConsent: z.boolean().default(false),
@@ -33,7 +40,10 @@ export const CreateMemberSchema = z.object({
 });
 
 export const UpdateMemberSchema = CreateMemberSchema.partial().extend({
-  cpf: z.string().refine(isCpfValid, { message: "Invalid CPF. Must be 11 digits and not a repeated sequence." }).optional(),
+  cpf: z
+    .string()
+    .refine(isCpfValid, { message: "Invalid CPF. Must be 11 digits and not a repeated sequence." })
+    .optional(),
 });
 
 export const RegisterMemberSchema = CreateMemberSchema.extend({
@@ -46,7 +56,6 @@ export const LoginSchema = z.object({
   password: z.string().min(1, "Password is required"),
 });
 export type LoginInput = z.infer<typeof LoginSchema>;
-
 
 export const MemberResponseSchema = z.object({
   id: z.string(),
@@ -72,12 +81,20 @@ export const MemberResponseSchema = z.object({
   referredById: z.string().nullable(),
 });
 
-export const UpdateMemberProfileSchema = z.object({
-  name: z.string().min(2).max(100).optional(),
-  phone: z.string().min(10).max(20).transform(normalizePhone).refine(val => /^\+[1-9]\d{1,14}$/.test(val), { message: "Invalid phone number format" }).optional(),
-  address: z.any().optional(),
-  showOnMonument: z.boolean().optional(),
-}).passthrough(); // passthrough to detect if they send cpf/email and return 403
+export const UpdateMemberProfileSchema = z
+  .object({
+    name: z.string().min(2).max(100).optional(),
+    phone: z
+      .string()
+      .min(10)
+      .max(20)
+      .transform(normalizePhone)
+      .refine((val) => /^\+[1-9]\d{1,14}$/.test(val), { message: "Invalid phone number format" })
+      .optional(),
+    address: z.any().optional(),
+    showOnMonument: z.boolean().optional(),
+  })
+  .passthrough(); // passthrough to detect if they send cpf/email and return 403
 
 export const SubscriptionStatusSchema = z.enum(["ACTIVE", "PENDING", "SUSPENDED", "CANCELLED"]);
 
@@ -97,6 +114,10 @@ export const CreateMembershipPlanSchema = z.object({
   maxCards: z.number().int().positive().nullable().optional(),
   isActive: z.boolean().default(true),
 });
+
+export const UpdateMembershipPlanSchema = CreateMembershipPlanSchema.partial();
+export type CreateMembershipPlanInput = z.infer<typeof CreateMembershipPlanSchema>;
+export type UpdateMembershipPlanInput = z.infer<typeof UpdateMembershipPlanSchema>;
 
 export const MembershipPlanResponseSchema = z.object({
   id: z.string(),
@@ -172,7 +193,7 @@ export const GamificationEventTypeSchema = z.enum([
   "REFERRAL",
   "ANNIVERSARY",
   "STREAK_6M",
-  "STREAK_12M"
+  "STREAK_12M",
 ]);
 
 export const GamificationEventResponseSchema = z.object({

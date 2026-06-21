@@ -131,16 +131,16 @@ Construir uma plataforma digital que:
 
 #### 3.1.2 Regras de Negócio
 
-| Código | Regra |
-|--------|-------|
-| RN-S01 | CPF é o identificador único de pessoa física. Mesmo e-mail não pode ser usado com dois CPFs distintos. |
-| RN-S02 | Um sócio pode ter apenas um plano ativo por vez. |
+| Código | Regra                                                                                                                                                      |
+| ------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| RN-S01 | CPF é o identificador único de pessoa física. Mesmo e-mail não pode ser usado com dois CPFs distintos.                                                     |
+| RN-S02 | Um sócio pode ter apenas um plano ativo por vez.                                                                                                           |
 | RN-S03 | Status de adimplência: `active` → `pending` (pagamento não processado no vencimento) → `suspended` (D+30 sem pagamento) → `active` (pagamento processado). |
-| RN-S04 | Cancelamento pelo sócio: acesso mantido até o fim do período pago; sem reembolso de período parcial. |
-| RN-S05 | Plano corporativo: cancelamento cancela todas as carteirinhas vinculadas simultaneamente. |
-| RN-S06 | Indicação: pontos só são creditados quando o indicado completa o primeiro pagamento — não no cadastro. |
-| RN-S07 | Direito de voto: calculado com base em `adimplencia_continua_meses >= 12`, recalculado a cada evento de pagamento/inadimplência. |
-| RN-S08 | QR code da carteirinha é regeado a cada renovação de plano e a cada reativação pós-suspensão. |
+| RN-S04 | Cancelamento pelo sócio: acesso mantido até o fim do período pago; sem reembolso de período parcial.                                                       |
+| RN-S05 | Plano corporativo: cancelamento cancela todas as carteirinhas vinculadas simultaneamente.                                                                  |
+| RN-S06 | Indicação: pontos só são creditados quando o indicado completa o primeiro pagamento — não no cadastro.                                                     |
+| RN-S07 | Direito de voto: calculado com base em `adimplencia_continua_meses >= 12`, recalculado a cada evento de pagamento/inadimplência.                           |
+| RN-S08 | QR code da carteirinha é regeado a cada renovação de plano e a cada reativação pós-suspensão.                                                              |
 
 #### 3.1.3 Fluxos Críticos
 
@@ -207,12 +207,12 @@ Registra check-in → +pontos de gamificação
 
 #### 3.2.2 Regras de Negócio
 
-| Código | Regra |
-|--------|-------|
+| Código | Regra                                                                                                                                                 |
+| ------ | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
 | RN-T01 | Publicação não pode ser deletada — apenas arquivada (visível com marcação "arquivado" ou substituída por versão nova). Garante rastro para auditoria. |
-| RN-T02 | Mês de referência é obrigatório para categorias `balanco_mensal` e `status_dividas`. |
-| RN-T03 | Deve haver exatamente uma publicação `balanco_mensal` por mês de referência — sistema alerta admin em caso de duplicata. |
-| RN-T04 | Gráfico de evolução do passivo é calculado com base no campo `saldo_restante` de todos os credores na data de cada atualização (snapshots). |
+| RN-T02 | Mês de referência é obrigatório para categorias `balanco_mensal` e `status_dividas`.                                                                  |
+| RN-T03 | Deve haver exatamente uma publicação `balanco_mensal` por mês de referência — sistema alerta admin em caso de duplicata.                              |
+| RN-T04 | Gráfico de evolução do passivo é calculado com base no campo `saldo_restante` de todos os credores na data de cada atualização (snapshots).           |
 
 #### 3.2.3 Fluxos Críticos
 
@@ -252,12 +252,12 @@ Sistema publica na data → Notifica assinantes do RSS →
 
 #### 3.3.2 Regras de Negócio
 
-| Código | Regra |
-|--------|-------|
-| RN-P01 | Acordo não pode ser deletado — apenas cancelado com motivo registrado. |
-| RN-P02 | Contrapartida do tipo `por_jogo` gera uma entrega pendente automaticamente a cada evento de matchday cadastrado no sistema. |
+| Código | Regra                                                                                                                                      |
+| ------ | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| RN-P01 | Acordo não pode ser deletado — apenas cancelado com motivo registrado.                                                                     |
+| RN-P02 | Contrapartida do tipo `por_jogo` gera uma entrega pendente automaticamente a cada evento de matchday cadastrado no sistema.                |
 | RN-P03 | Relatório de prova de entrega só pode ser gerado para acordos com ao menos uma entrega registrada — impede envio de PDF vazio ao parceiro. |
-| RN-P04 | Parceiro com CNPJ válido: sistema valida formato, não faz consulta à Receita Federal no MVP. |
+| RN-P04 | Parceiro com CNPJ válido: sistema valida formato, não faz consulta à Receita Federal no MVP.                                               |
 
 #### 3.3.3 Fluxos Críticos
 
@@ -300,12 +300,12 @@ Envia ao parceiro → Parceiro renova
 
 #### 3.4.2 Regras de Negócio
 
-| Código | Regra |
-|--------|-------|
-| RN-L01 | Produto "exclusivo para sócios": ao tentar comprar, visitante não-logado é redirecionado para cadastro de sócio. Sócio `suspended` vê mensagem de regularização antes do checkout. |
+| Código  | Regra                                                                                                                                                                                                                                                                                                                                                                    |
+| ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| RN-L01  | Produto "exclusivo para sócios": ao tentar comprar, visitante não-logado é redirecionado para cadastro de sócio. Sócio `suspended` vê mensagem de regularização antes do checkout.                                                                                                                                                                                       |
 | RN-L01b | Prevenção de Estoque Negativo: Decrementos de estoque (`estoque_fixo`) ocorrem sincronicamente durante o processamento do webhook de pagamento (`payment.approved`), não na criação do checkout. Isso evita esgotamento de estoque por checkouts maliciosos e elimina a necessidade de jobs de liberação de estoque. Race conditions são evitadas via database row lock. |
-| RN-L02 | Estoque `sob_demanda`: pedido confirmado gera notificação por e-mail ao admin com itens, variantes e endereço — admin repassa ao fornecedor manualmente no MVP. Automação com API do fornecedor é fase 2. |
-| RN-L03 | Cancelamento de pedido pago: reembolso é operado manualmente pelo admin via dashboard do gateway — sistema atualiza status para `cancelado` via webhook. |
+| RN-L02  | Estoque `sob_demanda`: pedido confirmado gera notificação por e-mail ao admin com itens, variantes e endereço — admin repassa ao fornecedor manualmente no MVP. Automação com API do fornecedor é fase 2.                                                                                                                                                                |
+| RN-L03  | Cancelamento de pedido pago: reembolso é operado manualmente pelo admin via dashboard do gateway — sistema atualiza status para `cancelado` via webhook.                                                                                                                                                                                                                 |
 
 ---
 
@@ -405,6 +405,7 @@ Envia ao parceiro → Parceiro renova
 ### 6.1 Entidades
 
 #### `Member` (Sócio)
+
 ```
 id                  UUID, PK
 name                string
@@ -419,6 +420,7 @@ referredBy          FK → Member (nullable)
 ```
 
 #### `MembershipPlan` (Plano)
+
 ```
 id                  UUID, PK
 name                string
@@ -432,6 +434,7 @@ createdAt           datetime
 ```
 
 #### `Subscription` (Assinatura)
+
 ```
 id                  UUID, PK
 memberId            FK → Member
@@ -445,6 +448,7 @@ createdAt           datetime
 ```
 
 #### `Payment` (Pagamento)
+
 ```
 id                  UUID, PK
 subscriptionId      FK → Subscription (nullable — pode ser loja)
@@ -458,6 +462,7 @@ createdAt           datetime
 ```
 
 #### `MembershipCard` (Carteirinha)
+
 ```
 id                  UUID, PK
 memberId            FK → Member
@@ -469,6 +474,7 @@ createdAt           datetime
 ```
 
 #### `GamificationEvent` (Evento de Gamificação)
+
 ```
 id                  UUID, PK
 memberId            FK → Member
@@ -479,6 +485,7 @@ createdAt           datetime
 ```
 
 #### `Poll` (Enquete)
+
 ```
 id                  UUID, PK
 title               string
@@ -493,6 +500,7 @@ createdAt           datetime
 ```
 
 #### `PollVote` (Voto)
+
 ```
 id                  UUID, PK
 pollId              FK → Poll
@@ -503,6 +511,7 @@ UNIQUE(pollId, memberId)
 ```
 
 #### `TransparencyPost` (Publicação de Transparência)
+
 ```
 id                  UUID, PK
 title               string
@@ -520,6 +529,7 @@ createdBy           FK → Member (admin)
 ```
 
 #### `DebtRecord` (Registro de Dívida)
+
 ```
 id                  UUID, PK
 creditorName        string
@@ -533,6 +543,7 @@ updatedAt           datetime
 ```
 
 #### `DebtSnapshot` (Snapshot de Passivo)
+
 ```
 id                  UUID, PK
 totalOriginal       decimal
@@ -544,6 +555,7 @@ createdBy           FK → Member (admin)
 ```
 
 #### `Partner` (Parceiro)
+
 ```
 id                  UUID, PK
 legalName           string
@@ -559,6 +571,7 @@ createdAt           datetime
 ```
 
 #### `SponsorshipDeal` (Acordo)
+
 ```
 id                  UUID, PK
 partnerId           FK → Partner
@@ -573,6 +586,7 @@ createdAt           datetime
 ```
 
 #### `Deliverable` (Contrapartida)
+
 ```
 id                  UUID, PK
 dealId              FK → SponsorshipDeal
@@ -582,6 +596,7 @@ ownerId             FK → Member (admin responsável)
 ```
 
 #### `DeliveryProof` (Prova de Entrega)
+
 ```
 id                  UUID, PK
 deliverableId       FK → Deliverable
@@ -595,6 +610,7 @@ createdBy           FK → Member (admin)
 ```
 
 #### `Product` (Produto da Loja)
+
 ```
 id                  UUID, PK
 name                string
@@ -612,6 +628,7 @@ createdAt           datetime
 ```
 
 #### `Order` (Pedido)
+
 ```
 id                  UUID, PK
 customerId          FK → Member (nullable — guest)
@@ -626,6 +643,7 @@ createdAt           datetime
 ```
 
 #### `MatchEvent` (Evento / Partida)
+
 ```
 id                  UUID, PK
 name                string
@@ -661,16 +679,16 @@ MatchEvent      1 ──< GamificationEvent (type: CHECKIN)
 
 **Proposta:**
 
-| Camada | Tecnologia proposta | Justificativa |
-|--------|---------------------|---------------|
-| Frontend | Next.js (App Router) | SSR para SEO do portal de transparência; RSC para caching de páginas públicas; único app com rotas separadas por domínio funcional |
-| API | Fastify + TypeScript | Throughput alto para webhooks do gateway; schema validation nativa |
-| ORM | Prisma | Type-safety no modelo de dados; migrations versionadas |
-| Banco | PostgreSQL | ACID para dados financeiros |
-| Cache | Redis | Sessão de login + cache de páginas públicas de alto tráfego |
-| Infra | Docker Compose em VPS | Custo mínimo; portabilidade para cloud quando crescer |
-| Gateway | Mercado Pago | Ver seção 5.1 |
-| E-mail | Resend | Developer experience; preço acessível no volume inicial |
+| Camada   | Tecnologia proposta   | Justificativa                                                                                                                      |
+| -------- | --------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| Frontend | Next.js (App Router)  | SSR para SEO do portal de transparência; RSC para caching de páginas públicas; único app com rotas separadas por domínio funcional |
+| API      | Fastify + TypeScript  | Throughput alto para webhooks do gateway; schema validation nativa                                                                 |
+| ORM      | Prisma                | Type-safety no modelo de dados; migrations versionadas                                                                             |
+| Banco    | PostgreSQL            | ACID para dados financeiros                                                                                                        |
+| Cache    | Redis                 | Sessão de login + cache de páginas públicas de alto tráfego                                                                        |
+| Infra    | Docker Compose em VPS | Custo mínimo; portabilidade para cloud quando crescer                                                                              |
+| Gateway  | Mercado Pago          | Ver seção 5.1                                                                                                                      |
+| E-mail   | Resend                | Developer experience; preço acessível no volume inicial                                                                            |
 
 ---
 
@@ -678,14 +696,14 @@ MatchEvent      1 ──< GamificationEvent (type: CHECKIN)
 
 ### MVP (Fase 1) — ~12 semanas estimadas
 
-| Semana | Entregável |
-|--------|-----------|
-| 1–2 | Setup infra (Docker, CI/CD), modelo de dados completo, autenticação |
-| 3–5 | Módulo Sócio-Torcedor: cadastro, planos, recorrência, carteirinha, webhooks |
-| 6–7 | Módulo Portal de Transparência: publicações, dashboard de dívidas, documentos |
-| 8–9 | Módulo CRM de Parceiros: cadastro, acordos, provas de entrega, relatório PDF |
-| 10–11 | Módulo Loja: catálogo, checkout, painel de pedidos |
-| 12 | QA, testes de carga, LGPD review, treinamento do admin, go-live |
+| Semana | Entregável                                                                    |
+| ------ | ----------------------------------------------------------------------------- |
+| 1–2    | Setup infra (Docker, CI/CD), modelo de dados completo, autenticação           |
+| 3–5    | Módulo Sócio-Torcedor: cadastro, planos, recorrência, carteirinha, webhooks   |
+| 6–7    | Módulo Portal de Transparência: publicações, dashboard de dívidas, documentos |
+| 8–9    | Módulo CRM de Parceiros: cadastro, acordos, provas de entrega, relatório PDF  |
+| 10–11  | Módulo Loja: catálogo, checkout, painel de pedidos                            |
+| 12     | QA, testes de carga, LGPD review, treinamento do admin, go-live               |
 
 ### Fase 2 — pós-MVP
 

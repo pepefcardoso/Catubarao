@@ -50,12 +50,16 @@ if (process.env.NODE_ENV === "test") {
   Object.assign(process.env, dummyTestEnv);
 }
 
-const parsed = process.env.NODE_ENV === "test" 
-  ? { success: true, data: process.env as any }
-  : envSchema.safeParse(process.env);
+const parsed =
+  process.env.NODE_ENV === "test"
+    ? { success: true, data: process.env as any }
+    : envSchema.safeParse(process.env);
 
 if (!parsed.success) {
-  console.error("❌ Invalid environment variables:", JSON.stringify(parsed.error.format(), null, 2));
+  console.error(
+    "❌ Invalid environment variables:",
+    JSON.stringify(parsed.error.format(), null, 2),
+  );
   process.exit(1);
 }
 

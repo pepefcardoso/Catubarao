@@ -31,7 +31,9 @@ export function AdminSidebar() {
 
       <div className="flex-1 px-4 py-4 space-y-1 overflow-y-auto">
         {adminNavItems.map((item) => {
-          const isActive = pathname === item.href || (item.href !== "/admin" && pathname.startsWith(`${item.href}/`));
+          const isActive =
+            pathname === item.href ||
+            (item.href !== "/admin" && pathname.startsWith(`${item.href}/`));
           const Icon = item.icon;
           return (
             <Link
@@ -41,7 +43,7 @@ export function AdminSidebar() {
                 "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors",
                 isActive
                   ? "bg-primary text-primary-foreground shadow-md shadow-primary/20"
-                  : "text-muted-foreground hover:bg-secondary/80 hover:text-foreground"
+                  : "text-muted-foreground hover:bg-secondary/80 hover:text-foreground",
               )}
             >
               <Icon className="w-5 h-5" />
@@ -61,8 +63,11 @@ export function AdminSidebar() {
             <span className="text-xs text-muted-foreground truncate">admin@tubarao.com</span>
           </div>
         </div>
-        
-        <Button variant="ghost" className="w-full justify-start text-destructive hover:text-destructive hover:bg-destructive/10">
+
+        <Button
+          variant="ghost"
+          className="w-full justify-start text-destructive hover:text-destructive hover:bg-destructive/10"
+        >
           <LogOut className="w-4 h-4 mr-2" />
           Sair
         </Button>

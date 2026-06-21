@@ -16,7 +16,7 @@ export interface SendEmailJobData {
 
 export async function sendEmailJob(job: Job<SendEmailJobData>) {
   const { template, to, subject, props } = job.data;
-  
+
   const TemplateComponent = templates[template];
   if (!TemplateComponent) {
     throw new Error(`Email template ${template} not found`);

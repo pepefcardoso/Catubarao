@@ -33,7 +33,7 @@ export function PublicHeader() {
         "fixed top-0 w-full z-50 transition-all duration-300 border-b",
         isScrolled
           ? "bg-background/80 backdrop-blur-md border-border/50 shadow-sm"
-          : "bg-transparent border-transparent"
+          : "bg-transparent border-transparent",
       )}
     >
       <div className="container mx-auto px-4 md:px-6 h-16 md:h-20 flex items-center justify-between">
@@ -47,7 +47,8 @@ export function PublicHeader() {
         {/* Desktop Nav */}
         <nav className="hidden md:flex items-center gap-1">
           {navItems.map((item) => {
-            const isActive = pathname.startsWith(item.href) && item.href !== "/" || pathname === item.href;
+            const isActive =
+              (pathname.startsWith(item.href) && item.href !== "/") || pathname === item.href;
             return (
               <Link
                 key={item.href}
@@ -56,7 +57,7 @@ export function PublicHeader() {
                   "px-4 py-2 rounded-full text-sm font-medium transition-all duration-300",
                   isActive
                     ? "bg-primary/10 text-primary"
-                    : "text-muted-foreground hover:bg-secondary/50 hover:text-foreground"
+                    : "text-muted-foreground hover:bg-secondary/50 hover:text-foreground",
                 )}
               >
                 {item.name}
@@ -67,7 +68,9 @@ export function PublicHeader() {
 
         <div className="hidden md:flex items-center gap-4">
           <Link href="/login">
-            <Button variant="ghost" className="rounded-full">Entrar</Button>
+            <Button variant="ghost" className="rounded-full">
+              Entrar
+            </Button>
           </Link>
           <Link href="/socio">
             <Button className="rounded-full shadow-lg shadow-primary/25 hover:shadow-primary/40 transition-shadow">
@@ -96,7 +99,9 @@ export function PublicHeader() {
                 </Link>
                 <nav className="flex flex-col gap-2">
                   {navItems.map((item) => {
-                    const isActive = pathname.startsWith(item.href) && item.href !== "/" || pathname === item.href;
+                    const isActive =
+                      (pathname.startsWith(item.href) && item.href !== "/") ||
+                      pathname === item.href;
                     return (
                       <Link
                         key={item.href}
@@ -105,7 +110,7 @@ export function PublicHeader() {
                           "px-4 py-3 rounded-xl text-base font-medium transition-colors",
                           isActive
                             ? "bg-primary/10 text-primary"
-                            : "text-muted-foreground hover:bg-secondary/50 hover:text-foreground"
+                            : "text-muted-foreground hover:bg-secondary/50 hover:text-foreground",
                         )}
                       >
                         {item.name}

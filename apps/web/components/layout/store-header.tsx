@@ -57,18 +57,20 @@ export function StoreHeader() {
                     </div>
                     <span className="font-bold text-xl tracking-tight">Tubarão Store</span>
                   </Link>
-                  
+
                   <div className="relative">
                     <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                    <input 
-                      type="search" 
-                      placeholder="Buscar produtos..." 
+                    <input
+                      type="search"
+                      placeholder="Buscar produtos..."
                       className="w-full pl-9 pr-4 py-2 bg-secondary rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-primary/20"
                     />
                   </div>
 
                   <nav className="flex flex-col gap-2">
-                    <h4 className="text-sm font-semibold text-muted-foreground mb-2 px-2">Categorias</h4>
+                    <h4 className="text-sm font-semibold text-muted-foreground mb-2 px-2">
+                      Categorias
+                    </h4>
                     {storeCategories.map((category) => {
                       const isActive = pathname === category.href;
                       return (
@@ -79,7 +81,7 @@ export function StoreHeader() {
                             "px-4 py-3 rounded-xl text-base font-medium transition-colors",
                             isActive
                               ? "bg-primary/10 text-primary"
-                              : "text-muted-foreground hover:bg-secondary/50 hover:text-foreground"
+                              : "text-muted-foreground hover:bg-secondary/50 hover:text-foreground",
                           )}
                         >
                           {category.name}
@@ -96,16 +98,18 @@ export function StoreHeader() {
             <div className="bg-primary p-1.5 md:p-2 rounded-xl group-hover:bg-primary/90 transition-colors">
               <Waves className="w-5 h-5 md:w-6 md:h-6 text-primary-foreground" />
             </div>
-            <span className="font-bold text-lg md:text-xl tracking-tight hidden sm:block">Tubarão Store</span>
+            <span className="font-bold text-lg md:text-xl tracking-tight hidden sm:block">
+              Tubarão Store
+            </span>
           </Link>
         </div>
 
         {/* Desktop Search */}
         <div className="hidden md:flex flex-1 max-w-md mx-8 relative">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-          <input 
-            type="search" 
-            placeholder="O que você está procurando?" 
+          <input
+            type="search"
+            placeholder="O que você está procurando?"
             className="w-full pl-10 pr-4 py-2 bg-secondary/50 hover:bg-secondary focus:bg-background border border-transparent focus:border-primary/30 rounded-full text-sm transition-all focus:outline-none focus:ring-4 focus:ring-primary/10"
           />
         </div>
@@ -118,9 +122,12 @@ export function StoreHeader() {
               <span className="sr-only">Minha Conta</span>
             </Button>
           </Link>
-          
+
           <Link href="/loja/carrinho">
-            <Button variant="outline" className="rounded-full relative border-border/50 hover:bg-secondary">
+            <Button
+              variant="outline"
+              className="rounded-full relative border-border/50 hover:bg-secondary"
+            >
               <ShoppingBag className="w-5 h-5 mr-0 md:mr-2" />
               <span className="hidden md:inline font-medium">Carrinho</span>
               <span className="absolute -top-1 -right-1 bg-primary text-primary-foreground text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
@@ -142,7 +149,9 @@ export function StoreHeader() {
                 href={category.href}
                 className={cn(
                   "text-sm font-medium transition-colors hover:text-primary",
-                  isActive ? "text-primary border-b-2 border-primary pb-3 mt-3" : "text-muted-foreground"
+                  isActive
+                    ? "text-primary border-b-2 border-primary pb-3 mt-3"
+                    : "text-muted-foreground",
                 )}
               >
                 {category.name}

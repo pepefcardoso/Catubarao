@@ -8,7 +8,7 @@ import { ConflictError } from "../../lib/errors";
 export async function registerMember(
   request: FastifyRequest<{ Body: RegisterMemberInput }>,
   reply: FastifyReply,
-  db: PrismaClient
+  db: PrismaClient,
 ) {
   const input = request.body;
 
@@ -51,7 +51,7 @@ export async function registerMember(
 
 export async function loginMember(
   request: FastifyRequest<{ Body: LoginInput }>,
-  reply: FastifyReply
+  reply: FastifyReply,
 ) {
   const input = request.body;
 
@@ -69,10 +69,7 @@ export async function loginMember(
   return reply.send(response.body ? await response.text() : null);
 }
 
-export async function logoutMember(
-  request: FastifyRequest,
-  reply: FastifyReply
-) {
+export async function logoutMember(request: FastifyRequest, reply: FastifyReply) {
   const response = await auth.api.signOut({
     headers: fromNodeHeaders(request.headers),
     asResponse: true,
@@ -83,10 +80,7 @@ export async function logoutMember(
   return reply.send(response.body ? await response.text() : null);
 }
 
-export async function refreshToken(
-  request: FastifyRequest,
-  reply: FastifyReply
-) {
+export async function refreshToken(request: FastifyRequest, reply: FastifyReply) {
   const session = await auth.api.getSession({
     headers: fromNodeHeaders(request.headers),
   });

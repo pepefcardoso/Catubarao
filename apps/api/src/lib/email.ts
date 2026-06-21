@@ -4,11 +4,7 @@ import * as React from "react";
 
 const resend = new Resend(env.RESEND_API_KEY);
 
-export async function sendEmail(
-  template: React.ReactElement,
-  to: string,
-  subject: string
-) {
+export async function sendEmail(template: React.ReactElement, to: string, subject: string) {
   try {
     const data = await resend.emails.send({
       from: env.RESEND_FROM,

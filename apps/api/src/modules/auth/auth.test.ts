@@ -13,7 +13,9 @@ describe("Auth Endpoints", () => {
     await app.close();
   });
 
-  const randomCpf = Math.floor(10000000000 + Math.random() * 90000000000).toString().substring(0, 11);
+  const randomCpf = Math.floor(10000000000 + Math.random() * 90000000000)
+    .toString()
+    .substring(0, 11);
 
   const validMember = {
     name: "John Doe Auth",
@@ -30,11 +32,11 @@ describe("Auth Endpoints", () => {
       url: "/auth/register",
       payload: validMember,
     });
-    
+
     if (res.statusCode !== 201) {
       console.error("Register failed:", res.payload);
     }
-    
+
     // Better auth signup email successful
     expect(res.statusCode).toBe(201);
     const body = JSON.parse(res.payload);
@@ -103,7 +105,7 @@ describe("Auth Endpoints", () => {
         password: validMember.password,
       },
     });
-    
+
     const cookies = loginRes.headers["set-cookie"];
 
     const res = await app.inject({
@@ -126,7 +128,7 @@ describe("Auth Endpoints", () => {
         password: validMember.password,
       },
     });
-    
+
     const cookies = loginRes.headers["set-cookie"];
 
     const res = await app.inject({

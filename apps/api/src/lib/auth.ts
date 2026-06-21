@@ -22,9 +22,5 @@ export const auth = betterAuth({
       whatsappOptIn: { type: "boolean", required: false },
     },
   },
-  plugins: [
-    admin(),
-    jwt(),
-  ],
+  plugins: [admin(), jwt()],
 });
-

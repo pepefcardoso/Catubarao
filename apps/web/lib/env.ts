@@ -13,7 +13,10 @@ const parsed = envSchema.safeParse({
 });
 
 if (!parsed.success) {
-  console.error("❌ Invalid environment variables:", JSON.stringify(parsed.error.format(), null, 2));
+  console.error(
+    "❌ Invalid environment variables:",
+    JSON.stringify(parsed.error.format(), null, 2),
+  );
   if (typeof window === "undefined") {
     process.exit(1);
   }

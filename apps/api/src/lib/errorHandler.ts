@@ -8,11 +8,7 @@ import {
   ForbiddenError,
 } from "./errors";
 
-export function errorHandler(
-  error: FastifyError,
-  request: FastifyRequest,
-  reply: FastifyReply
-) {
+export function errorHandler(error: FastifyError, request: FastifyRequest, reply: FastifyReply) {
   if (
     error instanceof ValidationError ||
     error instanceof ConflictError ||
@@ -37,7 +33,7 @@ export function errorHandler(
 
   request.log.error(error);
   Sentry.captureException(error);
-  
+
   return reply.status(500).send({
     error: "InternalServerError",
     message: "An unexpected error occurred.",

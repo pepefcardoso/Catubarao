@@ -14,7 +14,7 @@ export const authRoutes: FastifyPluginAsyncZod = async (fastify) => {
     },
     async (request, reply) => {
       return registerMember(request, reply, prisma);
-    }
+    },
   );
 
   fastify.post(
@@ -27,7 +27,7 @@ export const authRoutes: FastifyPluginAsyncZod = async (fastify) => {
     },
     async (request, reply) => {
       return loginMember(request, reply);
-    }
+    },
   );
 
   fastify.post(
@@ -39,7 +39,7 @@ export const authRoutes: FastifyPluginAsyncZod = async (fastify) => {
     },
     async (request, reply) => {
       return logoutMember(request, reply);
-    }
+    },
   );
 
   fastify.post(
@@ -51,6 +51,6 @@ export const authRoutes: FastifyPluginAsyncZod = async (fastify) => {
     },
     async (request, reply) => {
       return refreshToken(request, reply);
-    }
+    },
   );
 };

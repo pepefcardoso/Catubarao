@@ -43,7 +43,7 @@ describe("storage utility", () => {
           Bucket: "mock-bucket",
           Key: "test-key",
         }),
-      })
+      }),
     );
   });
 });
