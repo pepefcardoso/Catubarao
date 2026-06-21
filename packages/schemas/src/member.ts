@@ -30,7 +30,7 @@ export const CreateMemberSchema = z.object({
     .min(10)
     .max(20)
     .transform(normalizePhone)
-    .refine((val) => /^\+[1-9]\d{1,14}$/.test(val), { message: "Invalid phone number format" }),
+    .refine((val: string) => /^\+[1-9]\d{1,14}$/.test(val), { message: "Invalid phone number format" }),
   birthDate: z.coerce.date(),
   referralCode: z.string().optional(),
   marketingConsent: z.boolean().default(false),
@@ -89,7 +89,7 @@ export const UpdateMemberProfileSchema = z
       .min(10)
       .max(20)
       .transform(normalizePhone)
-      .refine((val) => /^\+[1-9]\d{1,14}$/.test(val), { message: "Invalid phone number format" })
+      .refine((val: string) => /^\+[1-9]\d{1,14}$/.test(val), { message: "Invalid phone number format" })
       .optional(),
     address: z.any().optional(),
     showOnMonument: z.boolean().optional(),
@@ -133,6 +133,10 @@ export const MembershipPlanResponseSchema = z.object({
 
 export const CreateSubscriptionSchema = z.object({
   memberId: z.string().uuid(),
+  planId: z.string().uuid(),
+});
+
+export const UpdateSubscriptionPlanSchema = z.object({
   planId: z.string().uuid(),
 });
 

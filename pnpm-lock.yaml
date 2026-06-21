@@ -77,6 +77,9 @@ importers:
       ioredis:
         specifier: ^5.11.1
         version: 5.11.1
+      mercadopago:
+        specifier: ^3.1.0
+        version: 3.1.0
       pino:
         specifier: ^10.3.1
         version: 10.3.1
@@ -222,6 +225,10 @@ importers:
         version: 5.9.3
 
   packages/schemas:
+    dependencies:
+      zod:
+        specifier: ^4.4.3
+        version: 4.4.3
     devDependencies:
       '@repo/config':
         specifier: workspace:*
@@ -4556,6 +4563,10 @@ packages:
   math-intrinsics@1.1.0:
     resolution: {integrity: sha512-/IXtbwEk5HTPyEwyKX6hGkYXxM9nbj64B+ilVJnC/R6B0pH5G4V3b0pVbL7DBj4tkhBAppbQUlf6F6Xl9LHu1g==}
     engines: {node: '>= 0.4'}
+
+  mercadopago@3.1.0:
+    resolution: {integrity: sha512-3VB8AFpE8eZgm67e22kVbR19k9JC/1j66voLSh7m9tPvkASuRKNH2Y7yb793rO+fIpMtvl+wBj27UY4jIItWYA==}
+    engines: {node: '>=18'}
 
   merge-stream@2.0.0:
     resolution: {integrity: sha512-abv/qOcuPfk3URPfDzmZU1LKmuw8kT+0nIHvKrKgFrwifol/doWcdA4ZqsWQ8ENrFKkd67Mfpo/LovbIUsbt3w==}
@@ -10131,6 +10142,8 @@ snapshots:
       '@jridgewell/sourcemap-codec': 1.5.5
 
   math-intrinsics@1.1.0: {}
+
+  mercadopago@3.1.0: {}
 
   merge-stream@2.0.0: {}
 

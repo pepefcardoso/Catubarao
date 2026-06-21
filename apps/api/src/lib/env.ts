@@ -58,7 +58,7 @@ const parsed =
 if (!parsed.success) {
   console.error(
     "❌ Invalid environment variables:",
-    JSON.stringify(parsed.error.format(), null, 2),
+    "error" in parsed ? JSON.stringify((parsed as any).error.format(), null, 2) : "Unknown error",
   );
   process.exit(1);
 }

@@ -73,6 +73,9 @@ fastify.register(membersRoutes, { prefix: "/members" });
 import { plansRoutes } from "./modules/members/plans.routes";
 fastify.register(plansRoutes);
 
+import { subscriptionsRoutes } from "./modules/members/subscriptions.routes";
+fastify.register(subscriptionsRoutes, { prefix: "/subscriptions" });
+
 // Health check endpoint
 fastify.get("/health", async (request, reply) => {
   return { status: "ok", timestamp: new Date().toISOString() };

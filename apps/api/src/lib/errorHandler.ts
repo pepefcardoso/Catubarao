@@ -31,7 +31,8 @@ export function errorHandler(error: FastifyError, request: FastifyRequest, reply
     });
   }
 
-  request.log.error(error);
+  request.log?.error?.(error);
+  console.error("UNHANDLED ERROR:", error);
   Sentry.captureException(error);
 
   return reply.status(500).send({

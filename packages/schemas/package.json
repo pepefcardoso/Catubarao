@@ -19,5 +19,8 @@
     "@repo/config": "workspace:*",
     "tsup": "^8.0.2",
     "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "zod": "^4.4.3"
   }
 }
