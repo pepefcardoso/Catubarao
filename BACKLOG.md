@@ -1560,9 +1560,9 @@ All templates: club logo, responsive layout, unsubscribe footer (transactional e
 
 **Acceptance criteria:**
 
-- [ ] Markdown tables render correctly
-- [ ] PDF download button links to R2 URL
-- [ ] "Versão anterior" link is present and functional when applicable
+- [x] Markdown tables render correctly
+- [x] PDF download button links to R2 URL
+- [x] "Versão anterior" link is present and functional when applicable
 
 ---
 

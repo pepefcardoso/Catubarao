@@ -94,7 +94,7 @@ async function PostList({ searchParams }: { searchParams: { [key: string]: strin
           }
 
           return (
-            <Link href={`/transparencia/${post.id}`} key={post.id} className="block group">
+            <Link href={`/transparencia/posts/${post.id}`} key={post.id} className="block group">
               <Card className="group-hover:border-primary/50 transition-colors bg-card/50">
                 <CardHeader className="pb-3">
                   <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4 mb-2">
