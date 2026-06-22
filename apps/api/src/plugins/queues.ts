@@ -4,6 +4,7 @@ import { createBullBoard } from "@bull-board/api";
 import { sendEmailJob } from "../jobs/send-email";
 import { processPaymentEventJob } from "../jobs/process-payment-event";
 import { processDelinquencyJob } from "../jobs/process-delinquency";
+import { closePollJob } from "../jobs/close-poll";
 import { BullMQAdapter } from "@bull-board/api/bullMQAdapter";
 import { FastifyAdapter } from "@bull-board/fastify";
 import { env } from "../lib/env";
@@ -55,7 +56,10 @@ export default fp(
       ),
       new Worker(
         "scheduled",
-        processDelinquencyJob,
+        async (job) => {
+          if (job.name === "process-delinquency") return processDelinquencyJob(job);
+          if (job.name === "close-poll") return closePollJob(job);
+        },
         { connection },
       ),
     ];

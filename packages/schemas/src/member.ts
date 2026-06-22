@@ -187,6 +187,14 @@ export const PollResponseSchema = z.object({
   createdAt: z.date(),
 });
 
+export const PollWithCountsResponseSchema = PollResponseSchema.extend({
+  voteCounts: z.record(z.string(), z.number().int()),
+});
+
+export const PollResultResponseSchema = PollWithCountsResponseSchema.extend({
+  quorumReached: z.boolean(),
+});
+
 export const CastVoteSchema = z.object({
   pollId: z.string().uuid(),
   optionId: z.string(),

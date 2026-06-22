@@ -916,10 +916,10 @@ Task backlog from zero to production. Each task is sized for a single AI agent s
 
 **Acceptance criteria:**
 
-- [ ] Voting twice on the same poll returns `409`
-- [ ] Voting on a `requiresSeniority` poll with 11 months streak returns `403`
-- [ ] Voting on a `requiresSeniority` poll with 12+ months streak succeeds
-- [ ] Poll results are visible after `closesAt` with correct counts
+- [x] Voting twice on the same poll returns `409`
+- [x] Voting on a `requiresSeniority` poll with 11 months streak returns `403`
+- [x] Voting on a `requiresSeniority` poll with 12+ months streak succeeds
+- [x] Poll results are visible after `closesAt` with correct counts
 
 ---
 
