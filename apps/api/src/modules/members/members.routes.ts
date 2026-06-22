@@ -1,10 +1,28 @@
 import type { FastifyPluginAsyncZod } from "fastify-type-provider-zod";
-import { UpdateMemberProfileSchema, MeResponseSchema, MembershipCardResponseSchema, MemberReferralResponseSchema, PaginatedPaymentsResponseSchema } from "@repo/schemas/member";
-import { getMe, updateMe, generateMembershipCard, getMemberReferral, getMemberPayments } from "./members.service";
+import { UpdateMemberProfileSchema, MeResponseSchema, MembershipCardResponseSchema, MemberReferralResponseSchema, PaginatedPaymentsResponseSchema, PaginatedMembersResponseSchema, ListMembersQuerySchema } from "@repo/schemas/member";
+import { getMe, updateMe, generateMembershipCard, getMemberReferral, getMemberPayments, listMembers } from "./members.service";
 import { prisma } from "@repo/db";
 import { z } from "zod";
 
 export const membersRoutes: FastifyPluginAsyncZod = async (fastify) => {
+  fastify.get(
+    "/",
+    {
+      schema: {
+        tags: ["members"],
+        querystring: ListMembersQuerySchema,
+        response: {
+          200: PaginatedMembersResponseSchema,
+        },
+      },
+      preHandler: [fastify.authenticate, fastify.requireRole("ADMIN")],
+    },
+    async (request, reply) => {
+      const query = request.query;
+      const result = await listMembers(query, prisma);
+      return reply.status(200).send(result);
+    }
+  );
   fastify.get(
     "/me",
     {

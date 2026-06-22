@@ -133,7 +133,6 @@ export async function getMemberReferral(memberId: string, db: PrismaClient) {
     referralCode: member.referralCode,
     referralCount,
   };
-  };
 }
 
 export async function getMemberPayments(
@@ -171,6 +170,62 @@ export async function getMemberPayments(
       ...p,
       amount: Number(p.amount), // Convert Decimal to number for JSON response
     })),
+    total,
+    page,
+    limit,
+    totalPages: Math.ceil(total / limit),
+  };
+}
+
+export async function listMembers(
+  query: { page: number; limit: number; search?: string; status: string },
+  db: PrismaClient
+) {
+  const { page, limit, search, status } = query;
+  const skip = (page - 1) * limit;
+
+  const where: any = {};
+  if (search) {
+    where.OR = [
+      { name: { contains: search, mode: "insensitive" } },
+      { email: { contains: search, mode: "insensitive" } },
+    ];
+  }
+
+  if (status && status !== "ALL") {
+    where.subscriptions = {
+      some: { status },
+    };
+  }
+
+  const [members, total] = await Promise.all([
+    db.member.findMany({
+      where,
+      skip,
+      take: limit,
+      orderBy: { createdAt: "desc" },
+      include: {
+        subscriptions: {
+          orderBy: { createdAt: "desc" },
+          take: 1,
+          include: { plan: true },
+        },
+      },
+    }),
+    db.member.count({ where }),
+  ]);
+
+  return {
+    data: members.map((member) => {
+      const { subscriptions, ...memberData } = member;
+      return {
+        ...memberData,
+        subscriptionStatus: member.subscriptions[0]?.status ?? null,
+        activePlanId: member.subscriptions[0]?.planId ?? null,
+        activePlanName: member.subscriptions[0]?.plan?.name ?? null,
+        adimplenciaStreak: member.adimplenciaStreakMonths,
+      };
+    }),
     total,
     page,
     limit,

@@ -1197,11 +1197,11 @@ All templates: club logo, responsive layout, unsubscribe footer (transactional e
 
 **Acceptance criteria:**
 
-- [ ] Search filters results in real-time (debounced)
-- [ ] CSV export does not include CPF
-- [ ] Pagination maintains filter/search state
-- [ ] Table shows a skeleton loader while fetching data
-- [ ] Table shows a dedicated empty state component when no members are found
+- [x] Search filters results in real-time (debounced)
+- [x] CSV export does not include CPF
+- [x] Pagination maintains filter/search state
+- [x] Table shows a skeleton loader while fetching data
+- [x] Table shows a dedicated empty state component when no members are found
 
 ---
 

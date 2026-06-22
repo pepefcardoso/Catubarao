@@ -104,6 +104,28 @@ export const MeResponseSchema = MemberResponseSchema.extend({
   adimplenciaStreak: z.number().int().nonnegative(),
 });
 
+export const ListMembersQuerySchema = z.object({
+  page: z.coerce.number().min(1).default(1),
+  limit: z.coerce.number().min(1).max(10000).default(20),
+  search: z.string().optional(),
+  status: z.enum(["ALL", "ACTIVE", "PENDING", "SUSPENDED", "CANCELLED"]).default("ALL"),
+});
+
+export const AdminMemberListItemSchema = MemberResponseSchema.extend({
+  subscriptionStatus: SubscriptionStatusSchema.nullable(),
+  activePlanId: z.string().nullable(),
+  activePlanName: z.string().nullable().optional(),
+  adimplenciaStreak: z.number().int().nonnegative(),
+});
+
+export const PaginatedMembersResponseSchema = z.object({
+  data: z.array(AdminMemberListItemSchema),
+  total: z.number().int(),
+  page: z.number().int(),
+  limit: z.number().int(),
+  totalPages: z.number().int(),
+});
+
 export const MemberReferralResponseSchema = z.object({
   referralCode: z.string().nullable(),
   referralCount: z.number().int().nonnegative(),
