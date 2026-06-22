@@ -20,9 +20,25 @@ import {
   createDebtRecord,
   updateDebtRecord,
   createDebtSnapshot,
+  generateFeedXml,
 } from "./transparency.service";
 
 export const transparencyRoutes: FastifyPluginAsyncZod = async (fastify) => {
+  fastify.get(
+    "/feed.xml",
+    {
+      schema: {
+        tags: ["transparency"],
+        querystring: z.object({
+          category: TransparencyCategorySchema.optional(),
+        }),
+      },
+    },
+    async (request, reply) => {
+      const xml = await generateFeedXml(fastify.prisma, request.query.category);
+      return reply.type("application/rss+xml; charset=utf-8").send(xml);
+    }
+  );
   fastify.get(
     "/posts",
     {

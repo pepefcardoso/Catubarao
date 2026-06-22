@@ -6,6 +6,46 @@ import type {
 } from "@repo/schemas/transparency";
 import { ConflictError, NotFoundError } from "../../lib/errors";
 
+export async function generateFeedXml(
+  db: PrismaClient,
+  category?: TransparencyCategory
+): Promise<string> {
+  const { posts } = await getPosts(db, { limit: 20, category });
+
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL || "https://tubarao.fc";
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL || "https://api.tubarao.fc";
+  const title = category ? `Portal de Transparência - ${category}` : "Portal de Transparência";
+  const description = "Atualizações do Portal de Transparência do Clube Atlético Tubarão";
+
+  const feedUrl = category
+    ? `${apiUrl}/transparency/feed.xml?category=${category}`
+    : `${apiUrl}/transparency/feed.xml`;
+
+  const items = posts.map((post) => {
+    const link = `${appUrl}/transparencia/${post.id}`;
+    const pubDate = new Date(post.publishedAt).toUTCString();
+    return `    <item>
+      <title><![CDATA[${post.title}]]></title>
+      <link>${link}</link>
+      <guid isPermaLink="true">${link}</guid>
+      <description><![CDATA[${post.body}]]></description>
+      <pubDate>${pubDate}</pubDate>
+    </item>`;
+  }).join("\n");
+
+  return `<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>${title}</title>
+    <atom:link href="${feedUrl}" rel="self" type="application/rss+xml" />
+    <link>${appUrl}/transparencia</link>
+    <description>${description}</description>
+    <language>pt-br</language>
+${items}
+  </channel>
+</rss>`;
+}
+
 export async function getPosts(
   db: PrismaClient,
   options: {

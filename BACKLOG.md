@@ -1462,9 +1462,9 @@ All templates: club logo, responsive layout, unsubscribe footer (transactional e
 
 **Acceptance criteria:**
 
-- [ ] Feed validates as valid RSS 2.0 (test with W3C validator)
-- [ ] Category filter returns only matching posts
-- [ ] New post appears in feed within 30s (no long-lived cache on this endpoint)
+- [x] Feed validates as valid RSS 2.0 (test with W3C validator)
+- [x] Category filter returns only matching posts
+- [x] New post appears in feed within 30s (no long-lived cache on this endpoint)
 
 ---
 
