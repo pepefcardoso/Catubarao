@@ -865,10 +865,10 @@ Task backlog from zero to production. Each task is sized for a single AI agent s
 
 **Acceptance criteria:**
 
-- [ ] Generated JWT contains `{ memberId, planId, tier, validUntil, status: "ACTIVE" }`
-- [ ] Token verifies offline using only the public key
-- [ ] `GET /members/me/card` for a suspended member returns `404`
-- [ ] Rotating a card invalidates the previous card's `isActive` flag
+- [x] Generated JWT contains `{ memberId, planId, tier, validUntil, status: "ACTIVE" }`
+- [x] Token verifies offline using only the public key
+- [x] `GET /members/me/card` for a suspended member returns `404`
+- [x] Rotating a card invalidates the previous card's `isActive` flag
 
 ---
 

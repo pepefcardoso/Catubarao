@@ -2,6 +2,7 @@ import type { PrismaClient } from "@repo/db";
 import { NotFoundError, ForbiddenError } from "../../lib/errors";
 import type { UpdateMemberProfileSchema } from "@repo/schemas/member";
 import type { z } from "zod";
+import { generateCardToken } from "../../lib/qr";
 
 type UpdateMemberProfileInput = z.infer<typeof UpdateMemberProfileSchema>;
 
@@ -70,4 +71,42 @@ export async function updateMe(memberId: string, data: UpdateMemberProfileInput,
   });
 
   return updatedMember;
+}
+
+export async function generateMembershipCard(memberId: string, subscriptionId: string, db: PrismaClient) {
+  await db.membershipCard.updateMany({
+    where: { subscriptionId, isActive: true },
+    data: { isActive: false }
+  });
+
+  const subscription = await db.subscription.findUnique({
+    where: { id: subscriptionId },
+    include: { plan: true }
+  });
+
+  if (!subscription) {
+    throw new NotFoundError("Subscription not found");
+  }
+
+  const validUntil = subscription.currentPeriodEnd;
+
+  const qrToken = await generateCardToken({
+    memberId,
+    planId: subscription.planId,
+    tier: subscription.plan.name,
+    validUntil: validUntil.toISOString(),
+    status: "ACTIVE"
+  });
+
+  const card = await db.membershipCard.create({
+    data: {
+      memberId,
+      subscriptionId,
+      qrToken,
+      validUntil,
+      isActive: true,
+    }
+  });
+
+  return card;
 }

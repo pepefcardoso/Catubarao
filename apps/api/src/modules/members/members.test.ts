@@ -98,6 +98,114 @@ describe("Members Profile Routes", () => {
     expect(dbMember?.name).toBe("Updated Member");
     expect(dbMember?.showOnMonument).toBe(true);
   });
+
+  describe("Membership Cards", () => {
+    let subscriptionId: string;
+
+    beforeAll(async () => {
+      // Create a plan and subscription for the member
+      const plan = await prisma.membershipPlan.create({
+        data: {
+          name: "Test Plan",
+          price: 100,
+          interval: "MONTHLY",
+          benefits: [],
+        }
+      });
+
+      const subscription = await prisma.subscription.create({
+        data: {
+          memberId,
+          planId: plan.id,
+          status: "ACTIVE",
+          currentPeriodStart: new Date(),
+          currentPeriodEnd: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 days
+        }
+      });
+      subscriptionId = subscription.id;
+
+      // Mock the keys for the test
+      const { generateKeyPair, exportPKCS8, exportSPKI } = await import("jose");
+      const { publicKey, privateKey } = await generateKeyPair("ES256");
+      process.env.QR_PRIVATE_KEY = await exportPKCS8(privateKey);
+      process.env.QR_PUBLIC_KEY = await exportSPKI(publicKey);
+    });
+
+    afterAll(async () => {
+      await prisma.subscription.deleteMany({ where: { memberId } });
+      await prisma.membershipPlan.deleteMany({ where: { name: "Test Plan" } });
+    });
+
+    it("GET /members/me/card returns 404 when no card exists", async () => {
+      const res = await request.get("/members/me/card").set("Cookie", memberToken);
+      expect(res.status).toBe(404);
+    });
+
+    it("POST /members/:id/card/rotate fails for non-admin", async () => {
+      const res = await request.post(`/members/${memberId}/card/rotate`).set("Cookie", memberToken);
+      expect(res.status).toBe(403);
+    });
+
+    it("should allow card generation, rotating, and getting active card", async () => {
+      const { generateMembershipCard } = await import("./members.service");
+      
+      // 1. Generate an initial card manually via service
+      const card1 = await generateMembershipCard(memberId, subscriptionId, prisma);
+      expect(card1.isActive).toBe(true);
+
+      // 2. Fetch the card via endpoint
+      const res1 = await request.get("/members/me/card").set("Cookie", memberToken);
+      expect(res1.status).toBe(200);
+      expect(res1.body.id).toBe(card1.id);
+      expect(res1.body.qrToken).toBe(card1.qrToken);
+
+      // 3. Temporarily make the user an admin
+      await prisma.member.update({
+        where: { id: memberId },
+        data: { role: "ADMIN" }
+      });
+
+      // 4. Rotate the card
+      const resRotate = await request.post(`/members/${memberId}/card/rotate`).set("Cookie", memberToken);
+      expect(resRotate.status).toBe(200);
+      const card2 = resRotate.body;
+      expect(card2.id).not.toBe(card1.id);
+      expect(card2.isActive).toBe(true);
+
+      // 5. Verify the old card is invalidated
+      const oldCard = await prisma.membershipCard.findUnique({ where: { id: card1.id } });
+      expect(oldCard?.isActive).toBe(false);
+
+      // 6. Fetch the new active card
+      const res2 = await request.get("/members/me/card").set("Cookie", memberToken);
+      expect(res2.status).toBe(200);
+      expect(res2.body.id).toBe(card2.id);
+
+      // Remove admin role
+      await prisma.member.update({
+        where: { id: memberId },
+        data: { role: null }
+      });
+    });
+
+    it("GET /members/me/card returns 404 for a suspended member", async () => {
+      // Suspend the subscription
+      await prisma.subscription.update({
+        where: { id: subscriptionId },
+        data: { status: "SUSPENDED" }
+      });
+
+      // Invalidate existing active cards to simulate suspension logic which usually drops them
+      await prisma.membershipCard.updateMany({
+        where: { subscriptionId },
+        data: { isActive: false }
+      });
+
+      const res = await request.get("/members/me/card").set("Cookie", memberToken);
+      expect(res.status).toBe(404);
+      expect(res.body.message).toBe("Card not found or suspended");
+    });
+  });
 });
 
 import { isEligibleToVote } from "./members.service";
