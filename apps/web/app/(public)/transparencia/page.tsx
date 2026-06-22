@@ -117,7 +117,7 @@ export default async function TransparenciaPage() {
                 </div>
                 <CardTitle className="text-lg">Credores Renegociados</CardTitle>
               </div>
-              <CardDescription>Acordos firmados em RCE</CardDescription>
+              <CardDescription>Acordos de renegociação firmados</CardDescription>
             </CardHeader>
             <CardContent>
               <p className="text-4xl font-bold tracking-tight text-foreground">{renegotiatedCount}</p>
