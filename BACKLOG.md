@@ -1391,10 +1391,10 @@ All templates: club logo, responsive layout, unsubscribe footer (transactional e
 
 **Acceptance criteria:**
 
-- [ ] Editing a published post creates a new version and marks old as superseded (not deleted)
-- [ ] Duplicate monthly balance post returns `409`
-- [ ] Archived posts do not appear in `GET /transparency/posts` public list
-- [ ] `GET /transparency/posts/:id` for superseded post returns it with `supersededById` populated
+- [x] Editing a published post creates a new version and marks old as superseded (not deleted)
+- [x] Duplicate monthly balance post returns `409`
+- [x] Archived posts do not appear in `GET /transparency/posts` public list
+- [x] `GET /transparency/posts/:id` for superseded post returns it with `supersededById` populated
 
 ---
 

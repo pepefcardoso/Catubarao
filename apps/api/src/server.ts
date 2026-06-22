@@ -91,6 +91,9 @@ fastify.register(pollsRoutes);
 import { statsRoutes } from "./modules/members/stats.routes";
 fastify.register(statsRoutes);
 
+import { transparencyRoutes } from "./modules/transparency/transparency.routes";
+fastify.register(transparencyRoutes, { prefix: "/transparency" });
+
 // Health check endpoint
 
 fastify.get("/health", async (request, reply) => {
