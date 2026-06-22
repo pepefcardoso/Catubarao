@@ -3,6 +3,7 @@ import { Queue, Worker, DefaultJobOptions } from "bullmq";
 import { createBullBoard } from "@bull-board/api";
 import { sendEmailJob } from "../jobs/send-email";
 import { processPaymentEventJob } from "../jobs/process-payment-event";
+import { processDelinquencyJob } from "../jobs/process-delinquency";
 import { BullMQAdapter } from "@bull-board/api/bullMQAdapter";
 import { FastifyAdapter } from "@bull-board/fastify";
 import { env } from "../lib/env";
@@ -54,9 +55,7 @@ export default fp(
       ),
       new Worker(
         "scheduled",
-        async (job) => {
-          fastify.log.info({ jobId: job.id }, "Processing scheduled job");
-        },
+        processDelinquencyJob,
         { connection },
       ),
     ];
@@ -87,6 +86,20 @@ export default fp(
     fastify.addHook("onClose", async () => {
       await Promise.all(workers.map((w) => w.close()));
       await Promise.all(Object.values(queues).map((q) => q.close()));
+    });
+
+    fastify.addHook("onReady", async () => {
+      await queues.scheduled.add(
+        "process-delinquency",
+        {},
+        {
+          repeat: {
+            pattern: "0 8 * * *",
+            tz: "America/Sao_Paulo",
+          },
+          jobId: "process-delinquency-job",
+        }
+      );
     });
   },
   {

@@ -176,6 +176,7 @@ model Subscription {
   plan            MembershipPlan   @relation(fields: [planId], references: [id])
   payments        Payment[]
   membershipCards MembershipCard[]
+  notifications   SubscriptionNotification[]
 
   @@index([memberId, status])
   @@map("subscriptions")
@@ -256,4 +257,16 @@ model PollVote {
 
   @@unique([pollId, memberId])
   @@map("poll_votes")
+}
+
+model SubscriptionNotification {
+  id             String   @id @default(uuid())
+  subscriptionId String
+  type           String
+  sentAt         DateTime @default(now())
+
+  subscription Subscription @relation(fields: [subscriptionId], references: [id], onDelete: Cascade)
+
+  @@unique([subscriptionId, type])
+  @@map("subscription_notifications")
 }

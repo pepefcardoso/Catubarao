@@ -2,9 +2,17 @@ import { Job } from "bullmq";
 import { sendEmail } from "../lib/email";
 import * as React from "react";
 import { WelcomeEmail } from "../emails/WelcomeEmail";
+import { DelinquencyD1Email } from "../emails/DelinquencyD1Email";
+import { DelinquencyD7Email } from "../emails/DelinquencyD7Email";
+import { DelinquencyD15Email } from "../emails/DelinquencyD15Email";
+import { SuspensionEmail } from "../emails/SuspensionEmail";
 
 const templates: Record<string, React.FC<any>> = {
   WelcomeEmail,
+  DelinquencyD1Email,
+  DelinquencyD7Email,
+  DelinquencyD15Email,
+  SuspensionEmail,
 };
 
 export interface SendEmailJobData {

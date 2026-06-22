@@ -165,6 +165,10 @@ export async function reactivateFromDelinquency(subscriptionId: string, db: Pris
       }
     });
 
+    await tx.subscriptionNotification.deleteMany({
+      where: { subscriptionId }
+    });
+
     await tx.membershipCard.updateMany({
       where: { subscriptionId },
       data: { isActive: false }

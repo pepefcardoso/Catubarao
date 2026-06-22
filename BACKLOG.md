@@ -837,9 +837,9 @@ Task backlog from zero to production. Each task is sized for a single AI agent s
 
 **Acceptance criteria:**
 
-- [ ] A subscription at D+1 receives exactly one first-notice email (even if job runs twice)
-- [ ] A subscription at D+30 is suspended and card invalidated
-- [ ] Reactivated subscription (MEMBER-008) stops receiving delinquency notifications
+- [x] A subscription at D+1 receives exactly one first-notice email (even if job runs twice)
+- [x] A subscription at D+30 is suspended and card invalidated
+- [x] Reactivated subscription (MEMBER-008) stops receiving delinquency notifications
 
 ---
 
