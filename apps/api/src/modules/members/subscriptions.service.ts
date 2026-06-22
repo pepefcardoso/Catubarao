@@ -167,3 +167,32 @@ export async function cancelSubscription(subscriptionId: string, db: PrismaClien
 
   return { success: true };
 }
+
+export async function updateSubscriptionStatus(
+  subscriptionId: string,
+  status: "ACTIVE" | "PENDING" | "SUSPENDED" | "CANCELLED",
+  db: PrismaClient
+) {
+  const subscription = await db.subscription.findUnique({
+    where: { id: subscriptionId },
+    include: { plan: true },
+  });
+  if (!subscription) throw new NotFoundError("Subscription not found");
+
+  await db.$transaction(async (tx) => {
+    await tx.subscription.update({
+      where: { id: subscriptionId },
+      data: { status },
+    });
+
+    if (subscription.plan.isCorporate) {
+      // If status is not active, deactivate all cards. If active, reactivate them.
+      await tx.membershipCard.updateMany({
+        where: { subscriptionId },
+        data: { isActive: status === "ACTIVE" },
+      });
+    }
+  });
+
+  return { success: true };
+}

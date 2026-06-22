@@ -183,7 +183,7 @@ model Payment {
   id               String        @id @default(uuid())
   subscriptionId   String?
   orderId          String?
-  gatewayPaymentId String?
+  gatewayPaymentId String?       @unique
   amount           Decimal
   status           PaymentStatus
   method           PaymentMethod

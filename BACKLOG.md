@@ -675,11 +675,11 @@ Task backlog from zero to production. Each task is sized for a single AI agent s
 
 **Acceptance criteria:**
 
-- [ ] `POST /auth/register` with duplicate CPF returns `409 ConflictError`
-- [ ] `POST /auth/register` with invalid CPF returns `422 ValidationError`
-- [ ] `POST /auth/register` with valid data creates the member and returns a usable session token
-- [ ] `POST /auth/login` with wrong password returns `401`
-- [ ] Access token expires after 15 minutes (configurable via env)
+- [x] `POST /auth/register` with duplicate CPF returns `409 ConflictError`
+- [x] `POST /auth/register` with invalid CPF returns `422 ValidationError`
+- [x] `POST /auth/register` with valid data creates the member and returns a usable session token
+- [x] `POST /auth/login` with wrong password returns `401`
+- [x] Access token expires after 15 minutes (configurable via env)
 
 ---
 
@@ -700,10 +700,10 @@ Task backlog from zero to production. Each task is sized for a single AI agent s
 
 **Acceptance criteria:**
 
-- [ ] `GET /members/me` returns adimplência streak calculated correctly
-- [ ] `PATCH /members/me` with `{ cpf: "..." }` returns `403`
-- [ ] `PATCH /members/me` with valid fields updates and returns updated profile
-- [ ] Both routes return `401` without authentication
+- [x] `GET /members/me` returns adimplência streak calculated correctly
+- [x] `PATCH /members/me` with `{ cpf: "..." }` returns `403`
+- [x] `PATCH /members/me` with valid fields updates and returns updated profile
+- [x] Both routes return `401` without authentication
 
 ---
 
@@ -725,10 +725,10 @@ Task backlog from zero to production. Each task is sized for a single AI agent s
 
 **Acceptance criteria:**
 
-- [ ] `GET /plans` is accessible without auth and returns only active plans
-- [ ] `POST /admin/plans` without ADMIN token returns `403`
-- [ ] `DELETE /admin/plans/:id` with active subscribers returns `409`
-- [ ] Deactivated plan no longer appears in `GET /plans`
+- [x] `GET /plans` is accessible without auth and returns only active plans
+- [x] `POST /admin/plans` without ADMIN token returns `403`
+- [x] `DELETE /admin/plans/:id` with active subscribers returns `409`
+- [x] Deactivated plan no longer appears in `GET /plans`
 
 ---
 
@@ -751,11 +751,11 @@ Task backlog from zero to production. Each task is sized for a single AI agent s
 
 **Acceptance criteria:**
 
-- [ ] `POST /subscriptions` returns a Mercado Pago checkout URL
-- [ ] Local `Subscription` is created with `status: PENDING` before payment confirmation
-- [ ] A member with an existing `ACTIVE` subscription cannot create a second one (returns `409`)
-- [ ] Cancel sets status to `CANCELLED` and calls MP preapproval cancel
-- [ ] `DELETE /subscriptions/:id` on a corporate plan sets all linked `MembershipCard` records to `isActive: false` in the same transaction
+- [x] `POST /subscriptions` returns a Mercado Pago checkout URL
+- [x] Local `Subscription` is created with `status: PENDING` before payment confirmation
+- [x] A member with an existing `ACTIVE` subscription cannot create a second one (returns `409`)
+- [x] Cancel sets status to `CANCELLED` and calls MP preapproval cancel
+- [x] `DELETE /subscriptions/:id` on a corporate plan sets all linked `MembershipCard` records to `isActive: false` in the same transaction
 
 ---
 
@@ -778,13 +778,13 @@ Task backlog from zero to production. Each task is sized for a single AI agent s
 
 **Acceptance criteria:**
 
-- [ ] Webhook with invalid signature returns `401` and does NOT enqueue
-- [ ] Valid webhook returns `200` within 50ms (enqueue is fast, no DB write in handler)
-- [ ] Response body for `POST /webhooks/mercadopago` is always empty on `200`
-- [ ] `payment.approved` event results in `Subscription.status = ACTIVE` and `Payment` record created
-- [ ] Failed job retries 3 times before moving to dead letter queue
-- [ ] Duplicate delivery of same `gatewayPaymentId` is a no-op (upsert or early-exit before enqueue)
-- [ ] `WelcomeEmail` job is only enqueued if no prior `Payment` with `status: APPROVED` exists for this member
+- [x] Webhook with invalid signature returns `401` and does NOT enqueue
+- [x] Valid webhook returns `200` within 50ms (enqueue is fast, no DB write in handler)
+- [x] Response body for `POST /webhooks/mercadopago` is always empty on `200`
+- [x] `payment.approved` event results in `Subscription.status = ACTIVE` and `Payment` record created
+- [x] Failed job retries 3 times before moving to dead letter queue
+- [x] Duplicate delivery of same `gatewayPaymentId` is a no-op (upsert or early-exit before enqueue)
+- [x] `WelcomeEmail` job is only enqueued if no prior `Payment` with `status: APPROVED` exists for this member
 
 ---
 

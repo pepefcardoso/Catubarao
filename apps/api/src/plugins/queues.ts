@@ -2,6 +2,7 @@ import fp from "fastify-plugin";
 import { Queue, Worker, DefaultJobOptions } from "bullmq";
 import { createBullBoard } from "@bull-board/api";
 import { sendEmailJob } from "../jobs/send-email";
+import { processPaymentEventJob } from "../jobs/process-payment-event";
 import { BullMQAdapter } from "@bull-board/api/bullMQAdapter";
 import { FastifyAdapter } from "@bull-board/fastify";
 import { env } from "../lib/env";
@@ -42,13 +43,7 @@ export default fp(
 
     // Worker stubs
     const workers = [
-      new Worker(
-        "payments",
-        async (job) => {
-          fastify.log.info({ jobId: job.id }, "Processing payments job");
-        },
-        { connection },
-      ),
+      new Worker("payments", processPaymentEventJob, { connection }),
       new Worker("email", sendEmailJob, { connection }),
       new Worker(
         "notifications",
