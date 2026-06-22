@@ -9,6 +9,12 @@ export async function getActivePlans(db: PrismaClient) {
   });
 }
 
+export async function getAllPlans(db: PrismaClient) {
+  return db.membershipPlan.findMany({
+    orderBy: { createdAt: "desc" },
+  });
+}
+
 export async function createPlan(data: CreateMembershipPlanInput, db: PrismaClient) {
   return db.membershipPlan.create({
     data,

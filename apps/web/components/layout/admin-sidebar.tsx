@@ -10,6 +10,7 @@ import { Button } from "@repo/ui/components/button";
 export const adminNavItems = [
   { name: "Dashboard", href: "/admin", icon: LayoutDashboard },
   { name: "Sócios", href: "/admin/members", icon: Users },
+  { name: "Planos", href: "/admin/plans", icon: Shield },
   { name: "Financeiro", href: "/admin/finance", icon: Receipt },
   { name: "Transparência", href: "/admin/transparency", icon: Shield },
   { name: "Configurações", href: "/admin/settings", icon: Settings },

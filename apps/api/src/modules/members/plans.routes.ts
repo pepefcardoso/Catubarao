@@ -4,7 +4,7 @@ import {
   UpdateMembershipPlanSchema,
   MembershipPlanResponseSchema,
 } from "@repo/schemas/member";
-import { getActivePlans, createPlan, updatePlan, deletePlan } from "./plans.service";
+import { getActivePlans, getAllPlans, createPlan, updatePlan, deletePlan } from "./plans.service";
 import { prisma } from "@repo/db";
 import { z } from "zod";
 
@@ -27,6 +27,23 @@ export const plansRoutes: FastifyPluginAsyncZod = async (fastify) => {
   );
 
   // Admin routes
+  fastify.get(
+    "/admin/plans",
+    {
+      schema: {
+        tags: ["plans"],
+        response: {
+          200: z.array(MembershipPlanResponseSchema),
+        },
+      },
+      preHandler: [fastify.authenticate, fastify.requireRole("ADMIN")],
+    },
+    async (request, reply) => {
+      const plans = await getAllPlans(prisma);
+      return reply.status(200).send(plans);
+    },
+  );
+
   fastify.post(
     "/admin/plans",
     {

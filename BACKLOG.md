@@ -1250,9 +1250,9 @@ All templates: club logo, responsive layout, unsubscribe footer (transactional e
 
 **Acceptance criteria:**
 
-- [ ] Creating a plan with no name shows inline validation error
-- [ ] Deactivating a plan with active subscribers shows the 409 message clearly
-- [ ] Inactive plans appear in the list with visual distinction
+- [x] Creating a plan with no name shows inline validation error
+- [x] Deactivating a plan with active subscribers shows the 409 message clearly
+- [x] Inactive plans appear in the list with visual distinction
 
 ---
 
