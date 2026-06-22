@@ -4,6 +4,10 @@ import {
   CreateTransparencyPostSchema,
   TransparencyPostResponseSchema,
   TransparencyCategorySchema,
+  CreateDebtRecordSchema,
+  UpdateDebtRecordSchema,
+  DebtRecordResponseSchema,
+  DebtSnapshotResponseSchema,
 } from "@repo/schemas/transparency";
 import {
   getPosts,
@@ -11,6 +15,11 @@ import {
   createPost,
   updatePost,
   archivePost,
+  getDebts,
+  getDebtSnapshots,
+  createDebtRecord,
+  updateDebtRecord,
+  createDebtSnapshot,
 } from "./transparency.service";
 
 export const transparencyRoutes: FastifyPluginAsyncZod = async (fastify) => {
@@ -110,6 +119,92 @@ export const transparencyRoutes: FastifyPluginAsyncZod = async (fastify) => {
     async (request, reply) => {
       const post = await archivePost(request.params.id, fastify.prisma);
       return reply.send(post);
+    }
+  );
+
+  fastify.get(
+    "/debts",
+    {
+      schema: {
+        tags: ["transparency", "debts"],
+        response: {
+          200: z.record(z.string(), z.array(DebtRecordResponseSchema)),
+        },
+      },
+    },
+    async (request, reply) => {
+      const groupedDebts = await getDebts(fastify.prisma);
+      return reply.send(groupedDebts);
+    }
+  );
+
+  fastify.get(
+    "/debts/snapshots",
+    {
+      schema: {
+        tags: ["transparency", "debts"],
+        response: {
+          200: z.array(DebtSnapshotResponseSchema),
+        },
+      },
+    },
+    async (request, reply) => {
+      const snapshots = await getDebtSnapshots(fastify.prisma);
+      return reply.send(snapshots);
+    }
+  );
+
+  fastify.post(
+    "/debts",
+    {
+      preHandler: [fastify.authenticate, fastify.requireRole("ADMIN")],
+      schema: {
+        tags: ["transparency", "debts"],
+        body: CreateDebtRecordSchema,
+        response: {
+          201: DebtRecordResponseSchema,
+        },
+      },
+    },
+    async (request, reply) => {
+      const debt = await createDebtRecord(request.body, fastify.prisma);
+      return reply.status(201).send(debt);
+    }
+  );
+
+  fastify.patch(
+    "/debts/:id",
+    {
+      preHandler: [fastify.authenticate, fastify.requireRole("ADMIN")],
+      schema: {
+        tags: ["transparency", "debts"],
+        params: z.object({ id: z.string().uuid() }),
+        body: UpdateDebtRecordSchema,
+        response: {
+          200: DebtRecordResponseSchema,
+        },
+      },
+    },
+    async (request, reply) => {
+      const debt = await updateDebtRecord(request.params.id, request.body, fastify.prisma);
+      return reply.send(debt);
+    }
+  );
+
+  fastify.post(
+    "/debts/snapshot",
+    {
+      preHandler: [fastify.authenticate, fastify.requireRole("ADMIN")],
+      schema: {
+        tags: ["transparency", "debts"],
+        response: {
+          201: DebtSnapshotResponseSchema,
+        },
+      },
+    },
+    async (request, reply) => {
+      const snapshot = await createDebtSnapshot(request.user.id, fastify.prisma);
+      return reply.status(201).send(snapshot);
     }
   );
 };

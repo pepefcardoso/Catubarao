@@ -1,5 +1,9 @@
-import type { PrismaClient, TransparencyCategory } from "@repo/db";
-import type { CreateTransparencyPostInput } from "@repo/schemas/transparency";
+import type { PrismaClient, TransparencyCategory, DebtStatus } from "@repo/db";
+import type { 
+  CreateTransparencyPostInput,
+  CreateDebtRecordInput,
+  UpdateDebtRecordInput
+} from "@repo/schemas/transparency";
 import { ConflictError, NotFoundError } from "../../lib/errors";
 
 export async function getPosts(
@@ -127,5 +131,92 @@ export async function archivePost(id: string, db: PrismaClient) {
   return db.transparencyPost.update({
     where: { id },
     data: { isArchived: true },
+  });
+}
+
+export async function getDebts(db: PrismaClient) {
+  const debts = await db.debtRecord.findMany({
+    orderBy: { createdAt: "desc" },
+  });
+
+  const grouped = debts.reduce(
+    (acc, debt) => {
+      const status = debt.status;
+      if (!acc[status]) acc[status] = [];
+      acc[status].push(debt);
+      return acc;
+    },
+    {} as Record<DebtStatus, typeof debts>
+  );
+
+  return grouped;
+}
+
+export async function getDebtSnapshots(db: PrismaClient) {
+  return db.debtSnapshot.findMany({
+    orderBy: { snapshotDate: "asc" },
+  });
+}
+
+export async function createDebtRecord(
+  input: CreateDebtRecordInput,
+  db: PrismaClient
+) {
+  return db.debtRecord.create({
+    data: input,
+  });
+}
+
+export async function updateDebtRecord(
+  id: string,
+  input: UpdateDebtRecordInput,
+  db: PrismaClient
+) {
+  const debt = await db.debtRecord.findUnique({ where: { id } });
+  if (!debt) {
+    throw new NotFoundError("Debt record not found");
+  }
+
+  return db.debtRecord.update({
+    where: { id },
+    data: input,
+  });
+}
+
+export async function createDebtSnapshot(userId: string, db: PrismaClient) {
+  return db.$transaction(async (tx) => {
+    const debts = await tx.debtRecord.findMany();
+
+    let totalOriginal = 0;
+    let totalNegotiated = 0;
+    let totalPaid = 0;
+    let totalRemaining = 0;
+
+    for (const debt of debts) {
+      const original = Number(debt.originalAmount);
+      const hasNegotiated = debt.negotiatedAmount != null;
+      const negotiated = hasNegotiated ? Number(debt.negotiatedAmount) : 0;
+      const paid = Number(debt.paidAmount);
+
+      totalOriginal += original;
+      if (hasNegotiated) {
+        totalNegotiated += negotiated;
+        totalRemaining += Math.max(0, negotiated - paid);
+      } else {
+        totalRemaining += Math.max(0, original - paid);
+      }
+      totalPaid += paid;
+    }
+
+    return tx.debtSnapshot.create({
+      data: {
+        totalOriginal,
+        totalNegotiated,
+        totalPaid,
+        totalRemaining,
+        snapshotDate: new Date(),
+        createdBy: userId,
+      },
+    });
   });
 }

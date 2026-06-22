@@ -1417,9 +1417,9 @@ All templates: club logo, responsive layout, unsubscribe footer (transactional e
 
 **Acceptance criteria:**
 
-- [ ] Snapshot totals match the sum of current DebtRecord values
-- [ ] Second snapshot on same day is allowed (no uniqueness constraint on date — admin may correct)
-- [ ] `GET /transparency/debts/snapshots` returns ordered by `snapshotDate ASC`
+- [x] Snapshot totals match the sum of current DebtRecord values
+- [x] Second snapshot on same day is allowed (no uniqueness constraint on date — admin may correct)
+- [x] `GET /transparency/debts/snapshots` returns ordered by `snapshotDate ASC`
 
 ---
 
