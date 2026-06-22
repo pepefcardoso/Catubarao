@@ -1172,8 +1172,8 @@ All templates: club logo, responsive layout, unsubscribe footer (transactional e
 
 **Acceptance criteria:**
 
-- [ ] Counter updates within 35s of a new member activating (30s cache + 5s poll interval)
-- [ ] OG image meta tag is present and correct
+- [x] Counter updates within 35s of a new member activating (30s cache + 5s poll interval)
+- [x] OG image meta tag is present and correct
 
 ---
 
