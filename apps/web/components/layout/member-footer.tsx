@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export function MemberFooter() {
   return (
     <footer className="border-t py-6 md:py-0 bg-muted/20">
@@ -7,15 +9,15 @@ export function MemberFooter() {
           reservados.
         </p>
         <div className="flex items-center gap-4 text-sm text-muted-foreground">
-          <a href="/termos" className="hover:underline underline-offset-4">
+          <Link href="/termos" className="hover:underline underline-offset-4">
             Termos
-          </a>
-          <a href="/privacidade" className="hover:underline underline-offset-4">
+          </Link>
+          <Link href="/privacidade" className="hover:underline underline-offset-4">
             Privacidade
-          </a>
-          <a href="/suporte" className="hover:underline underline-offset-4">
+          </Link>
+          <Link href="/suporte" className="hover:underline underline-offset-4">
             Suporte
-          </a>
+          </Link>
         </div>
       </div>
     </footer>

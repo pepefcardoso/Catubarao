@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export function AdminFooter() {
   return (
     <footer className="border-t py-6 md:py-0 bg-muted/20">
@@ -6,12 +8,12 @@ export function AdminFooter() {
           &copy; {new Date().getFullYear()} Clube Atlético Tubarão SAF. Painel Administrativo.
         </p>
         <div className="flex items-center gap-4 text-sm text-muted-foreground">
-          <a href="/admin/ajuda" className="hover:underline underline-offset-4">
+          <Link href="/admin/ajuda" className="hover:underline underline-offset-4">
             Ajuda
-          </a>
-          <a href="/admin/logs" className="hover:underline underline-offset-4">
+          </Link>
+          <Link href="/admin/logs" className="hover:underline underline-offset-4">
             Logs do Sistema
-          </a>
+          </Link>
         </div>
       </div>
     </footer>

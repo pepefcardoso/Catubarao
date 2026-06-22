@@ -107,6 +107,7 @@ export const membersRoutes: FastifyPluginAsyncZod = async (fastify) => {
         tags: ["members"],
         response: {
           200: MembershipCardResponseSchema,
+          404: z.object({ message: z.string() }),
         },
       },
       preHandler: [fastify.authenticate],
@@ -142,6 +143,7 @@ export const membersRoutes: FastifyPluginAsyncZod = async (fastify) => {
         tags: ["members"],
         response: {
           200: MembershipCardResponseSchema,
+          404: z.object({ message: z.string() }),
         },
       },
       preHandler: [fastify.authenticate, fastify.requireRole("ADMIN")],

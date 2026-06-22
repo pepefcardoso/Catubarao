@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import fastify from "../../../server";
+import fastify from "../../server.js";
 import crypto from "crypto";
-import { env } from "../../../lib/env";
+import { env } from "../../lib/env.js";
 
 describe("Mercado Pago Webhooks", () => {
   beforeEach(() => {

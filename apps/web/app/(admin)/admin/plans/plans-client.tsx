@@ -57,7 +57,7 @@ export function PlansClient() {
     fetchPlans();
   }, [fetchPlans]);
 
-  const form = useForm<FormValues>({
+  const form = useForm<any>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
       name: "",
@@ -95,12 +95,12 @@ export function PlansClient() {
     setIsSheetOpen(true);
   };
 
-  const onSubmit = async (data: FormValues) => {
+  const onSubmit = async (data: any) => {
     const payload = {
       name: data.name,
       price: parseFloat(data.priceString.replace(",", ".")),
       interval: data.interval,
-      benefits: data.benefitsString.split("\n").map((s) => s.trim()).filter(Boolean),
+      benefits: data.benefitsString.split("\n").map((s: string) => s.trim()).filter(Boolean),
       isCorporate: data.isCorporate,
       isActive: data.isActive,
     };
@@ -247,7 +247,7 @@ export function PlansClient() {
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
                 <FormField
-                  control={form.control}
+                  control={form.control as any}
                   name="name"
                   render={({ field }) => (
                     <FormItem>
@@ -262,7 +262,7 @@ export function PlansClient() {
 
                 <div className="grid grid-cols-2 gap-4">
                   <FormField
-                    control={form.control}
+                    control={form.control as any}
                     name="priceString"
                     render={({ field }) => (
                       <FormItem>
@@ -276,7 +276,7 @@ export function PlansClient() {
                   />
                   
                   <FormField
-                    control={form.control}
+                    control={form.control as any}
                     name="interval"
                     render={({ field }) => (
                       <FormItem>
@@ -297,7 +297,7 @@ export function PlansClient() {
                 </div>
 
                 <FormField
-                  control={form.control}
+                  control={form.control as any}
                   name="benefitsString"
                   render={({ field }) => (
                     <FormItem>
@@ -315,7 +315,7 @@ export function PlansClient() {
                 />
 
                 <FormField
-                  control={form.control}
+                  control={form.control as any}
                   name="isCorporate"
                   render={({ field }) => (
                     <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4 shadow-sm">
@@ -333,7 +333,7 @@ export function PlansClient() {
                 />
 
                 <FormField
-                  control={form.control}
+                  control={form.control as any}
                   name="isActive"
                   render={({ field }) => (
                     <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4 shadow-sm">

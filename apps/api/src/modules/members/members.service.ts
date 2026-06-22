@@ -253,9 +253,6 @@ export async function getMemberAdminDetail(id: string, db: PrismaClient) {
       membershipCards: {
         orderBy: { createdAt: "desc" },
       },
-      payments: {
-        orderBy: { createdAt: "desc" },
-      },
     },
   });
 
@@ -263,7 +260,12 @@ export async function getMemberAdminDetail(id: string, db: PrismaClient) {
     throw new NotFoundError("Member not found");
   }
 
-  const { subscriptions, gamificationEvents, membershipCards, payments, ...memberData } = member;
+  const { subscriptions, gamificationEvents, membershipCards, ...memberData } = member;
+
+  const payments = await db.payment.findMany({
+    where: { subscription: { memberId: id } },
+    orderBy: { createdAt: "desc" },
+  });
 
   return {
     ...memberData,

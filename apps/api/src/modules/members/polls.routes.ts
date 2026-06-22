@@ -86,7 +86,7 @@ export const pollsRoutes: FastifyPluginAsyncZod = async (fastify) => {
         request.body.optionId,
         fastify.prisma,
       );
-      return reply.status(204).send();
+      return reply.status(204).send(null as any);
     },
   );
 

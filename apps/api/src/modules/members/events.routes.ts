@@ -64,6 +64,8 @@ export const eventsRoutes: FastifyPluginAsyncZod = async (fastify) => {
             totalPoints: z.number(),
             breakdown: z.array(z.any()),
           }),
+          401: z.any(),
+          404: z.any(),
         },
       },
     },
@@ -98,7 +100,7 @@ export const eventsRoutes: FastifyPluginAsyncZod = async (fastify) => {
           idempotencyKey
         );
 
-        const pointsData = await import("./gamification.service").then(m => m.getMemberPoints(payload.memberId, fastify.prisma));
+        const pointsData = await import("./gamification.service.js").then(m => m.getMemberPoints(payload.memberId, fastify.prisma));
 
         return reply.status(200).send({
           message: "Check-in successful",
@@ -131,6 +133,7 @@ export const eventsRoutes: FastifyPluginAsyncZod = async (fastify) => {
             processed: z.number(),
             failed: z.number(),
           }),
+          404: z.any(),
         },
       },
     },

@@ -60,11 +60,11 @@ export default fp(
           if (job.name === "process-delinquency") return processDelinquencyJob(job);
           if (job.name === "close-poll") return closePollJob(job);
           if (job.name === "send-poll-open-emails") {
-            const { sendPollOpenEmailsJob } = await import("../jobs/send-poll-open-emails");
+            const { sendPollOpenEmailsJob } = await import("../jobs/send-poll-open-emails.js");
             return sendPollOpenEmailsJob(job);
           }
           if (job.name === "increment-streak") {
-            const { incrementStreakJob } = await import("../jobs/increment-streak");
+            const { incrementStreakJob } = await import("../jobs/increment-streak.js");
             return incrementStreakJob(job);
           }
         },

@@ -1,6 +1,7 @@
 import type { FastifyPluginAsyncZod } from "fastify-type-provider-zod";
 import { MercadoPagoWebhookSchema } from "@repo/schemas/webhooks";
-import { verifyMercadoPagoSignature } from "./signature";
+import { verifyMercadoPagoSignature } from "./signature.js";
+import { z } from "zod";
 
 export const mercadopagoRoutes: FastifyPluginAsyncZod = async (fastify) => {
   fastify.post(
@@ -11,7 +12,8 @@ export const mercadopagoRoutes: FastifyPluginAsyncZod = async (fastify) => {
         tags: ["webhooks"],
         body: MercadoPagoWebhookSchema,
         response: {
-          200: { type: "null" },
+          200: z.any(),
+          401: z.any(),
         },
       },
     },

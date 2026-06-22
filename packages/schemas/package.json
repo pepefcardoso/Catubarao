@@ -6,7 +6,11 @@
   "types": "./src/index.ts",
   "exports": {
     ".": "./src/index.ts",
-    "./member": "./src/member.ts"
+    "./member": "./src/member.ts",
+    "./gamification": "./src/gamification.ts",
+    "./stats": "./src/stats.ts",
+    "./webhooks": "./src/webhooks.ts",
+    "./events": "./src/events.ts"
   },
   "scripts": {
     "build": "tsup src/index.ts --format cjs,esm --dts",

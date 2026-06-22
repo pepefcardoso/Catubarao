@@ -3,6 +3,7 @@ import { prisma } from "@repo/db";
 import { mp } from "../lib/mercadopago";
 import { updateSubscriptionStatus } from "../modules/members/subscriptions.service";
 import { recordGamificationEvent } from "../modules/members/gamification.service";
+import Redis from "ioredis";
 
 export async function processPaymentEventJob(job: Job) {
   const { type, data } = job.data;
@@ -17,7 +18,7 @@ export async function processPaymentEventJob(job: Job) {
   // Fetch payment from MP
   let mpPayment;
   try {
-    mpPayment = await mp.payment.findById(Number(paymentId));
+    mpPayment = await mp.payment.get({ id: paymentId } as any);
   } catch (err) {
     console.error("Failed to fetch MP payment", err);
     throw err; // retry
@@ -83,7 +84,7 @@ export async function processPaymentEventJob(job: Job) {
       });
 
       const { Queue } = await import("bullmq");
-      const { env } = await import("../lib/env");
+      const { env } = await import("../lib/env.js");
       const emailQueue = new Queue("email", { 
         connection: { host: env.REDIS_HOST, port: Number(env.REDIS_PORT) } 
       });
@@ -136,7 +137,6 @@ export async function processPaymentEventJob(job: Job) {
       await emailQueue.close();
 
       // Invalidate stats:members cache
-      const Redis = (await import("ioredis")).default;
       const redis = new Redis({
         host: env.REDIS_HOST,
         port: Number(env.REDIS_PORT)

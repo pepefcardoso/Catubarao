@@ -3,6 +3,7 @@ import { ConflictError, NotFoundError, ValidationError } from "../../lib/errors"
 import { mp } from "../../lib/mercadopago";
 import { env } from "../../lib/env";
 import crypto from "crypto";
+import Redis from "ioredis";
 
 import type { CreateSubscriptionSchema } from "@repo/schemas/member";
 import type { z } from "zod";
@@ -391,7 +392,6 @@ export async function updateSubscriptionStatus(
 
 async function invalidateStatsCache() {
   try {
-    const Redis = (await import("ioredis")).default;
     const redis = new Redis({
       host: env.REDIS_HOST,
       port: Number(env.REDIS_PORT)

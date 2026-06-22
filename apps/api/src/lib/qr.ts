@@ -11,7 +11,7 @@ export async function generateCardToken(payload: {
   return new SignJWT(payload)
     .setProtectedHeader({ alg: "ES256" })
     .setIssuedAt()
-    .setExpirationTime(payload.validUntil)
+    .setExpirationTime(Math.floor(new Date(payload.validUntil).getTime() / 1000))
     .sign(privateKey);
 }
 

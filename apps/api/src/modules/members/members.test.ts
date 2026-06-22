@@ -147,7 +147,7 @@ describe("Members Profile Routes", () => {
     });
 
     it("should allow card generation, rotating, and getting active card", async () => {
-      const { generateMembershipCard } = await import("./members.service");
+      const { generateMembershipCard } = await import("./members.service.js");
       
       // 1. Generate an initial card manually via service
       const card1 = await generateMembershipCard(memberId, subscriptionId, prisma);
