@@ -1484,9 +1484,9 @@ All templates: club logo, responsive layout, unsubscribe footer (transactional e
 
 **Acceptance criteria:**
 
-- [ ] Post scheduled 5 minutes in future is not returned by `GET /transparency/posts` before the time
-- [ ] Post appears in `GET /transparency/posts` after `scheduledFor` time passes
-- [ ] Archiving a scheduled post removes the job from Bull Board
+- [x] Post scheduled 5 minutes in future is not returned by `GET /transparency/posts` before the time
+- [x] Post appears in `GET /transparency/posts` after `scheduledFor` time passes
+- [x] Archiving a scheduled post removes the job from Bull Board
 
 ---
 

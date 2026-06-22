@@ -96,7 +96,7 @@ export const transparencyRoutes: FastifyPluginAsyncZod = async (fastify) => {
       },
     },
     async (request, reply) => {
-      const post = await createPost(request.body, request.user.id, fastify.prisma);
+      const post = await createPost(request.body, request.user.id, fastify.prisma, fastify.queues);
       return reply.status(201).send(post);
     }
   );
@@ -115,7 +115,7 @@ export const transparencyRoutes: FastifyPluginAsyncZod = async (fastify) => {
       },
     },
     async (request, reply) => {
-      const post = await updatePost(request.params.id, request.body, request.user.id, fastify.prisma);
+      const post = await updatePost(request.params.id, request.body, request.user.id, fastify.prisma, fastify.queues);
       return reply.send(post);
     }
   );
@@ -133,7 +133,7 @@ export const transparencyRoutes: FastifyPluginAsyncZod = async (fastify) => {
       },
     },
     async (request, reply) => {
-      const post = await archivePost(request.params.id, fastify.prisma);
+      const post = await archivePost(request.params.id, fastify.prisma, fastify.queues);
       return reply.send(post);
     }
   );

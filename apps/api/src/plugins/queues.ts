@@ -71,6 +71,10 @@ export default fp(
             const { createDebtSnapshotJob } = await import("../jobs/create-debt-snapshot.js");
             return createDebtSnapshotJob(job, fastify.log);
           }
+          if (job.name === "publish-scheduled-post") {
+            const { publishScheduledPostJob } = await import("../jobs/publish-scheduled-post.js");
+            return publishScheduledPostJob(job);
+          }
         },
         { connection },
       ),

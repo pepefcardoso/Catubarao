@@ -61,6 +61,7 @@ export async function getPosts(
   const where = {
     isArchived: false,
     supersededById: null,
+    scheduledFor: null,
     ...(category ? { category } : {}),
     ...(referenceYear ? { referenceYear } : {}),
   };
@@ -93,7 +94,8 @@ export async function getPostById(id: string, db: PrismaClient) {
 export async function createPost(
   input: CreateTransparencyPostInput,
   userId: string,
-  db: PrismaClient
+  db: PrismaClient,
+  queues: any
 ) {
   if (input.category === "BALANCO_MENSAL" && input.referenceMonth && input.referenceYear) {
     const existing = await db.transparencyPost.findFirst({
@@ -111,7 +113,7 @@ export async function createPost(
     }
   }
 
-  return db.transparencyPost.create({
+  const post = await db.transparencyPost.create({
     data: {
       ...input,
       supersededById: null,
@@ -119,15 +121,29 @@ export async function createPost(
       version: 1,
     },
   });
+
+  if (post.scheduledFor) {
+    const delay = Math.max(0, new Date(post.scheduledFor).getTime() - Date.now());
+    await queues.scheduled.add(
+      "publish-scheduled-post",
+      { postId: post.id },
+      { delay, jobId: `publish-post-${post.id}` }
+    );
+  }
+
+  return post;
 }
 
 export async function updatePost(
   id: string,
   input: CreateTransparencyPostInput,
   userId: string,
-  db: PrismaClient
+  db: PrismaClient,
+  queues: any
 ) {
-  return db.$transaction(async (tx) => {
+  let oldPostScheduledFor: Date | null = null;
+
+  const newPost = await db.$transaction(async (tx) => {
     const oldPost = await tx.transparencyPost.findUnique({
       where: { id },
     });
@@ -139,6 +155,8 @@ export async function updatePost(
     if (oldPost.isArchived) {
       throw new ConflictError("Cannot update an archived post");
     }
+
+    oldPostScheduledFor = oldPost.scheduledFor;
 
     if (oldPost.supersededById) {
       throw new ConflictError("Cannot update a superseded post");
@@ -160,18 +178,39 @@ export async function updatePost(
 
     return newPost;
   });
+
+  if (oldPostScheduledFor) {
+    await queues.scheduled.remove(`publish-post-${id}`);
+  }
+
+  if (newPost.scheduledFor) {
+    const delay = Math.max(0, new Date(newPost.scheduledFor).getTime() - Date.now());
+    await queues.scheduled.add(
+      "publish-scheduled-post",
+      { postId: newPost.id },
+      { delay, jobId: `publish-post-${newPost.id}` }
+    );
+  }
+
+  return newPost;
 }
 
-export async function archivePost(id: string, db: PrismaClient) {
+export async function archivePost(id: string, db: PrismaClient, queues: any) {
   const post = await db.transparencyPost.findUnique({ where: { id } });
   if (!post) {
     throw new NotFoundError("Post not found");
   }
 
-  return db.transparencyPost.update({
+  const archived = await db.transparencyPost.update({
     where: { id },
     data: { isArchived: true },
   });
+
+  if (archived.scheduledFor) {
+    await queues.scheduled.remove(`publish-post-${id}`);
+  }
+
+  return archived;
 }
 
 export async function getDebts(db: PrismaClient) {
