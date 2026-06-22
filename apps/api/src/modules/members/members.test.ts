@@ -99,3 +99,23 @@ describe("Members Profile Routes", () => {
     expect(dbMember?.showOnMonument).toBe(true);
   });
 });
+
+import { isEligibleToVote } from "./members.service";
+
+describe("isEligibleToVote helper", () => {
+  it("should return false for member with 11 months streak", () => {
+    expect(isEligibleToVote({ adimplenciaStreakMonths: 11 })).toBe(false);
+  });
+
+  it("should return true for member with 12 months streak", () => {
+    expect(isEligibleToVote({ adimplenciaStreakMonths: 12 })).toBe(true);
+  });
+
+  it("should return true for member with 13 months streak", () => {
+    expect(isEligibleToVote({ adimplenciaStreakMonths: 13 })).toBe(true);
+  });
+
+  it("should return false for member with 0 months streak", () => {
+    expect(isEligibleToVote({ adimplenciaStreakMonths: 0 })).toBe(false);
+  });
+});

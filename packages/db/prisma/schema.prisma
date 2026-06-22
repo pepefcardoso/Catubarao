@@ -30,6 +30,8 @@ model Member {
   whatsappOptIn    Boolean @default(false)
   address       Json?
   showOnMonument Boolean @default(false)
+  adimplenciaStreakMonths Int @default(0)
+  lastAdimplenciaResetAt DateTime?
 
   referredById  String?
   referredBy    Member?   @relation("MemberReferrals", fields: [referredById], references: [id])

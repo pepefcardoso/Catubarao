@@ -65,9 +65,19 @@ export async function createSubscription(memberId: string, planId: string, db: P
         },
       });
 
+      const cardsData = [];
+      // Primary member card
+      cardsData.push({
+        memberId,
+        subscriptionId: sub.id,
+        qrToken: crypto.randomUUID(),
+        validUntil: currentPeriodEnd,
+        isActive: false,
+      });
+
       if (plan.isCorporate && plan.maxCards) {
-        const cardsData = [];
-        for (let i = 0; i < plan.maxCards; i++) {
+        const additionalCards = Math.max(0, plan.maxCards - 1);
+        for (let i = 0; i < additionalCards; i++) {
           cardsData.push({
             memberId,
             subscriptionId: sub.id,
@@ -76,8 +86,9 @@ export async function createSubscription(memberId: string, planId: string, db: P
             isActive: false,
           });
         }
-        await tx.membershipCard.createMany({ data: cardsData });
       }
+      
+      await tx.membershipCard.createMany({ data: cardsData });
 
       return sub;
     });
@@ -133,6 +144,149 @@ export async function updateSubscriptionPlan(subscriptionId: string, planId: str
   return { subscriptionId: updated.id, checkoutUrl: mpRes.init_point };
 }
 
+export async function reactivateFromDelinquency(subscriptionId: string, db: PrismaClient) {
+  const subscription = await db.subscription.findUnique({
+    where: { id: subscriptionId },
+    include: { plan: true }
+  });
+  if (!subscription) throw new NotFoundError("Subscription not found");
+
+  await db.$transaction(async (tx) => {
+    await tx.subscription.update({
+      where: { id: subscriptionId },
+      data: { status: "ACTIVE" }
+    });
+
+    await tx.member.update({
+      where: { id: subscription.memberId },
+      data: {
+        adimplenciaStreakMonths: 0,
+        lastAdimplenciaResetAt: new Date()
+      }
+    });
+
+    await tx.membershipCard.updateMany({
+      where: { subscriptionId },
+      data: { isActive: false }
+    });
+
+    const cardsData = [];
+    cardsData.push({
+      memberId: subscription.memberId,
+      subscriptionId,
+      qrToken: crypto.randomUUID(),
+      validUntil: subscription.currentPeriodEnd,
+      isActive: true,
+    });
+
+    if (subscription.plan.isCorporate && subscription.plan.maxCards) {
+      const additionalCards = Math.max(0, subscription.plan.maxCards - 1);
+      for (let i = 0; i < additionalCards; i++) {
+        cardsData.push({
+          memberId: subscription.memberId,
+          subscriptionId,
+          qrToken: crypto.randomUUID(),
+          validUntil: subscription.currentPeriodEnd,
+          isActive: true,
+        });
+      }
+    }
+    
+    await tx.membershipCard.createMany({ data: cardsData });
+  });
+
+  return { success: true };
+}
+
+export async function renewActiveSubscription(subscriptionId: string, db: PrismaClient) {
+  const subscription = await db.subscription.findUnique({
+    where: { id: subscriptionId },
+    include: { plan: true }
+  });
+  if (!subscription) throw new NotFoundError("Subscription not found");
+
+  const now = new Date();
+  const newPeriodEnd = new Date(subscription.currentPeriodEnd);
+  
+  if (subscription.plan.interval === "MONTHLY") {
+    newPeriodEnd.setMonth(newPeriodEnd.getMonth() + 1);
+  } else {
+    newPeriodEnd.setFullYear(newPeriodEnd.getFullYear() + 1);
+  }
+
+  // Only renew if we've actually passed the end date or are very close to it
+  // But for the scope of the function we blindly extend
+  await db.$transaction(async (tx) => {
+    await tx.subscription.update({
+      where: { id: subscriptionId },
+      data: {
+        currentPeriodStart: subscription.currentPeriodEnd,
+        currentPeriodEnd: newPeriodEnd
+      }
+    });
+
+    await tx.membershipCard.updateMany({
+      where: { subscriptionId },
+      data: { isActive: false }
+    });
+
+    const cardsData = [];
+    cardsData.push({
+      memberId: subscription.memberId,
+      subscriptionId,
+      qrToken: crypto.randomUUID(),
+      validUntil: newPeriodEnd,
+      isActive: true,
+    });
+
+    if (subscription.plan.isCorporate && subscription.plan.maxCards) {
+      const additionalCards = Math.max(0, subscription.plan.maxCards - 1);
+      for (let i = 0; i < additionalCards; i++) {
+        cardsData.push({
+          memberId: subscription.memberId,
+          subscriptionId,
+          qrToken: crypto.randomUUID(),
+          validUntil: newPeriodEnd,
+          isActive: true,
+        });
+      }
+    }
+    
+    await tx.membershipCard.createMany({ data: cardsData });
+  });
+
+  return { success: true };
+}
+
+export async function suspendSubscription(subscriptionId: string, db: PrismaClient) {
+  const subscription = await db.subscription.findUnique({
+    where: { id: subscriptionId }
+  });
+  if (!subscription) throw new NotFoundError("Subscription not found");
+
+  await db.$transaction(async (tx) => {
+    await tx.subscription.update({
+      where: { id: subscriptionId },
+      data: { status: "SUSPENDED" }
+    });
+
+    await tx.member.update({
+      where: { id: subscription.memberId },
+      data: {
+        adimplenciaStreakMonths: 0,
+        lastAdimplenciaResetAt: new Date()
+      }
+    });
+
+    await tx.membershipCard.updateMany({
+      where: { subscriptionId },
+      data: { isActive: false }
+    });
+  });
+
+  return { success: true };
+}
+
 export async function cancelSubscription(subscriptionId: string, db: PrismaClient) {
   const subscription = await db.subscription.findUnique({
     where: { id: subscriptionId },
@@ -157,12 +311,10 @@ export async function cancelSubscription(subscriptionId: string, db: PrismaClien
       },
     });
 
-    if (subscription.plan.isCorporate) {
-      await tx.membershipCard.updateMany({
-        where: { subscriptionId },
-        data: { isActive: false },
-      });
-    }
+    await tx.membershipCard.updateMany({
+      where: { subscriptionId },
+      data: { isActive: false },
+    });
   });
 
   return { success: true };
@@ -175,24 +327,26 @@ export async function updateSubscriptionStatus(
 ) {
   const subscription = await db.subscription.findUnique({
     where: { id: subscriptionId },
-    include: { plan: true },
   });
   if (!subscription) throw new NotFoundError("Subscription not found");
 
-  await db.$transaction(async (tx) => {
-    await tx.subscription.update({
-      where: { id: subscriptionId },
-      data: { status },
-    });
-
-    if (subscription.plan.isCorporate) {
-      // If status is not active, deactivate all cards. If active, reactivate them.
-      await tx.membershipCard.updateMany({
-        where: { subscriptionId },
-        data: { isActive: status === "ACTIVE" },
-      });
+  if (status === "ACTIVE") {
+    if (subscription.status === "ACTIVE") {
+      return renewActiveSubscription(subscriptionId, db);
+    } else {
+      return reactivateFromDelinquency(subscriptionId, db);
     }
-  });
-
+  } else if (status === "SUSPENDED") {
+    return suspendSubscription(subscriptionId, db);
+  } else if (status === "CANCELLED") {
+    return cancelSubscription(subscriptionId, db);
+  } else if (status === "PENDING") {
+    await db.subscription.update({
+      where: { id: subscriptionId },
+      data: { status: "PENDING" }
+    });
+    return { success: true };
+  }
+  
   return { success: true };
 }

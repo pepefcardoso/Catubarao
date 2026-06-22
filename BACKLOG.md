@@ -810,9 +810,9 @@ Task backlog from zero to production. Each task is sized for a single AI agent s
 
 **Acceptance criteria:**
 
-- [ ] Activating a suspended subscription resets streak to 0 (fresh start, not resumed)
-- [ ] Transaction rolls back entirely if card invalidation fails
-- [ ] `isEligibleToVote` returns false for a member with 11 months streak, true at 12
+- [x] Activating a suspended subscription resets streak to 0 (fresh start, not resumed)
+- [x] Transaction rolls back entirely if card invalidation fails
+- [x] `isEligibleToVote` returns false for a member with 11 months streak, true at 12
 
 ---
 
