@@ -1,5 +1,5 @@
 import type { FastifyPluginAsyncZod } from "fastify-type-provider-zod";
-import { CheckinBodySchema } from "@repo/schemas/gamification";
+import { CheckinBodySchema, BulkCheckinBodySchema } from "@repo/schemas/gamification";
 import { verifyCardToken } from "../../lib/qr";
 import { recordGamificationEvent } from "./gamification.service";
 import { UnauthorizedError } from "../../lib/errors";
@@ -64,6 +64,65 @@ export const eventsRoutes: FastifyPluginAsyncZod = async (fastify) => {
         fastify.log.error(err);
         throw new UnauthorizedError("Invalid or expired QR token");
       }
+    }
+  );
+  fastify.post(
+    "/events/:eventId/checkin-bulk",
+    {
+      schema: {
+        tags: ["events", "gamification"],
+        params: z.object({
+          eventId: z.string().uuid(),
+        }),
+        body: BulkCheckinBodySchema,
+        response: {
+          200: z.object({
+            message: z.string(),
+            processed: z.number(),
+            failed: z.number(),
+          }),
+        },
+      },
+    },
+    async (request, reply) => {
+      const { eventId } = request.params;
+      const { checkins } = request.body;
+      
+      let processed = 0;
+      let failed = 0;
+
+      for (const checkin of checkins) {
+        try {
+          // Verify token (jwtVerify throws if expired or invalid)
+          const result = await verifyCardToken(checkin.token);
+          const payload = result.payload as any;
+
+          if (!payload || !payload.memberId) {
+            failed++;
+            continue;
+          }
+
+          const idempotencyKey = `CHECKIN_${payload.memberId}_${eventId}`;
+          
+          await recordGamificationEvent(
+            payload.memberId,
+            "CHECKIN",
+            fastify.prisma,
+            { eventId, offlineTimestamp: checkin.timestamp },
+            idempotencyKey
+          );
+          processed++;
+        } catch (err: any) {
+          fastify.log.warn(`Bulk checkin failed for token: ${err.message}`);
+          failed++;
+        }
+      }
+
+      return reply.status(200).send({
+        message: "Bulk check-in processed",
+        processed,
+        failed,
+      });
     }
   );
 };

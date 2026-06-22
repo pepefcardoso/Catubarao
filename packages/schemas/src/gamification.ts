@@ -35,3 +35,12 @@ export const LeaderboardResponseSchema = z.array(LeaderboardEntrySchema);
 export const CheckinBodySchema = z.object({
   token: z.string(),
 });
+
+export const BulkCheckinBodySchema = z.object({
+  checkins: z.array(
+    z.object({
+      token: z.string(),
+      timestamp: z.number(),
+    })
+  ).max(500),
+});

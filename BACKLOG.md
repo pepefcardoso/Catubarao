@@ -1296,9 +1296,9 @@ All templates: club logo, responsive layout, unsubscribe footer (transactional e
 
 **Acceptance criteria:**
 
-- [ ] Validator works when device is in airplane mode
-- [ ] Offline check-ins sync automatically upon reconnection
-- [ ] Invalid QR shows red screen
+- [x] Validator works when device is in airplane mode
+- [x] Offline check-ins sync automatically upon reconnection
+- [x] Invalid QR shows red screen
 
 ---
 
