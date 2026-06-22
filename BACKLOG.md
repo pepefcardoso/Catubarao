@@ -1318,8 +1318,8 @@ All templates: club logo, responsive layout, unsubscribe footer (transactional e
 
 **Acceptance criteria:**
 
-- [ ] Admin can create a match event
-- [ ] Check-in endpoint can link to the newly created event
+- [x] Admin can create a match event
+- [x] Check-in endpoint can link to the newly created event
 
 ---
 

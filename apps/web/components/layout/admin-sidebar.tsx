@@ -3,7 +3,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, Users, Shield, Receipt, LogOut, Settings } from "lucide-react";
+import { LayoutDashboard, Users, Shield, Receipt, LogOut, Settings, Calendar } from "lucide-react";
 import { cn } from "@repo/ui/lib/utils";
 import { Button } from "@repo/ui/components/button";
 
@@ -11,6 +11,7 @@ export const adminNavItems = [
   { name: "Dashboard", href: "/admin", icon: LayoutDashboard },
   { name: "Sócios", href: "/admin/members", icon: Users },
   { name: "Planos", href: "/admin/plans", icon: Shield },
+  { name: "Eventos", href: "/admin/eventos", icon: Calendar },
   { name: "Financeiro", href: "/admin/finance", icon: Receipt },
   { name: "Transparência", href: "/admin/transparency", icon: Shield },
   { name: "Configurações", href: "/admin/settings", icon: Settings },

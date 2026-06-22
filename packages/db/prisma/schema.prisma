@@ -294,3 +294,13 @@ model DashboardGoal {
 
   @@map("dashboard_goals")
 }
+
+model MatchEvent {
+  id          String   @id @default(uuid())
+  date        DateTime
+  opponent    String
+  competition String
+  createdAt   DateTime @default(now())
+
+  @@map("match_events")
+}

@@ -1,11 +1,53 @@
 import type { FastifyPluginAsyncZod } from "fastify-type-provider-zod";
 import { CheckinBodySchema, BulkCheckinBodySchema } from "@repo/schemas/gamification";
+import { CreateMatchEventSchema, MatchEventResponseSchema, PaginatedMatchEventsResponseSchema } from "@repo/schemas/events";
 import { verifyCardToken } from "../../lib/qr";
 import { recordGamificationEvent } from "./gamification.service";
+import { createMatchEvent, listMatchEvents } from "./events.service";
 import { UnauthorizedError } from "../../lib/errors";
 import { z } from "zod";
 
 export const eventsRoutes: FastifyPluginAsyncZod = async (fastify) => {
+  fastify.post(
+    "/admin/events",
+    {
+      schema: {
+        tags: ["events", "admin"],
+        body: CreateMatchEventSchema,
+        response: {
+          201: MatchEventResponseSchema,
+        },
+      },
+      preHandler: [fastify.authenticate, fastify.requireRole("ADMIN")],
+    },
+    async (request, reply) => {
+      const event = await createMatchEvent(request.body, fastify.prisma);
+      return reply.status(201).send(event);
+    }
+  );
+
+  fastify.get(
+    "/admin/events",
+    {
+      schema: {
+        tags: ["events", "admin"],
+        querystring: z.object({
+          page: z.coerce.number().min(1).default(1),
+          limit: z.coerce.number().min(1).max(100).default(20),
+        }),
+        response: {
+          200: PaginatedMatchEventsResponseSchema,
+        },
+      },
+      preHandler: [fastify.authenticate, fastify.requireRole("ADMIN")],
+    },
+    async (request, reply) => {
+      const { page, limit } = request.query;
+      const result = await listMatchEvents(page, limit, fastify.prisma);
+      return reply.send(result);
+    }
+  );
+
   fastify.post(
     "/events/:eventId/checkin",
     {
@@ -30,6 +72,14 @@ export const eventsRoutes: FastifyPluginAsyncZod = async (fastify) => {
       const { token } = request.body;
 
       try {
+        const matchEvent = await fastify.prisma.matchEvent.findUnique({
+          where: { id: eventId },
+        });
+
+        if (!matchEvent) {
+          return reply.status(404).send({ message: "Match event not found" } as any);
+        }
+
         // Verify token (jwtVerify throws if expired or invalid)
         const result = await verifyCardToken(token);
         const payload = result.payload as any;
@@ -88,6 +138,14 @@ export const eventsRoutes: FastifyPluginAsyncZod = async (fastify) => {
       const { eventId } = request.params;
       const { checkins } = request.body;
       
+      const matchEvent = await fastify.prisma.matchEvent.findUnique({
+        where: { id: eventId },
+      });
+
+      if (!matchEvent) {
+        return reply.status(404).send({ message: "Match event not found" } as any);
+      }
+
       let processed = 0;
       let failed = 0;
 
