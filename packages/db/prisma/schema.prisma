@@ -20,24 +20,24 @@ model Member {
   banned        Boolean?  @default(false)
   banReason     String?
   banExpires    DateTime?
-  
-  cpf           String?   @unique
-  phone         String?
-  birthDate     DateTime?
-  referralCode  String?   @unique
-  isActive      Boolean   @default(true)
-  marketingConsent Boolean @default(false)
-  whatsappOptIn    Boolean @default(false)
-  address       Json?
-  showOnMonument Boolean @default(false)
-  showOnLeaderboard Boolean @default(false)
-  adimplenciaStreakMonths Int @default(0)
-  lastAdimplenciaResetAt DateTime?
-  adminNotes    String?
 
-  referredById  String?
-  referredBy    Member?   @relation("MemberReferrals", fields: [referredById], references: [id])
-  referrals     Member[]  @relation("MemberReferrals")
+  cpf                     String?   @unique
+  phone                   String?
+  birthDate               DateTime?
+  referralCode            String?   @unique
+  isActive                Boolean   @default(true)
+  marketingConsent        Boolean   @default(false)
+  whatsappOptIn           Boolean   @default(false)
+  address                 Json?
+  showOnMonument          Boolean   @default(false)
+  showOnLeaderboard       Boolean   @default(false)
+  adimplenciaStreakMonths Int       @default(0)
+  lastAdimplenciaResetAt  DateTime?
+  adminNotes              String?
+
+  referredById String?
+  referredBy   Member?  @relation("MemberReferrals", fields: [referredById], references: [id])
+  referrals    Member[] @relation("MemberReferrals")
 
   sessions           Session[]
   accounts           Account[]
@@ -45,6 +45,8 @@ model Member {
   gamificationEvents GamificationEvent[]
   membershipCards    MembershipCard[]
   pollVotes          PollVote[]
+  transparencyPosts  TransparencyPost[]
+  debtSnapshots      DebtSnapshot[]
 
   @@unique([email])
   @@map("members")
@@ -174,8 +176,8 @@ model Subscription {
   cancelledAt           DateTime?
   createdAt             DateTime           @default(now())
 
-  member          Member           @relation(fields: [memberId], references: [id], onDelete: Cascade)
-  plan            MembershipPlan   @relation(fields: [planId], references: [id])
+  member          Member                     @relation(fields: [memberId], references: [id], onDelete: Cascade)
+  plan            MembershipPlan             @relation(fields: [planId], references: [id])
   payments        Payment[]
   membershipCards MembershipCard[]
   notifications   SubscriptionNotification[]
@@ -218,10 +220,10 @@ model MembershipCard {
 }
 
 model GamificationEvent {
-  id        String                @id @default(uuid())
-  memberId  String
-  type      GamificationEventType
-  points    Int
+  id             String                @id @default(uuid())
+  memberId       String
+  type           GamificationEventType
+  points         Int
   metadata       Json?
   idempotencyKey String?               @unique
   createdAt      DateTime              @default(now())
@@ -303,4 +305,73 @@ model MatchEvent {
   createdAt   DateTime @default(now())
 
   @@map("match_events")
+}
+
+enum TransparencyCategory {
+  BALANCO_MENSAL
+  STATUS_DIVIDAS
+  ATA_ASSEMBLEIA
+  COMPOSICAO_SOCIETARIA
+  DOCUMENTO_SAF
+  OUTRO
+}
+
+enum DebtStatus {
+  EM_NEGOCIACAO
+  EM_DIA
+  ATRASADO
+  QUITADO
+}
+
+model TransparencyPost {
+  id             String               @id @default(uuid())
+  title          String
+  category       TransparencyCategory
+  referenceMonth Int?
+  referenceYear  Int?
+  body           String
+  attachmentUrl  String?
+  publishedAt    DateTime
+  scheduledFor   DateTime?
+  version        Int                  @default(1)
+  supersededById String?
+  supersededBy   TransparencyPost?    @relation("PostVersions", fields: [supersededById], references: [id])
+  versions       TransparencyPost[]   @relation("PostVersions")
+  isArchived     Boolean              @default(false)
+  createdBy      String
+  author         Member               @relation(fields: [createdBy], references: [id])
+  createdAt      DateTime             @default(now())
+  updatedAt      DateTime             @updatedAt
+
+  @@index([category, publishedAt])
+  @@map("transparency_posts")
+}
+
+model DebtRecord {
+  id               String     @id @default(uuid())
+  creditorName     String
+  creditorGroup    String?
+  originalAmount   Decimal
+  negotiatedAmount Decimal?
+  paidAmount       Decimal    @default(0)
+  status           DebtStatus
+  publicNote       String?
+  createdAt        DateTime   @default(now())
+  updatedAt        DateTime   @updatedAt
+
+  @@map("debt_records")
+}
+
+model DebtSnapshot {
+  id              String   @id @default(uuid())
+  totalOriginal   Decimal
+  totalNegotiated Decimal
+  totalPaid       Decimal
+  totalRemaining  Decimal
+  snapshotDate    DateTime @db.Date
+  createdBy       String
+  author          Member   @relation(fields: [createdBy], references: [id])
+  createdAt       DateTime @default(now())
+
+  @@map("debt_snapshots")
 }

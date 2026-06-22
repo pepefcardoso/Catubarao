@@ -1345,8 +1345,8 @@ All templates: club logo, responsive layout, unsubscribe footer (transactional e
 
 **Acceptance criteria:**
 
-- [ ] Migration applies cleanly
-- [ ] Self-relation on `TransparencyPost` is correctly represented (previous version accessible via `supersededBy`)
+- [x] Migration applies cleanly
+- [x] Self-relation on `TransparencyPost` is correctly represented (previous version accessible via `supersededBy`)
 
 ---
 
