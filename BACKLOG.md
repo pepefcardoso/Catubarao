@@ -1019,12 +1019,12 @@ All templates: club logo, responsive layout, unsubscribe footer (transactional e
 
 **Acceptance criteria:**
 
-- [ ] Submitting with an invalid CPF shows inline error without API call
-- [ ] CPF input applies mask `###.###.###-##` on type
-- [ ] CPF mask is stripped to 11 raw digits before schema parse and API call
-- [ ] Signup form has explicit opt-in checkboxes for email marketing and WhatsApp, unchecked by default
-- [ ] Successful signup redirects to plan selection
-- [ ] Form is accessible (all fields have labels, errors announced to screen readers)
+- [x] Submitting with an invalid CPF shows inline error without API call
+- [x] CPF input applies mask `###.###.###-##` on type
+- [x] CPF mask is stripped to 11 raw digits before schema parse and API call
+- [x] Signup form has explicit opt-in checkboxes for email marketing and WhatsApp, unchecked by default
+- [x] Successful signup redirects to plan selection
+- [x] Form is accessible (all fields have labels, errors announced to screen readers)
 
 ---
 
