@@ -1123,10 +1123,10 @@ All templates: club logo, responsive layout, unsubscribe footer (transactional e
 
 **Acceptance criteria:**
 
-- [ ] QR code is scannable by the validator (test with MEMBER-011 check-in endpoint)
-- [ ] Wake Lock is requested on page mount
-- [ ] Suspended member cannot see an active QR
-- [ ] QR code container has `bg-white p-4` applied unconditionally, regardless of system color scheme
+- [x] QR code is scannable by the validator (test with MEMBER-011 check-in endpoint)
+- [x] Wake Lock is requested on page mount
+- [x] Suspended member cannot see an active QR
+- [x] QR code container has `bg-white p-4` applied unconditionally, regardless of system color scheme
 
 ---
 

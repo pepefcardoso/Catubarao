@@ -95,9 +95,11 @@ export function DashboardClient() {
                 </div>
               </CardContent>
               <CardFooter className="bg-primary/5 px-6 py-3 border-t border-primary/10">
-                <Button variant="ghost" size="sm" className="w-full justify-between hover:bg-primary/10">
-                  Ver carteirinha completa
-                  <ChevronRight className="w-4 h-4" />
+                <Button variant="ghost" size="sm" className="w-full justify-between hover:bg-primary/10" asChild>
+                  <Link href="/card">
+                    Ver carteirinha completa
+                    <ChevronRight className="w-4 h-4" />
+                  </Link>
                 </Button>
               </CardFooter>
             </Card>
