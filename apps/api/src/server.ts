@@ -88,7 +88,11 @@ fastify.register(eventsRoutes);
 import { pollsRoutes } from "./modules/members/polls.routes";
 fastify.register(pollsRoutes);
 
+import { statsRoutes } from "./modules/members/stats.routes";
+fastify.register(statsRoutes);
+
 // Health check endpoint
+
 fastify.get("/health", async (request, reply) => {
   return { status: "ok", timestamp: new Date().toISOString() };
 });

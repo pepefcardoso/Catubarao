@@ -134,6 +134,15 @@ export async function processPaymentEventJob(job: Job) {
       }
       
       await emailQueue.close();
+
+      // Invalidate stats:members cache
+      const Redis = (await import("ioredis")).default;
+      const redis = new Redis({
+        host: env.REDIS_HOST,
+        port: Number(env.REDIS_PORT)
+      });
+      await redis.del("stats:members");
+      await redis.quit();
     }
   }
 

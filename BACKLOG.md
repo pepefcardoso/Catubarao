@@ -993,9 +993,9 @@ All templates: club logo, responsive layout, unsubscribe footer (transactional e
 
 **Acceptance criteria:**
 
-- [ ] Response is correct immediately after a new subscription is activated
-- [ ] Second call within 30s returns cached response (verify via Redis key existence)
-- [ ] Cache is invalidated when a subscription webhook fires
+- [x] Response is correct immediately after a new subscription is activated
+- [x] Second call within 30s returns cached response (verify via Redis key existence)
+- [x] Cache is invalidated when a subscription webhook fires
 
 ---
 

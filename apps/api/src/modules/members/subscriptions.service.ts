@@ -334,23 +334,42 @@ export async function updateSubscriptionStatus(
   });
   if (!subscription) throw new NotFoundError("Subscription not found");
 
+  let result;
   if (status === "ACTIVE") {
     if (subscription.status === "ACTIVE") {
-      return renewActiveSubscription(subscriptionId, db);
+      result = await renewActiveSubscription(subscriptionId, db);
     } else {
-      return reactivateFromDelinquency(subscriptionId, db);
+      result = await reactivateFromDelinquency(subscriptionId, db);
     }
   } else if (status === "SUSPENDED") {
-    return suspendSubscription(subscriptionId, db);
+    result = await suspendSubscription(subscriptionId, db);
   } else if (status === "CANCELLED") {
-    return cancelSubscription(subscriptionId, db);
+    result = await cancelSubscription(subscriptionId, db);
   } else if (status === "PENDING") {
     await db.subscription.update({
       where: { id: subscriptionId },
       data: { status: "PENDING" }
     });
-    return { success: true };
+    result = { success: true };
+  } else {
+    result = { success: true };
   }
   
-  return { success: true };
+  await invalidateStatsCache();
+  return result;
 }
+
+async function invalidateStatsCache() {
+  try {
+    const Redis = (await import("ioredis")).default;
+    const redis = new Redis({
+      host: env.REDIS_HOST,
+      port: Number(env.REDIS_PORT)
+    });
+    await redis.del("stats:members");
+    await redis.quit();
+  } catch (err) {
+    console.error("Failed to invalidate stats cache", err);
+  }
+}
+

@@ -283,3 +283,13 @@ model SubscriptionNotification {
   @@unique([subscriptionId, type])
   @@map("subscription_notifications")
 }
+
+model DashboardGoal {
+  id        String   @id @default(uuid())
+  label     String
+  target    Int
+  metric    String
+  createdAt DateTime @default(now())
+
+  @@map("dashboard_goals")
+}
