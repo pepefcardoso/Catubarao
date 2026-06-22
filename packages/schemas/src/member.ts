@@ -100,6 +100,7 @@ export const SubscriptionStatusSchema = z.enum(["ACTIVE", "PENDING", "SUSPENDED"
 
 export const MeResponseSchema = MemberResponseSchema.extend({
   subscriptionStatus: SubscriptionStatusSchema.nullable(),
+  activePlanId: z.string().nullable(),
   adimplenciaStreak: z.number().int().nonnegative(),
 });
 

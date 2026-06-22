@@ -1047,9 +1047,9 @@ All templates: club logo, responsive layout, unsubscribe footer (transactional e
 
 **Acceptance criteria:**
 
-- [ ] Monthly/annual toggle updates all prices simultaneously
-- [ ] Active plan is visually indicated
-- [ ] Corporate plan CTA links to contact, not checkout
+- [x] Monthly/annual toggle updates all prices simultaneously
+- [x] Active plan is visually indicated
+- [x] Corporate plan CTA links to contact, not checkout
 
 ---
 

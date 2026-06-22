@@ -38,6 +38,7 @@ export async function getMe(memberId: string, db: PrismaClient) {
   return {
     ...memberData,
     subscriptionStatus: member.subscriptions[0]?.status ?? null,
+    activePlanId: member.subscriptions[0]?.planId ?? null,
     adimplenciaStreak: member.adimplenciaStreakMonths,
   };
 }
