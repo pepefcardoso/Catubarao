@@ -10,9 +10,9 @@ describe("Gamification Service", () => {
     // Create a dummy member
     const member = await prisma.member.create({
       data: {
-        id: \`test-gamification-\${Date.now()}\`,
+        id: `test-gamification-${Date.now()}`,
         name: "Gamification Test",
-        email: \`gami.\${Date.now()}@test.com\`,
+        email: `gami.${Date.now()}@test.com`,
         showOnLeaderboard: true,
       } as any,
     });
@@ -37,14 +37,14 @@ describe("Gamification Service", () => {
   });
 
   it("should record a new gamification event", async () => {
-    const event = await recordGamificationEvent(memberId, "CHECKIN", prisma, null, \`CHECKIN_123_\${Date.now()}\`);
+    const event = await recordGamificationEvent(memberId, "CHECKIN", prisma, null, `CHECKIN_123_${Date.now()}`);
     expect(event).toBeDefined();
     expect(event.points).toBe(10);
     expect(event.type).toBe("CHECKIN");
   });
 
   it("should prevent duplicate events with the same idempotency key", async () => {
-    const idempotencyKey = \`ANNIVERSARY_2026_\${Date.now()}\`;
+    const idempotencyKey = `ANNIVERSARY_2026_${Date.now()}`;
     const event1 = await recordGamificationEvent(memberId, "ANNIVERSARY", prisma, null, idempotencyKey);
     const event2 = await recordGamificationEvent(memberId, "ANNIVERSARY", prisma, null, idempotencyKey);
     

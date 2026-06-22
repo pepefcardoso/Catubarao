@@ -9,7 +9,7 @@ export const GamificationRuleSchema = z.object({
 export const GamificationEventSchema = z.object({
   type: z.enum(["CHECKIN", "REFERRAL", "ANNIVERSARY", "STREAK_6M", "STREAK_12M"]),
   points: z.number().int().nonnegative(),
-  metadata: z.record(z.any()).optional(),
+  metadata: z.record(z.string(), z.any()).optional(),
   createdAt: z.string().datetime(),
 });
 

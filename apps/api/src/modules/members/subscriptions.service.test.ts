@@ -58,7 +58,7 @@ describe("Subscriptions Service", () => {
   });
 
   it("createSubscription creates a pending subscription and a card", async () => {
-    const { subscriptionId } = await createSubscription(memberId, planId, prisma);
+    const { subscriptionId } = await createSubscription(memberId, { planId }, prisma);
 
     const sub = await prisma.subscription.findUnique({ where: { id: subscriptionId } });
     expect(sub).toBeDefined();
@@ -70,7 +70,7 @@ describe("Subscriptions Service", () => {
   });
 
   it("suspendSubscription sets status to SUSPENDED and streak to 0", async () => {
-    const { subscriptionId } = await createSubscription(memberId, planId, prisma);
+    const { subscriptionId } = await createSubscription(memberId, { planId }, prisma);
     
     // Set streak manually to simulate an active member
     await prisma.member.update({ where: { id: memberId }, data: { adimplenciaStreakMonths: 5 } });
@@ -88,7 +88,7 @@ describe("Subscriptions Service", () => {
   });
 
   it("reactivateFromDelinquency sets status to ACTIVE, resets streak, creates new cards", async () => {
-    const { subscriptionId } = await createSubscription(memberId, planId, prisma);
+    const { subscriptionId } = await createSubscription(memberId, { planId }, prisma);
     
     await suspendSubscription(subscriptionId, prisma);
     
@@ -111,7 +111,7 @@ describe("Subscriptions Service", () => {
   });
 
   it("renewActiveSubscription leaves streak untouched and creates new cards", async () => {
-    const { subscriptionId } = await createSubscription(memberId, planId, prisma);
+    const { subscriptionId } = await createSubscription(memberId, { planId }, prisma);
     await reactivateFromDelinquency(subscriptionId, prisma);
 
     // Set streak manually
@@ -127,7 +127,7 @@ describe("Subscriptions Service", () => {
   });
 
   it("cancelSubscription sets status to CANCELLED and invalidates all cards", async () => {
-    const { subscriptionId } = await createSubscription(memberId, planId, prisma);
+    const { subscriptionId } = await createSubscription(memberId, { planId }, prisma);
     await reactivateFromDelinquency(subscriptionId, prisma);
 
     await cancelSubscription(subscriptionId, prisma);

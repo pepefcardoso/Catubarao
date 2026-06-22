@@ -1,4 +1,4 @@
-import { MercadoPagoConfig, PreApproval } from 'mercadopago';
+import { MercadoPagoConfig, PreApproval, Payment } from 'mercadopago';
 import { env } from './env';
 
 const client = new MercadoPagoConfig({
@@ -7,6 +7,7 @@ const client = new MercadoPagoConfig({
 });
 
 const preApproval = new PreApproval(client);
+const payment = new Payment(client);
 
 // Wrapper to make it easy to mock in tests
 export const mp = {
@@ -15,4 +16,8 @@ export const mp = {
     update: async (id: string, body: any) => preApproval.update({ id, body }),
     get: async (id: string) => preApproval.get({ id }),
   },
+  payment: {
+    create: async (body: any) => payment.create({ body }),
+    get: async (id: string) => payment.get({ id }),
+  }
 };

@@ -8,11 +8,19 @@ import { Badge } from "@repo/ui/components/badge";
 import { Tabs, TabsList, TabsTrigger } from "@repo/ui/components/tabs";
 import { Check } from "lucide-react";
 import { useRouter } from "next/navigation";
-import type { z } from "zod";
-import type { MembershipPlanResponseSchema, MeResponseSchema } from "@repo/schemas/member";
+interface MembershipPlan {
+  id: string;
+  name: string;
+  price: number;
+  interval: "MONTHLY" | "ANNUAL";
+  benefits: string[];
+  isActive: boolean;
+  isCorporate: boolean;
+}
 
-type MembershipPlan = z.infer<typeof MembershipPlanResponseSchema>;
-type MeResponse = z.infer<typeof MeResponseSchema>;
+interface MeResponse {
+  activePlanId?: string;
+}
 
 interface PlansClientProps {
   initialPlans: MembershipPlan[];

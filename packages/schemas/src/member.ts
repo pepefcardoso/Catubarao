@@ -140,6 +140,11 @@ export const MembershipPlanResponseSchema = z.object({
 export const CreateSubscriptionSchema = z.object({
   memberId: z.string().uuid(),
   planId: z.string().uuid(),
+  paymentMethod: z.enum(["pix", "card"]).optional(),
+  token: z.string().optional(),
+  issuer_id: z.string().optional(),
+  payment_method_id: z.string().optional(),
+  installments: z.number().int().optional(),
 });
 
 export const UpdateSubscriptionPlanSchema = z.object({

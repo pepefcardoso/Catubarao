@@ -4,7 +4,14 @@ import { mp } from "../../lib/mercadopago";
 import { env } from "../../lib/env";
 import crypto from "crypto";
 
-export async function createSubscription(memberId: string, planId: string, db: PrismaClient) {
+import type { CreateSubscriptionSchema } from "@repo/schemas/member";
+import type { z } from "zod";
+
+type CreateSubData = Omit<z.infer<typeof CreateSubscriptionSchema>, "memberId">;
+
+export async function createSubscription(memberId: string, data: CreateSubData, db: PrismaClient) {
+  const { planId, paymentMethod, token, issuer_id, payment_method_id, installments } = data;
+
   const member = await db.member.findUnique({ where: { id: memberId } });
   if (!member) throw new NotFoundError("Member not found");
 
@@ -21,27 +28,50 @@ export async function createSubscription(memberId: string, planId: string, db: P
   if (existingActive) throw new ConflictError("Member already has an active subscription");
 
   const reason = `Assinatura - ${plan.name}`;
-  let mpRes;
+  let gatewaySubscriptionId = "";
+  let checkoutUrl: string | undefined = undefined;
+  let pixQrCode: string | undefined = undefined;
+  let pixQrCodeBase64: string | undefined = undefined;
+
   try {
-    mpRes = await mp.preApproval.create({
-      reason,
-      auto_recurring: {
-        frequency: 1,
-        frequency_type: plan.interval === "MONTHLY" ? "months" : "years",
+    if (paymentMethod === "pix") {
+      const mpRes = await mp.payment.create({
         transaction_amount: Number(plan.price),
-        currency_id: "BRL",
-      },
-      payer_email: member.email,
-      back_url: `${env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/member/dashboard`,
-      status: "pending",
-    });
+        description: reason,
+        payment_method_id: "pix",
+        payer: {
+          email: member.email,
+          first_name: member.name,
+          identification: {
+            type: "CPF",
+            number: member.cpf || "",
+          },
+        },
+      });
+      gatewaySubscriptionId = mpRes.id!.toString();
+      pixQrCode = mpRes.point_of_interaction?.transaction_data?.qr_code;
+      pixQrCodeBase64 = mpRes.point_of_interaction?.transaction_data?.qr_code_base64;
+    } else {
+      const mpRes = await mp.preApproval.create({
+        reason,
+        auto_recurring: {
+          frequency: 1,
+          frequency_type: plan.interval === "MONTHLY" ? "months" : "years",
+          transaction_amount: Number(plan.price),
+          currency_id: "BRL",
+        },
+        payer_email: member.email,
+        back_url: `${env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/member/dashboard`,
+        status: "pending",
+        card_token_id: token,
+      });
+      gatewaySubscriptionId = mpRes.id?.toString() || "";
+      checkoutUrl = mpRes.init_point;
+    }
   } catch (err) {
     console.error("MP CREATE ERROR:", err);
     throw err;
   }
-
-  const gatewaySubscriptionId = mpRes.id;
-  const checkoutUrl = mpRes.init_point;
 
   const now = new Date();
   const currentPeriodEnd = new Date(now);
@@ -97,7 +127,7 @@ export async function createSubscription(memberId: string, planId: string, db: P
     throw err;
   }
 
-  return { subscriptionId: subscription.id, checkoutUrl };
+  return { subscriptionId: subscription.id, checkoutUrl, pixQrCode, pixQrCodeBase64 };
 }
 
 export async function updateSubscriptionPlan(subscriptionId: string, planId: string, db: PrismaClient) {

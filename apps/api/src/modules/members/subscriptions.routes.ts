@@ -15,6 +15,8 @@ export const subscriptionsRoutes: FastifyPluginAsyncZod = async (fastify) => {
           201: z.object({
             subscriptionId: z.string(),
             checkoutUrl: z.string().optional(),
+            pixQrCode: z.string().optional(),
+            pixQrCodeBase64: z.string().optional(),
           }),
         },
       },
@@ -23,10 +25,44 @@ export const subscriptionsRoutes: FastifyPluginAsyncZod = async (fastify) => {
     async (request, reply) => {
       // Use memberId from auth token to ensure security
       const memberId = request.user.id;
-      const { planId } = request.body;
+      const data = request.body;
 
-      const result = await createSubscription(memberId, planId, prisma);
+      const result = await createSubscription(memberId, data, prisma);
       return reply.status(201).send(result);
+    },
+  );
+
+  fastify.get(
+    "/:id",
+    {
+      schema: {
+        tags: ["subscriptions"],
+        params: z.object({ id: z.string().uuid() }),
+        response: {
+          200: z.object({
+            id: z.string(),
+            status: z.string(),
+            planId: z.string(),
+            createdAt: z.date(),
+          }),
+          403: z.object({ message: z.string() }),
+          404: z.object({ message: z.string() }),
+        },
+      },
+      preHandler: [fastify.authenticate],
+    },
+    async (request, reply) => {
+      const subscription = await prisma.subscription.findUnique({
+        where: { id: request.params.id },
+      });
+      if (!subscription) {
+        return reply.status(404).send({ message: "Subscription not found" });
+      }
+      // Security check
+      if (subscription.memberId !== request.user.id) {
+        return reply.status(403).send({ message: "Forbidden" });
+      }
+      return reply.status(200).send(subscription);
     },
   );
 

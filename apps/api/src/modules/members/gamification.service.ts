@@ -76,7 +76,7 @@ export async function getMemberPoints(memberId: string, db: PrismaClient) {
 export async function getLeaderboard(limit: number, db: PrismaClient) {
   const leaderboardRaw = await db.$queryRaw<
     Array<{ memberId: string; name: string; totalPoints: number }>
-  >\`
+  >`
     SELECT 
       m.id as "memberId", 
       m.name, 
@@ -86,8 +86,8 @@ export async function getLeaderboard(limit: number, db: PrismaClient) {
     WHERE m."showOnLeaderboard" = true
     GROUP BY m.id, m.name
     ORDER BY "totalPoints" DESC
-    LIMIT \${limit}
-  \`;
+    LIMIT ${limit}
+  `;
 
   return leaderboardRaw.map((entry, index) => ({
     memberId: entry.memberId,

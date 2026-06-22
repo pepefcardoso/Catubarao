@@ -1072,10 +1072,10 @@ All templates: club logo, responsive layout, unsubscribe footer (transactional e
 
 **Acceptance criteria:**
 
-- [ ] MP Brick renders without console errors
-- [ ] Successful payment transitions to "aguardando confirmação" state
-- [ ] After webhook fires and subscription is ACTIVE, user is redirected to dashboard automatically
-- [ ] Pix code is copyable with one click
+- [x] MP Brick renders without console errors
+- [x] Successful payment transitions to "aguardando confirmação" state
+- [x] After webhook fires and subscription is ACTIVE, user is redirected to dashboard automatically
+- [x] Pix code is copyable with one click
 
 ---
 
