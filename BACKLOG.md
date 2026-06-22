@@ -1367,8 +1367,8 @@ All templates: club logo, responsive layout, unsubscribe footer (transactional e
 
 **Acceptance criteria:**
 
-- [ ] `CreateTransparencyPostSchema.parse({ category: "BALANCO_MENSAL" })` without referenceMonth throws
-- [ ] Valid post with referenceMonth passes
+- [x] `CreateTransparencyPostSchema.parse({ category: "BALANCO_MENSAL" })` without referenceMonth throws
+- [x] Valid post with referenceMonth passes
 
 ---
 
