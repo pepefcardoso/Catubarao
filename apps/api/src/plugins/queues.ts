@@ -63,6 +63,10 @@ export default fp(
             const { sendPollOpenEmailsJob } = await import("../jobs/send-poll-open-emails");
             return sendPollOpenEmailsJob(job);
           }
+          if (job.name === "increment-streak") {
+            const { incrementStreakJob } = await import("../jobs/increment-streak");
+            return incrementStreakJob(job);
+          }
         },
         { connection },
       ),
@@ -106,6 +110,18 @@ export default fp(
             tz: "America/Sao_Paulo",
           },
           jobId: "process-delinquency-job",
+        }
+      );
+
+      await queues.scheduled.add(
+        "increment-streak",
+        {},
+        {
+          repeat: {
+            pattern: "0 4 1 * *",
+            tz: "America/Sao_Paulo",
+          },
+          jobId: "increment-streak-job",
         }
       );
     });

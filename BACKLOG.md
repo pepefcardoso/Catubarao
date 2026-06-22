@@ -1273,8 +1273,8 @@ All templates: club logo, responsive layout, unsubscribe footer (transactional e
 
 **Acceptance criteria:**
 
-- [ ] Running the job increments the streak for active members only
-- [ ] Suspended or cancelled members do not have their streak incremented
+- [x] Running the job increments the streak for active members only
+- [x] Suspended or cancelled members do not have their streak incremented
 
 ---
 
