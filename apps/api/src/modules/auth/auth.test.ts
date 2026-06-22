@@ -79,6 +79,25 @@ describe("Auth Endpoints", () => {
     expect(res.statusCode).toBe(422);
   });
 
+  it("should return 422 when registering with invalid referral code", async () => {
+    const invalidReferralMember = {
+      ...validMember,
+      email: `invalid.referral.${Date.now()}@example.com`,
+      cpf: "12312312312", // Just something valid length
+      referralCode: "INVALIDCODE123",
+    };
+
+    const res = await app.inject({
+      method: "POST",
+      url: "/auth/register",
+      payload: invalidReferralMember,
+    });
+
+    expect(res.statusCode).toBe(422);
+    const body = JSON.parse(res.payload);
+    expect(body.error).toBe("ValidationError");
+  });
+
   it("should successfully login an existing member", async () => {
     const res = await app.inject({
       method: "POST",

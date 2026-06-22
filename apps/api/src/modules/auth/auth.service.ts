@@ -3,7 +3,8 @@ import type { PrismaClient } from "@repo/db";
 import type { RegisterMemberInput, LoginInput } from "@repo/schemas";
 import { fromNodeHeaders } from "better-auth/node";
 import { auth } from "../../lib/auth";
-import { ConflictError } from "../../lib/errors";
+import { ConflictError, ValidationError } from "../../lib/errors";
+import crypto from "crypto";
 
 export async function registerMember(
   request: FastifyRequest<{ Body: RegisterMemberInput }>,
@@ -20,6 +21,19 @@ export async function registerMember(
     }
   }
 
+  // Check referral code
+  let referredById = undefined;
+  if (input.referralCode) {
+    const referrer = await db.member.findUnique({ where: { referralCode: input.referralCode } });
+    if (!referrer) {
+      throw new ValidationError("Invalid referral code");
+    }
+    referredById = referrer.id;
+  }
+
+  // Generate unique referral code for the new member
+  const newReferralCode = crypto.randomBytes(4).toString("hex").toUpperCase();
+
   let response;
   try {
     response = await auth.api.signUpEmail({
@@ -31,7 +45,8 @@ export async function registerMember(
         cpf: input.cpf,
         phone: input.phone,
         birthDate: input.birthDate,
-        referralCode: input.referralCode,
+        referralCode: newReferralCode,
+        referredById,
         marketingConsent: input.marketingConsent,
         whatsappOptIn: input.whatsappOptIn,
         isActive: true,

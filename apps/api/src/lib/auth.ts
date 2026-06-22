@@ -20,6 +20,7 @@ export const auth = betterAuth({
       isActive: { type: "boolean" },
       marketingConsent: { type: "boolean", required: false },
       whatsappOptIn: { type: "boolean", required: false },
+      referredById: { type: "string", required: false },
     },
   },
   plugins: [admin(), jwt()],

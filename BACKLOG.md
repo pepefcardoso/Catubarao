@@ -942,10 +942,10 @@ Task backlog from zero to production. Each task is sized for a single AI agent s
 
 **Acceptance criteria:**
 
-- [ ] Registering with an invalid referral code returns `422`
-- [ ] Referral points are NOT credited when the referred member registers (only on first payment)
-- [ ] Referral points ARE credited once the referred member completes first payment
-- [ ] Second payment by same referred member does not credit the referrer again
+- [x] Registering with an invalid referral code returns `422`
+- [x] Referral points are NOT credited when the referred member registers (only on first payment)
+- [x] Referral points ARE credited once the referred member completes first payment
+- [x] Second payment by same referred member does not credit the referrer again
 
 ---
 

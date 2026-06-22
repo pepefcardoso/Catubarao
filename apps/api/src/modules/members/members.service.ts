@@ -110,3 +110,26 @@ export async function generateMembershipCard(memberId: string, subscriptionId: s
 
   return card;
 }
+
+export async function getMemberReferral(memberId: string, db: PrismaClient) {
+  const member = await db.member.findUnique({
+    where: { id: memberId },
+    select: { referralCode: true },
+  });
+
+  if (!member) {
+    throw new NotFoundError("Member not found");
+  }
+
+  const referralCount = await db.gamificationEvent.count({
+    where: {
+      memberId,
+      type: "REFERRAL",
+    },
+  });
+
+  return {
+    referralCode: member.referralCode,
+    referralCount,
+  };
+}

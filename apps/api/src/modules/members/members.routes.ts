@@ -1,6 +1,6 @@
 import type { FastifyPluginAsyncZod } from "fastify-type-provider-zod";
-import { UpdateMemberProfileSchema, MeResponseSchema, MembershipCardResponseSchema } from "@repo/schemas/member";
-import { getMe, updateMe, generateMembershipCard } from "./members.service";
+import { UpdateMemberProfileSchema, MeResponseSchema, MembershipCardResponseSchema, MemberReferralResponseSchema } from "@repo/schemas/member";
+import { getMe, updateMe, generateMembershipCard, getMemberReferral } from "./members.service";
 import { prisma } from "@repo/db";
 
 export const membersRoutes: FastifyPluginAsyncZod = async (fastify) => {
@@ -103,6 +103,24 @@ export const membersRoutes: FastifyPluginAsyncZod = async (fastify) => {
 
       const newCard = await generateMembershipCard(id, card.subscriptionId, prisma);
       return reply.status(200).send(newCard);
+    }
+  );
+
+  fastify.get(
+    "/me/referral",
+    {
+      schema: {
+        tags: ["members"],
+        response: {
+          200: MemberReferralResponseSchema,
+        },
+      },
+      preHandler: [fastify.authenticate],
+    },
+    async (request, reply) => {
+      const memberId = request.user.id;
+      const referralData = await getMemberReferral(memberId, prisma);
+      return reply.status(200).send(referralData);
     }
   );
 };

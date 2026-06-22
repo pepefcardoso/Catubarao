@@ -103,6 +103,11 @@ export const MeResponseSchema = MemberResponseSchema.extend({
   adimplenciaStreak: z.number().int().nonnegative(),
 });
 
+export const MemberReferralResponseSchema = z.object({
+  referralCode: z.string().nullable(),
+  referralCount: z.number().int().nonnegative(),
+});
+
 export const SubscriptionIntervalSchema = z.enum(["MONTHLY", "ANNUAL"]);
 
 export const CreateMembershipPlanSchema = z.object({

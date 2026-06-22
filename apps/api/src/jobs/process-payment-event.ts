@@ -2,6 +2,7 @@ import type { Job } from "bullmq";
 import { prisma } from "@repo/db";
 import { mp } from "../lib/mercadopago";
 import { updateSubscriptionStatus } from "../modules/members/subscriptions.service";
+import { recordGamificationEvent } from "../modules/members/gamification.service";
 
 export async function processPaymentEventJob(job: Job) {
   const { type, data } = job.data;
@@ -85,6 +86,21 @@ export async function processPaymentEventJob(job: Job) {
           props: { name: sub.member.name }
         });
         await emailQueue.close();
+
+        // Award referral points if referred by someone
+        if (sub.member.referredById) {
+          try {
+            await recordGamificationEvent(
+              sub.member.referredById,
+              "REFERRAL",
+              prisma,
+              { referredMemberId: sub.memberId },
+              `referral_${sub.memberId}`
+            );
+          } catch (err) {
+            console.error("Failed to record gamification event for referral:", err);
+          }
+        }
       }
     }
   }

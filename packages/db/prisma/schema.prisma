@@ -24,7 +24,7 @@ model Member {
   cpf           String?   @unique
   phone         String?
   birthDate     DateTime?
-  referralCode  String?
+  referralCode  String?   @unique
   isActive      Boolean   @default(true)
   marketingConsent Boolean @default(false)
   whatsappOptIn    Boolean @default(false)
