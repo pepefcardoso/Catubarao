@@ -1098,9 +1098,9 @@ All templates: club logo, responsive layout, unsubscribe footer (transactional e
 
 **Acceptance criteria:**
 
-- [ ] Dashboard shows correct status for ACTIVE, PENDING, and SUSPENDED states (test with mocked API)
-- [ ] Suspended state shows regularization CTA, not the card widget
-- [ ] All sections render correctly on mobile (375px)
+- [x] Dashboard shows correct status for ACTIVE, PENDING, and SUSPENDED states (test with mocked API)
+- [x] Suspended state shows regularization CTA, not the card widget
+- [x] All sections render correctly on mobile (375px)
 
 ---
 
