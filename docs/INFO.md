@@ -1,3 +1,5 @@
+> **Project & Legal Disclaimer:** The Clube Atlético Tubarão SAF is **not** currently under the Centralized Enforcement Regime (RCE); the details below are included solely as an informational reference. Additionally, this platform is being developed independently by an external developer with no employment or associative ties to the club. The intention is to present this project as a proposal to the current club management upon completion.
+
 # 1. Centralized Enforcement Regime (RCE)
 
 Established by Law No. 14,193/2021 (SAF Law), Articles 10 and 13–17.

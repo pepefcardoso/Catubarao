@@ -10,10 +10,17 @@ override, simplify, or "improve" anything without an explicit instruction from t
 
 **Club:** Clube Atlético Tubarão Saf (Santa Catarina, Brazil)  
 **Legal structure:** SAF (Sociedade Anônima do Futebol) + Associação (hybrid, coexisting)  
-**Financial context:** Club is under RCE (Regime Centralizado de Execuções, Lei 14.193/2021).
-This means there is a court-supervised debt repayment plan in place. Financial discipline is
-not a preference — it is a legal obligation. Any feature that touches money, debt data, or
-member records must be treated with the same rigor as financial system code.
+**Financial context:** The club carries legacy debt under a hybrid SAF + Associação structure.
+Financial discipline, good governance, and responsible fiscal management are the guiding principles
+of this product. Full auditability is a core design requirement, given that the transparency
+portal is a strategic asset for creditor and community trust. Recuperação Judicial (RJ) is a potential
+future mechanism, with RCE (Lei 14.193/2021) as a specific option within that context; this platform
+is designed to support such pathways if adopted, but they are not the foundational premise.
+
+**Project status:** This platform is being built independently by an external developer as a
+proposal to present to current club management. It is not commissioned by the club. No
+assumptions should be made about existing internal systems, staff workflows, or approved
+budgets.
 
 **Spec:** `spec.md` at the repository root is the source of truth for business requirements.
 If there is a conflict between spec.md and any code you find, the spec wins. If there is a

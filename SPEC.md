@@ -4,7 +4,14 @@
 
 **Versão:** 0.1 — Draft  
 **Status:** Aguardando aprovação para implementação  
-**Contexto legal:** Clube opera em estrutura híbrida SAF + Associação. Passivo em renegociação via RCE (Lei 14.193/2021). Toda decisão de produto deve respeitar a necessidade de disciplina de caixa e transparência como ativo estratégico.
+**Contexto de governança:** Clube opera em estrutura híbrida SAF + Associação com passivo herdado.
+A transparência é tratada como ativo estratégico e a responsabilidade fiscal é premissa inegociável.
+Disciplina de caixa e auditabilidade são requisitos fundamentais do produto, preparando o clube
+para qualquer regime de equacionamento de dívidas que venha a ser adotado.
+
+**Contexto de desenvolvimento:** Esta spec foi elaborada de forma independente por um
+desenvolvedor externo como proposta a ser apresentada à gestão atual do clube. Não há vínculo
+empregatício, associativo ou contratual com o clube no momento da elaboração.
 
 ---
 
@@ -12,7 +19,9 @@
 
 ### Problema central
 
-O Clube Atlético Tubarão Saf possui passivo herdado, credibilidade deteriorada com empresariado local e base de torcedores sem canal de engajamento ou contribuição financeira recorrente. A ausência de uma estrutura digital impede a geração de receita previsível, a atração de parceiros e a demonstração de governança que o RCE exige.
+O Clube Atlético Tubarão Saf possui passivo herdado, credibilidade deteriorada com empresariado local e base de torcedores sem canal de engajamento ou contribuição financeira recorrente. A ausência de uma estrutura digital impede a geração de receita previsível, a atração de parceiros e a demonstração contínua de boa governança e disciplina de caixa.
+
+> **Nota sobre regimes de execução:** Mecanismos como Recuperação Judicial (RJ) ou o Regime Centralizado de Execuções (RCE) são opções legais potenciais para o equacionamento do passivo. A arquitetura de transparência da plataforma suporta nativamente as exigências rigorosas desses regimes, caso venham a ser adotados.
 
 ### Objetivo do produto
 

@@ -2,7 +2,14 @@
 
 # Clube Atlético Tubarão SAF — Plataforma Digital
 
-Plataforma digital do Clube Atlético Tubarão Saf: sócio-torcedor, portal de transparência, CRM de parceiros e loja. Construída sob regime de RCE (Lei 14.193/2021) — disciplina financeira e rastreabilidade são requisitos de negócio, não apenas boas práticas.
+Proposta de plataforma digital para o Clube Atlético Tubarão SAF: sócio-torcedor, portal de
+transparência, CRM de parceiros e loja. Desenvolvida de forma independente para apresentação
+à gestão do clube. A arquitetura tem como princípios-guia a governança, a disciplina fiscal
+e a transparência como ativo estratégico.
+
+> **Nota:** A plataforma é projetada com rastreabilidade necessária por design, de modo a
+> suportar mecanismos legais de equacionamento de dívidas, como Recuperação Judicial (RJ)
+> ou o Regime Centralizado de Execuções (RCE), caso sejam adotados pelo clube.
 
 > 📄 Antes de contribuir, leia [`AGENTS.md`](./AGENTS.md) (regras de arquitetura e hard rules), [`SPEC.md`](./SPEC.md) (requisitos de negócio) e [`DESIGN.md`](./DESIGN.md) (padrões de UI/UX).
 
