@@ -59,6 +59,10 @@ export default fp(
         async (job) => {
           if (job.name === "process-delinquency") return processDelinquencyJob(job);
           if (job.name === "close-poll") return closePollJob(job);
+          if (job.name === "send-poll-open-emails") {
+            const { sendPollOpenEmailsJob } = await import("../jobs/send-poll-open-emails");
+            return sendPollOpenEmailsJob(job);
+          }
         },
         { connection },
       ),

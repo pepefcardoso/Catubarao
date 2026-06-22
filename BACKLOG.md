@@ -970,9 +970,9 @@ All templates: club logo, responsive layout, unsubscribe footer (transactional e
 
 **Acceptance criteria:**
 
-- [ ] All templates render without error in `pnpm email:preview`
-- [ ] All templates are mobile-responsive (test at 375px width)
-- [ ] `WelcomeEmail` is triggered exactly once per member (first payment only, not subsequent)
+- [x] All templates render without error in `pnpm email:preview`
+- [x] All templates are mobile-responsive (test at 375px width)
+- [x] `WelcomeEmail` is triggered exactly once per member (first payment only, not subsequent)
 
 ---
 

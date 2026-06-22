@@ -65,11 +65,16 @@ export async function processDelinquencyJob(job: Job) {
           await suspendSubscription(sub.id, prisma);
         }
 
+        let props: any = { name: sub.member.name };
+        if (typeToSend === "SUSPENSION") {
+          props.reactivationLink = `${env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/member/dashboard`;
+        }
+
         await emailQueue.add(`send-delinquency-${typeToSend}`, {
           to: sub.member.email,
           subject,
           template: templateName,
-          props: { name: sub.member.name }
+          props
         });
 
         await prisma.subscriptionNotification.create({

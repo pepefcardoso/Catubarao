@@ -17,6 +17,9 @@ export async function createPoll(data: any, db: PrismaClient, queue: any) {
     await queue.add("close-poll", { pollId: poll.id });
   }
 
+  // Enqueue the email job
+  await queue.add("send-poll-open-emails", { pollId: poll.id });
+
   return poll;
 }
 

@@ -36,7 +36,18 @@ export async function processPaymentEventJob(job: Job) {
 
   const preapprovalId = mpPayment.metadata?.subscription_id || mpPayment.external_reference || null;
 
+  const existingPayment = await prisma.payment.findUnique({
+    where: { gatewayPaymentId: paymentId }
+  });
+
+  if (existingPayment && existingPayment.status === mappedStatus) {
+    // Already processed this exact status for this payment, return early to avoid duplicate emails/events
+    return;
+  }
+
   let subscriptionId: string | undefined;
+
+  let subStatusBeforeUpdate: string | undefined;
 
   // If there's a preapproval, find the subscription
   if (preapprovalId) {
@@ -45,6 +56,7 @@ export async function processPaymentEventJob(job: Job) {
     });
     if (sub) {
       subscriptionId = sub.id;
+      subStatusBeforeUpdate = sub.status;
 
       // Update subscription status if necessary
       if (mappedStatus === "PAID") {
@@ -55,12 +67,11 @@ export async function processPaymentEventJob(job: Job) {
     }
   }
 
-  // Enqueue WelcomeEmail if this is a PAID event and there's a subscription, 
-  // and no previous PAID payment exists for this member.
+  // Enqueue emails if this is a PAID event and there's a subscription
   if (mappedStatus === "PAID" && subscriptionId) {
     const sub = await prisma.subscription.findUnique({
       where: { id: subscriptionId },
-      include: { member: true }
+      include: { member: true, plan: true }
     });
     
     if (sub && sub.member) {
@@ -71,21 +82,24 @@ export async function processPaymentEventJob(job: Job) {
         }
       });
 
+      const { Queue } = await import("bullmq");
+      const { env } = await import("../lib/env");
+      const emailQueue = new Queue("email", { 
+        connection: { host: env.REDIS_HOST, port: Number(env.REDIS_PORT) } 
+      });
+
       if (!previousPaid) {
         // It's the first paid payment for this member! Enqueue welcome email.
-        const { Queue } = await import("bullmq");
-        const { env } = await import("../lib/env");
-        const emailQueue = new Queue("email", { 
-          connection: { host: env.REDIS_HOST, port: Number(env.REDIS_PORT) } 
-        });
-        
         await emailQueue.add("send-welcome", { 
           to: sub.member.email, 
           subject: "Bem-vindo ao Sócio-Torcedor Tubarão!",
           template: "WelcomeEmail",
-          props: { name: sub.member.name }
+          props: { 
+            name: sub.member.name,
+            planName: sub.plan.name,
+            cardDownloadLink: `${env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/member/card`
+          }
         });
-        await emailQueue.close();
 
         // Award referral points if referred by someone
         if (sub.member.referredById) {
@@ -101,7 +115,25 @@ export async function processPaymentEventJob(job: Job) {
             console.error("Failed to record gamification event for referral:", err);
           }
         }
+      } else {
+        if (subStatusBeforeUpdate === "SUSPENDED") {
+          await emailQueue.add("send-reactivation", { 
+            to: sub.member.email, 
+            subject: "Sua assinatura foi reativada - Clube Atlético Tubarão",
+            template: "ReactivationEmail",
+            props: { name: sub.member.name, planName: sub.plan.name }
+          });
+        } else {
+          await emailQueue.add("send-payment-confirmed", { 
+            to: sub.member.email, 
+            subject: "Pagamento Confirmado - Clube Atlético Tubarão",
+            template: "PaymentConfirmedEmail",
+            props: { name: sub.member.name, planName: sub.plan.name }
+          });
+        }
       }
+      
+      await emailQueue.close();
     }
   }
 

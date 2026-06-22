@@ -1,51 +1,25 @@
-import { Body, Container, Head, Heading, Html, Preview, Text } from "@react-email/components";
+import { Heading, Text } from "@react-email/components";
 import * as React from "react";
+import { EmailLayout } from "./EmailLayout";
 
-interface DelinquencyD1EmailProps {
+export interface DelinquencyD1EmailProps {
   name: string;
 }
 
 export const DelinquencyD1Email = ({ name }: DelinquencyD1EmailProps) => {
   return (
-    <Html>
-      <Head />
-      <Preview>Aviso: Pagamento pendente - Clube Atlético Tubarão</Preview>
-      <Body style={main}>
-        <Container style={container}>
-          <Heading style={h1}>Olá, {name}!</Heading>
-          <Text style={text}>
-            Notamos que o pagamento da sua assinatura do Clube Atlético Tubarão não foi confirmado.
-            Por favor, regularize sua situação para continuar aproveitando os benefícios.
-          </Text>
-        </Container>
-      </Body>
-    </Html>
+    <EmailLayout previewText="Aviso sobre seu pagamento">
+      <Heading className="text-xl font-bold text-gray-800 my-0">Olá, {name}!</Heading>
+      
+      <Text className="text-sm text-gray-700 mt-4 leading-relaxed">
+        Não conseguimos identificar o pagamento da sua assinatura do Clube Atlético Tubarão.
+      </Text>
+      
+      <Text className="text-sm text-gray-700 mt-2 leading-relaxed">
+        Por favor, verifique se houve algum problema com seu cartão de crédito ou se você esqueceu de realizar o pagamento.
+      </Text>
+    </EmailLayout>
   );
 };
 
 export default DelinquencyD1Email;
-
-const main = {
-  backgroundColor: "#ffffff",
-  fontFamily:
-    '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif',
-};
-
-const container = {
-  margin: "0 auto",
-  padding: "20px 0 48px",
-};
-
-const h1 = {
-  color: "#333",
-  fontSize: "24px",
-  fontWeight: "bold",
-  padding: "17px 0 0",
-  margin: "0",
-};
-
-const text = {
-  color: "#333",
-  fontSize: "14px",
-  margin: "24px 0",
-};
