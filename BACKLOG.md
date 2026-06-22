@@ -890,10 +890,10 @@ Task backlog from zero to production. Each task is sized for a single AI agent s
 
 **Acceptance criteria:**
 
-- [ ] Recording two ANNIVERSARY events for the same member in the same year creates only one
-- [ ] Leaderboard only includes members who opted in
-- [ ] Check-in with an invalid or expired QR token returns `401`
-- [ ] Check-in with a valid token records the event and returns updated points
+- [x] Recording two ANNIVERSARY events for the same member in the same year creates only one
+- [x] Leaderboard only includes members who opted in
+- [x] Check-in with an invalid or expired QR token returns `401`
+- [x] Check-in with a valid token records the event and returns updated points
 
 ---
 

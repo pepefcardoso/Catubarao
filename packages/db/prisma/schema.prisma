@@ -30,6 +30,7 @@ model Member {
   whatsappOptIn    Boolean @default(false)
   address       Json?
   showOnMonument Boolean @default(false)
+  showOnLeaderboard Boolean @default(false)
   adimplenciaStreakMonths Int @default(0)
   lastAdimplenciaResetAt DateTime?
 
@@ -220,12 +221,24 @@ model GamificationEvent {
   memberId  String
   type      GamificationEventType
   points    Int
-  metadata  Json?
-  createdAt DateTime              @default(now())
+  metadata       Json?
+  idempotencyKey String?               @unique
+  createdAt      DateTime              @default(now())
 
   member Member @relation(fields: [memberId], references: [id], onDelete: Cascade)
 
   @@map("gamification_events")
+}
+
+model GamificationRule {
+  id        String                @id @default(uuid())
+  type      GamificationEventType @unique
+  points    Int
+  isActive  Boolean               @default(true)
+  createdAt DateTime              @default(now())
+  updatedAt DateTime              @updatedAt
+
+  @@map("gamification_rules")
 }
 
 model Poll {

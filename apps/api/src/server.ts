@@ -79,6 +79,12 @@ fastify.register(subscriptionsRoutes, { prefix: "/subscriptions" });
 import { mercadopagoRoutes } from "./modules/webhooks/mercadopago.routes";
 fastify.register(mercadopagoRoutes, { prefix: "/webhooks" });
 
+import { gamificationRoutes } from "./modules/members/gamification.routes";
+fastify.register(gamificationRoutes);
+
+import { eventsRoutes } from "./modules/members/events.routes";
+fastify.register(eventsRoutes);
+
 // Health check endpoint
 fastify.get("/health", async (request, reply) => {
   return { status: "ok", timestamp: new Date().toISOString() };
