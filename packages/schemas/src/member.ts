@@ -116,6 +116,18 @@ export const AdminMemberListItemSchema = MemberResponseSchema.extend({
   activePlanId: z.string().nullable(),
   activePlanName: z.string().nullable().optional(),
   adimplenciaStreak: z.number().int().nonnegative(),
+  adminNotes: z.string().nullable().optional(),
+});
+
+export const UpdateAdminNoteSchema = z.object({
+  adminNotes: z.string().nullable(),
+});
+
+export const AdminMemberDetailResponseSchema = AdminMemberListItemSchema.extend({
+  subscriptions: z.array(z.any()), // Can be refined
+  payments: z.array(z.any()),
+  gamificationEvents: z.array(z.any()),
+  membershipCards: z.array(z.any()),
 });
 
 export const PaginatedMembersResponseSchema = z.object({

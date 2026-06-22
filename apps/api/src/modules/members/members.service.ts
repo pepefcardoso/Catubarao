@@ -224,6 +224,7 @@ export async function listMembers(
         activePlanId: member.subscriptions[0]?.planId ?? null,
         activePlanName: member.subscriptions[0]?.plan?.name ?? null,
         adimplenciaStreak: member.adimplenciaStreakMonths,
+        adminNotes: member.adminNotes,
       };
     }),
     total,
@@ -231,4 +232,61 @@ export async function listMembers(
     limit,
     totalPages: Math.ceil(total / limit),
   };
+}
+
+export async function getMemberAdminDetail(id: string, db: PrismaClient) {
+  const member = await db.member.findUnique({
+    where: { id },
+    include: {
+      subscriptions: {
+        orderBy: { createdAt: "desc" },
+        include: {
+          plan: true,
+          payments: {
+            orderBy: { createdAt: "desc" },
+          },
+        },
+      },
+      gamificationEvents: {
+        orderBy: { createdAt: "desc" },
+      },
+      membershipCards: {
+        orderBy: { createdAt: "desc" },
+      },
+      payments: {
+        orderBy: { createdAt: "desc" },
+      },
+    },
+  });
+
+  if (!member) {
+    throw new NotFoundError("Member not found");
+  }
+
+  const { subscriptions, gamificationEvents, membershipCards, payments, ...memberData } = member;
+
+  return {
+    ...memberData,
+    subscriptionStatus: subscriptions[0]?.status ?? null,
+    activePlanId: subscriptions[0]?.planId ?? null,
+    activePlanName: subscriptions[0]?.plan?.name ?? null,
+    adimplenciaStreak: member.adimplenciaStreakMonths,
+    adminNotes: member.adminNotes,
+    subscriptions,
+    gamificationEvents,
+    membershipCards,
+    payments,
+  };
+}
+
+export async function updateAdminNotes(id: string, notes: string | null, db: PrismaClient) {
+  const member = await db.member.findUnique({ where: { id } });
+  if (!member) {
+    throw new NotFoundError("Member not found");
+  }
+
+  return db.member.update({
+    where: { id },
+    data: { adminNotes: notes },
+  });
 }

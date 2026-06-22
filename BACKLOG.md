@@ -1226,9 +1226,9 @@ All templates: club logo, responsive layout, unsubscribe footer (transactional e
 
 **Acceptance criteria:**
 
-- [ ] "Rotar carteirinha" generates a new card and reflects on the page
-- [ ] Admin note is saved and persists on page reload
-- [ ] No button or UI element allows direct subscription status change
+- [x] "Rotar carteirinha" generates a new card and reflects on the page
+- [x] Admin note is saved and persists on page reload
+- [x] No button or UI element allows direct subscription status change
 
 ---
 

@@ -33,6 +33,7 @@ model Member {
   showOnLeaderboard Boolean @default(false)
   adimplenciaStreakMonths Int @default(0)
   lastAdimplenciaResetAt DateTime?
+  adminNotes    String?
 
   referredById  String?
   referredBy    Member?   @relation("MemberReferrals", fields: [referredById], references: [id])

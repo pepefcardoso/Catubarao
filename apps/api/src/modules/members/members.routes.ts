@@ -1,6 +1,6 @@
 import type { FastifyPluginAsyncZod } from "fastify-type-provider-zod";
-import { UpdateMemberProfileSchema, MeResponseSchema, MembershipCardResponseSchema, MemberReferralResponseSchema, PaginatedPaymentsResponseSchema, PaginatedMembersResponseSchema, ListMembersQuerySchema } from "@repo/schemas/member";
-import { getMe, updateMe, generateMembershipCard, getMemberReferral, getMemberPayments, listMembers } from "./members.service";
+import { UpdateMemberProfileSchema, MeResponseSchema, MembershipCardResponseSchema, MemberReferralResponseSchema, PaginatedPaymentsResponseSchema, PaginatedMembersResponseSchema, ListMembersQuerySchema, AdminMemberDetailResponseSchema, UpdateAdminNoteSchema } from "@repo/schemas/member";
+import { getMe, updateMe, generateMembershipCard, getMemberReferral, getMemberPayments, listMembers, getMemberAdminDetail, updateAdminNotes } from "./members.service";
 import { prisma } from "@repo/db";
 import { z } from "zod";
 
@@ -23,6 +23,44 @@ export const membersRoutes: FastifyPluginAsyncZod = async (fastify) => {
       return reply.status(200).send(result);
     }
   );
+
+  fastify.get(
+    "/:id",
+    {
+      schema: {
+        tags: ["members"],
+        response: {
+          200: AdminMemberDetailResponseSchema,
+        },
+      },
+      preHandler: [fastify.authenticate, fastify.requireRole("ADMIN")],
+    },
+    async (request, reply) => {
+      const { id } = request.params as { id: string };
+      const result = await getMemberAdminDetail(id, prisma);
+      return reply.status(200).send(result);
+    }
+  );
+
+  fastify.patch(
+    "/:id/admin-notes",
+    {
+      schema: {
+        tags: ["members"],
+        body: UpdateAdminNoteSchema,
+        response: {
+          200: z.object({ success: z.boolean() }),
+        },
+      },
+      preHandler: [fastify.authenticate, fastify.requireRole("ADMIN")],
+    },
+    async (request, reply) => {
+      const { id } = request.params as { id: string };
+      await updateAdminNotes(id, request.body.adminNotes, prisma);
+      return reply.status(200).send({ success: true });
+    }
+  );
+
   fastify.get(
     "/me",
     {
