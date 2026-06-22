@@ -133,4 +133,47 @@ export async function getMemberReferral(memberId: string, db: PrismaClient) {
     referralCode: member.referralCode,
     referralCount,
   };
+  };
+}
+
+export async function getMemberPayments(
+  memberId: string,
+  page: number,
+  limit: number,
+  db: PrismaClient
+) {
+  const skip = (page - 1) * limit;
+
+  const [payments, total] = await Promise.all([
+    db.payment.findMany({
+      where: {
+        subscription: {
+          memberId,
+        },
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+      skip,
+      take: limit,
+    }),
+    db.payment.count({
+      where: {
+        subscription: {
+          memberId,
+        },
+      },
+    }),
+  ]);
+
+  return {
+    data: payments.map((p) => ({
+      ...p,
+      amount: Number(p.amount), // Convert Decimal to number for JSON response
+    })),
+    total,
+    page,
+    limit,
+    totalPages: Math.ceil(total / limit),
+  };
 }

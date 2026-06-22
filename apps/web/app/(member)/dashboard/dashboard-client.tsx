@@ -143,7 +143,7 @@ export function DashboardClient() {
             </CardHeader>
             <CardContent className="p-0">
               <div className="grid grid-cols-1 divide-y">
-                <QuickLink href="/history" icon={<History className="w-5 h-5" />} label="Histórico de Pagamentos" />
+                <QuickLink href="/payments" icon={<History className="w-5 h-5" />} label="Histórico de Pagamentos" />
                 <QuickLink href="/profile" icon={<Settings className="w-5 h-5" />} label="Configurações do Perfil" />
                 <QuickLink href="/referrals" icon={<UserPlus className="w-5 h-5" />} label="Indique um Amigo" />
               </div>

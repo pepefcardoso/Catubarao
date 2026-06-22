@@ -1,7 +1,8 @@
 import type { FastifyPluginAsyncZod } from "fastify-type-provider-zod";
-import { UpdateMemberProfileSchema, MeResponseSchema, MembershipCardResponseSchema, MemberReferralResponseSchema } from "@repo/schemas/member";
-import { getMe, updateMe, generateMembershipCard, getMemberReferral } from "./members.service";
+import { UpdateMemberProfileSchema, MeResponseSchema, MembershipCardResponseSchema, MemberReferralResponseSchema, PaginatedPaymentsResponseSchema } from "@repo/schemas/member";
+import { getMe, updateMe, generateMembershipCard, getMemberReferral, getMemberPayments } from "./members.service";
 import { prisma } from "@repo/db";
+import { z } from "zod";
 
 export const membersRoutes: FastifyPluginAsyncZod = async (fastify) => {
   fastify.get(
@@ -121,6 +122,29 @@ export const membersRoutes: FastifyPluginAsyncZod = async (fastify) => {
       const memberId = request.user.id;
       const referralData = await getMemberReferral(memberId, prisma);
       return reply.status(200).send(referralData);
+    }
+  );
+
+  fastify.get(
+    "/me/payments",
+    {
+      schema: {
+        tags: ["members"],
+        querystring: z.object({
+          page: z.coerce.number().min(1).default(1),
+          limit: z.coerce.number().min(1).max(50).default(10),
+        }),
+        response: {
+          200: PaginatedPaymentsResponseSchema,
+        },
+      },
+      preHandler: [fastify.authenticate],
+    },
+    async (request, reply) => {
+      const memberId = request.user.id;
+      const { page, limit } = request.query as { page: number; limit: number };
+      const payments = await getMemberPayments(memberId, page, limit, prisma);
+      return reply.status(200).send(payments);
     }
   );
 };

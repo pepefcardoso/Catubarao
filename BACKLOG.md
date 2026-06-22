@@ -1147,9 +1147,9 @@ All templates: club logo, responsive layout, unsubscribe footer (transactional e
 
 **Acceptance criteria:**
 
-- [ ] Failed payments appear with red status badge
-- [ ] Pagination works correctly
-- [ ] Table is scrollable horizontally on mobile
+- [x] Failed payments appear with red status badge
+- [x] Pagination works correctly
+- [x] Table is scrollable horizontally on mobile
 
 ---
 

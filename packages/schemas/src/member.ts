@@ -163,6 +163,29 @@ export const SubscriptionResponseSchema = z.object({
   createdAt: z.date(),
 });
 
+export const PaymentStatusSchema = z.enum(["PENDING", "PAID", "FAILED", "REFUNDED"]);
+export const PaymentMethodSchema = z.enum(["CREDIT_CARD", "PIX"]);
+
+export const PaymentResponseSchema = z.object({
+  id: z.string(),
+  subscriptionId: z.string().nullable(),
+  orderId: z.string().nullable(),
+  gatewayPaymentId: z.string().nullable(),
+  amount: z.union([z.number(), z.string()]),
+  status: PaymentStatusSchema,
+  method: PaymentMethodSchema,
+  paidAt: z.date().nullable(),
+  createdAt: z.date(),
+});
+
+export const PaginatedPaymentsResponseSchema = z.object({
+  data: z.array(PaymentResponseSchema),
+  total: z.number().int(),
+  page: z.number().int(),
+  limit: z.number().int(),
+  totalPages: z.number().int(),
+});
+
 export const MembershipCardResponseSchema = z.object({
   id: z.string(),
   memberId: z.string(),
