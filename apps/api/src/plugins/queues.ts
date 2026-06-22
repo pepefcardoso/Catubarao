@@ -67,6 +67,10 @@ export default fp(
             const { incrementStreakJob } = await import("../jobs/increment-streak.js");
             return incrementStreakJob(job);
           }
+          if (job.name === "create-debt-snapshot") {
+            const { createDebtSnapshotJob } = await import("../jobs/create-debt-snapshot.js");
+            return createDebtSnapshotJob(job, fastify.log);
+          }
         },
         { connection },
       ),
@@ -122,6 +126,17 @@ export default fp(
             tz: "America/Sao_Paulo",
           },
           jobId: "increment-streak-job",
+        }
+      );
+
+      await queues.scheduled.add(
+        "create-debt-snapshot",
+        {},
+        {
+          repeat: {
+            pattern: "0 10 1 * *",
+          },
+          jobId: "create-debt-snapshot-job",
         }
       );
     });

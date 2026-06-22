@@ -203,7 +203,7 @@ export const transparencyRoutes: FastifyPluginAsyncZod = async (fastify) => {
       },
     },
     async (request, reply) => {
-      const snapshot = await createDebtSnapshot(request.user.id, fastify.prisma);
+      const snapshot = await createDebtSnapshot(fastify.prisma, request.user.id);
       return reply.status(201).send(snapshot);
     }
   );

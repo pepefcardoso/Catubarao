@@ -1439,8 +1439,8 @@ All templates: club logo, responsive layout, unsubscribe footer (transactional e
 
 **Acceptance criteria:**
 
-- [ ] Job is registered at startup and visible in Bull Board
-- [ ] Running the job processor directly creates a DebtSnapshot record
+- [x] Job is registered at startup and visible in Bull Board
+- [x] Running the job processor directly creates a DebtSnapshot record
 
 ---
 

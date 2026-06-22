@@ -369,8 +369,8 @@ model DebtSnapshot {
   totalPaid       Decimal
   totalRemaining  Decimal
   snapshotDate    DateTime @db.Date
-  createdBy       String
-  author          Member   @relation(fields: [createdBy], references: [id])
+  createdBy       String?
+  author          Member?  @relation(fields: [createdBy], references: [id])
   createdAt       DateTime @default(now())
 
   @@map("debt_snapshots")

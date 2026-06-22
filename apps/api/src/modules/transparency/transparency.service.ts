@@ -183,7 +183,7 @@ export async function updateDebtRecord(
   });
 }
 
-export async function createDebtSnapshot(userId: string, db: PrismaClient) {
+export async function createDebtSnapshot(db: PrismaClient, userId?: string) {
   return db.$transaction(async (tx) => {
     const debts = await tx.debtRecord.findMany();
 
