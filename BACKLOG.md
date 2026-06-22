@@ -1509,9 +1509,9 @@ All templates: club logo, responsive layout, unsubscribe footer (transactional e
 
 **Acceptance criteria:**
 
-- [ ] Page is accessible without login
-- [ ] Summary card numbers match `GET /transparency/debts` response
-- [ ] Page scores 90+ on Lighthouse accessibility
+- [x] Page is accessible without login
+- [x] Summary card numbers match `GET /transparency/debts` response
+- [x] Page scores 90+ on Lighthouse accessibility
 
 ---
 
