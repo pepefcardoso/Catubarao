@@ -1533,11 +1533,11 @@ All templates: club logo, responsive layout, unsubscribe footer (transactional e
 
 **Acceptance criteria:**
 
-- [ ] URL params persist on page reload
-- [ ] Category filter shows only posts of selected categories
-- [ ] Superseded posts do not appear (only current versions)
-- [ ] Post list shows a skeleton loader while fetching data
-- [ ] Post list shows a dedicated empty state component when no posts match filters
+- [x] URL params persist on page reload
+- [x] Category filter shows only posts of selected categories
+- [x] Superseded posts do not appear (only current versions)
+- [x] Post list shows a skeleton loader while fetching data
+- [x] Post list shows a dedicated empty state component when no posts match filters
 
 ---
 

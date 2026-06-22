@@ -47,7 +47,7 @@ export const transparencyRoutes: FastifyPluginAsyncZod = async (fastify) => {
         querystring: z.object({
           page: z.coerce.number().min(1).default(1),
           limit: z.coerce.number().min(1).max(100).default(10),
-          category: TransparencyCategorySchema.optional(),
+          category: z.union([TransparencyCategorySchema, z.array(TransparencyCategorySchema)]).optional(),
           referenceYear: z.coerce.number().optional(),
         }),
         response: {

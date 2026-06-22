@@ -51,7 +51,7 @@ export async function getPosts(
   options: {
     page?: number;
     limit?: number;
-    category?: TransparencyCategory;
+    category?: TransparencyCategory | TransparencyCategory[];
     referenceYear?: number;
   } = {}
 ) {
@@ -62,7 +62,7 @@ export async function getPosts(
     isArchived: false,
     supersededById: null,
     scheduledFor: null,
-    ...(category ? { category } : {}),
+    ...(category ? { category: Array.isArray(category) ? { in: category } : category } : {}),
     ...(referenceYear ? { referenceYear } : {}),
   };
 
