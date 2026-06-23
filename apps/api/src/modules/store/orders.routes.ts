@@ -1,6 +1,6 @@
 import type { FastifyPluginAsyncZod } from "fastify-type-provider-zod";
-import { CreateOrderSchema, UpdateOrderStatusSchema } from "@repo/schemas/store";
-import { createOrder, updateOrderStatus } from "./orders.service";
+import { CreateOrderSchema, UpdateOrderStatusSchema, OrderResponseSchema } from "@repo/schemas/store";
+import { createOrder, updateOrderStatus, getOrderHistory, getOrderById } from "./orders.service";
 import { auth } from "../../lib/auth";
 import { fromNodeHeaders } from "better-auth/node";
 import { z } from "zod";
@@ -33,6 +33,41 @@ export const ordersRoutes: FastifyPluginAsyncZod = async (fastify) => {
     },
   );
 
+  fastify.get(
+    "/history",
+    {
+      preHandler: [fastify.authenticate],
+      schema: {
+        tags: ["store"],
+        response: {
+          200: z.array(OrderResponseSchema),
+        },
+      },
+    },
+    async (request, reply) => {
+      const orders = await getOrderHistory(request.user!.id, fastify.prisma);
+      return reply.status(200).send(orders as any);
+    },
+  );
+
+  fastify.get(
+    "/:id",
+    {
+      schema: {
+        tags: ["store"],
+        params: z.object({ id: z.string().uuid() }),
+        response: {
+          200: OrderResponseSchema,
+        },
+      },
+    },
+    async (request, reply) => {
+      const { id } = request.params as { id: string };
+      const order = await getOrderById(id, fastify.prisma);
+      return reply.status(200).send(order as any);
+    },
+  );
+
   fastify.patch(
     "/:id/status",
     {
@@ -53,3 +88,4 @@ export const ordersRoutes: FastifyPluginAsyncZod = async (fastify) => {
     },
   );
 };
+

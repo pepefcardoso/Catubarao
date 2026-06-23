@@ -2213,8 +2213,8 @@ All templates: club logo, responsive layout, unsubscribe footer (transactional e
 
 **Acceptance criteria:**
 
-- [ ] Guest can access `/(store)/pedidos/:id` with just the URL (no login)
-- [ ] Logged-in member sees all past orders in `/(member)/pedidos`
+- [x] Guest can access `/(store)/pedidos/:id` with just the URL (no login)
+- [x] Logged-in member sees all past orders in `/(member)/pedidos`
 
 ---
 

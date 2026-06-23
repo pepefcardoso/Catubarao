@@ -188,3 +188,40 @@ export async function updateOrderStatus(
 
   return updatedOrder;
 }
+
+export async function getOrderById(id: string, db: PrismaClient) {
+  const order = await db.order.findUnique({
+    where: { id },
+    include: {
+      items: {
+        include: {
+          product: true,
+          variant: true,
+        },
+      },
+    },
+  });
+
+  if (!order) {
+    throw new NotFoundError("Order not found");
+  }
+
+  return order;
+}
+
+export async function getOrderHistory(memberId: string, db: PrismaClient) {
+  const orders = await db.order.findMany({
+    where: { customerId: memberId },
+    orderBy: { createdAt: "desc" },
+    include: {
+      items: {
+        include: {
+          product: true,
+          variant: true,
+        },
+      },
+    },
+  });
+
+  return orders;
+}
