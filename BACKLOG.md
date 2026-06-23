@@ -1995,8 +1995,8 @@ All templates: club logo, responsive layout, unsubscribe footer (transactional e
 
 **Acceptance criteria:**
 
-- [ ] Migration applies cleanly
-- [ ] `ProductVariant` has `sku` unique constraint
+- [x] Migration applies cleanly
+- [x] `ProductVariant` has `sku` unique constraint
 
 ---
 

@@ -50,6 +50,7 @@ model Member {
   managedDeals        SponsorshipDeal[]   @relation("DealOwner")
   managedDeliverables Deliverable[]       @relation("DeliverableOwner")
   deliveryProofs      DeliveryProof[]     @relation("ProofAuthor")
+  orders              Order[]
 
   @@unique([email])
   @@map("members")
@@ -201,8 +202,10 @@ model Payment {
   createdAt        DateTime      @default(now())
 
   subscription Subscription? @relation(fields: [subscriptionId], references: [id])
+  order        Order?        @relation(fields: [orderId], references: [id])
 
   @@index([subscriptionId])
+  @@index([orderId])
   @@map("payments")
 }
 
@@ -515,4 +518,88 @@ model PendingDelivery {
   matchEvent  MatchEvent? @relation(fields: [matchEventId], references: [id], onDelete: Cascade)
 
   @@map("pending_deliveries")
+}
+
+enum StockType {
+  SOB_DEMANDA
+  ESTOQUE_FIXO
+}
+
+enum OrderStatus {
+  AGUARDANDO_PAGAMENTO
+  PAGO
+  EM_PRODUCAO
+  ENVIADO
+  ENTREGUE
+  CANCELADO
+}
+
+model Product {
+  id                  String           @id @default(uuid())
+  name                String
+  description         String
+  category            String
+  images              String[]
+  basePrice           Decimal
+  stockType           StockType
+  stockQuantity       Int?
+  stockAlertThreshold Int?
+  membersOnly         Boolean          @default(false)
+  isActive            Boolean          @default(true)
+  createdAt           DateTime         @default(now())
+  updatedAt           DateTime         @updatedAt
+
+  variants            ProductVariant[]
+  orderItems          OrderItem[]
+
+  @@index([isActive, membersOnly])
+  @@map("products")
+}
+
+model ProductVariant {
+  id              String      @id @default(uuid())
+  productId       String
+  sku             String      @unique
+  size            String?
+  color           String?
+  priceAdjustment Decimal     @default(0)
+
+  product         Product     @relation(fields: [productId], references: [id], onDelete: Cascade)
+  orderItems      OrderItem[]
+
+  @@map("product_variants")
+}
+
+model Order {
+  id              String      @id @default(uuid())
+  customerId      String?
+  guestEmail      String?
+  guestCpf        String?
+  shippingAddress Json
+  status          OrderStatus @default(AGUARDANDO_PAGAMENTO)
+  trackingCode    String?
+  total           Decimal
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+
+  customer        Member?     @relation(fields: [customerId], references: [id])
+  items           OrderItem[]
+  payments        Payment[]
+
+  @@map("orders")
+}
+
+model OrderItem {
+  id         String          @id @default(uuid())
+  orderId    String
+  productId  String
+  variantId  String?
+  quantity   Int
+  unitPrice  Decimal
+
+  order      Order           @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product    Product         @relation(fields: [productId], references: [id])
+  variant    ProductVariant? @relation(fields: [variantId], references: [id])
+
+  @@map("order_items")
 }
