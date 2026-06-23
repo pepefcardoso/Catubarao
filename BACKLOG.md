@@ -1707,8 +1707,8 @@ All templates: club logo, responsive layout, unsubscribe footer (transactional e
 
 **Acceptance criteria:**
 
-- [ ] Migration applies cleanly
-- [ ] `db.sponsorshipDeal.findMany({ where: { endDate: { lte: thirtyDaysFromNow } } })` is type-safe
+- [x] Migration applies cleanly
+- [x] `db.sponsorshipDeal.findMany({ where: { endDate: { lte: thirtyDaysFromNow } } })` is type-safe
 
 ---
 
