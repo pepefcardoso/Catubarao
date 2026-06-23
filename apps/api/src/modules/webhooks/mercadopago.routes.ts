@@ -7,6 +7,12 @@ export const mercadopagoRoutes: FastifyPluginAsyncZod = async (fastify) => {
   fastify.post(
     "/mercadopago",
     {
+      config: {
+        rateLimit: {
+          max: 100,
+          timeWindow: 60 * 1000,
+        },
+      },
       // No fastify-raw-body installed, so we rely on parsed body for signature algorithm
       schema: {
         tags: ["webhooks"],

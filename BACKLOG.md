@@ -2293,9 +2293,9 @@ All templates: club logo, responsive layout, unsubscribe footer (transactional e
 
 **Acceptance criteria:**
 
-- [ ] 6th login attempt in 15 minutes returns `429`
-- [ ] `Retry-After` header is present on `429` response
-- [ ] Webhook endpoint is not rate-limited below 100/min
+- [x] 6th login attempt in 15 minutes returns `429`
+- [x] `Retry-After` header is present on `429` response
+- [x] Webhook endpoint is not rate-limited below 100/min
 
 ---
 

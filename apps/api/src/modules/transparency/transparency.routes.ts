@@ -30,6 +30,12 @@ export const transparencyRoutes: FastifyPluginAsyncZod = async (fastify) => {
   fastify.get(
     "/feed.xml",
     {
+      config: {
+        rateLimit: {
+          max: 60,
+          timeWindow: 60 * 1000,
+        },
+      },
       schema: {
         tags: ["transparency"],
         querystring: z.object({
@@ -45,6 +51,12 @@ export const transparencyRoutes: FastifyPluginAsyncZod = async (fastify) => {
   fastify.get(
     "/posts",
     {
+      config: {
+        rateLimit: {
+          max: 60,
+          timeWindow: 60 * 1000,
+        },
+      },
       schema: {
         tags: ["transparency"],
         querystring: z.object({
@@ -73,6 +85,12 @@ export const transparencyRoutes: FastifyPluginAsyncZod = async (fastify) => {
   fastify.get(
     "/posts/:id",
     {
+      config: {
+        rateLimit: {
+          max: 60,
+          timeWindow: 60 * 1000,
+        },
+      },
       schema: {
         tags: ["transparency"],
         params: z.object({ id: z.string().uuid() }),
@@ -199,6 +217,12 @@ export const transparencyRoutes: FastifyPluginAsyncZod = async (fastify) => {
   fastify.get(
     "/debts",
     {
+      config: {
+        rateLimit: {
+          max: 60,
+          timeWindow: 60 * 1000,
+        },
+      },
       schema: {
         tags: ["transparency", "debts"],
         response: {
@@ -215,6 +239,12 @@ export const transparencyRoutes: FastifyPluginAsyncZod = async (fastify) => {
   fastify.get(
     "/debts/snapshots",
     {
+      config: {
+        rateLimit: {
+          max: 60,
+          timeWindow: 60 * 1000,
+        },
+      },
       schema: {
         tags: ["transparency", "debts"],
         response: {

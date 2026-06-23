@@ -21,6 +21,12 @@ export const productsRoutes: FastifyPluginAsyncZod = async (fastify) => {
   fastify.get(
     "/store/products",
     {
+      config: {
+        rateLimit: {
+          max: 60,
+          timeWindow: 60 * 1000,
+        },
+      },
       schema: {
         tags: ["store", "products"],
         response: {
@@ -37,6 +43,12 @@ export const productsRoutes: FastifyPluginAsyncZod = async (fastify) => {
   fastify.get(
     "/store/products/:id",
     {
+      config: {
+        rateLimit: {
+          max: 60,
+          timeWindow: 60 * 1000,
+        },
+      },
       schema: {
         tags: ["store", "products"],
         params: z.object({ id: z.string().uuid() }),

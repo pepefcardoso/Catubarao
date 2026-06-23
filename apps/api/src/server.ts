@@ -3,7 +3,7 @@ import { env } from "./lib/env";
 import Fastify from "fastify";
 import * as Sentry from "@sentry/node";
 import cors from "@fastify/cors";
-import rateLimit from "@fastify/rate-limit";
+
 import multipart from "@fastify/multipart";
 import { serializerCompiler, validatorCompiler } from "fastify-type-provider-zod";
 import type { FastifyPluginAsyncZod } from "fastify-type-provider-zod";
@@ -46,14 +46,15 @@ fastify.register(cors, {
   credentials: true,
 });
 
-fastify.register(rateLimit, {
-  global: false,
-});
+
 
 fastify.register(multipart);
 
 import redisPlugin from "./plugins/redis";
 fastify.register(redisPlugin);
+
+import rateLimitPlugin from "./plugins/rate-limit";
+fastify.register(rateLimitPlugin);
 
 import swaggerPlugin from "./plugins/swagger";
 fastify.register(swaggerPlugin);
