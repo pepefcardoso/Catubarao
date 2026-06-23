@@ -1657,9 +1657,9 @@ All templates: club logo, responsive layout, unsubscribe footer (transactional e
 
 **Acceptance criteria:**
 
-- [ ] Inline edit saves on blur or Enter
-- [ ] "Criar snapshot" shows updated totals in toast immediately
-- [ ] Snapshot history table updates without page reload after creating snapshot
+- [x] Inline edit saves on blur or Enter
+- [x] "Criar snapshot" shows updated totals in toast immediately
+- [x] Snapshot history table updates without page reload after creating snapshot
 
 ---
 
