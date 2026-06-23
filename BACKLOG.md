@@ -1822,9 +1822,9 @@ All templates: club logo, responsive layout, unsubscribe footer (transactional e
 
 **Acceptance criteria:**
 
-- [ ] Presigned URL uses the key convention from AGENTS.md §6.8
-- [ ] Uploading a `.exe` type returns `422`
-- [ ] `DeliveryProof` record `fileUrl` resolves to the public R2 CDN URL
+- [x] Presigned URL uses the key convention from AGENTS.md §6.8
+- [x] Uploading a `.exe` type returns `422`
+- [x] `DeliveryProof` record `fileUrl` resolves to the public R2 CDN URL
 
 ---
 

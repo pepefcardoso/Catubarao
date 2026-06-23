@@ -1,6 +1,8 @@
 import type { PrismaClient } from "@repo/db";
-import type { CreateDeliverableInput, UpdateDeliverableInput } from "@repo/schemas/partner";
+import type { CreateDeliverableInput, UpdateDeliverableInput, GenerateProofUploadUrlInput, CreateDeliveryProofBodyInput } from "@repo/schemas/partner";
 import { NotFoundError } from "../../lib/errors";
+import { buildStorageKey, getUploadUrl } from "../../lib/storage";
+import { randomUUID } from "node:crypto";
 
 export async function createDeliverable(dealId: string, input: Omit<CreateDeliverableInput, "dealId">, db: PrismaClient) {
   const deal = await db.sponsorshipDeal.findUnique({ where: { id: dealId } });
@@ -58,5 +60,38 @@ export async function getPendingDeliveries(db: PrismaClient) {
       ...p,
       status,
     };
+  });
+}
+
+export async function generateProofUploadUrl(deliverableId: string, input: GenerateProofUploadUrlInput, db: PrismaClient) {
+  const deliverable = await db.deliverable.findUnique({ where: { id: deliverableId } });
+  if (!deliverable) {
+    throw new NotFoundError("Deliverable not found");
+  }
+
+  const proofId = randomUUID();
+  const key = buildStorageKey("partners", proofId, input.filename);
+  const uploadUrl = await getUploadUrl(key, input.contentType);
+
+  return { uploadUrl, key };
+}
+
+export async function createDeliveryProof(
+  deliverableId: string,
+  userId: string,
+  input: CreateDeliveryProofBodyInput,
+  db: PrismaClient
+) {
+  const deliverable = await db.deliverable.findUnique({ where: { id: deliverableId } });
+  if (!deliverable) {
+    throw new NotFoundError("Deliverable not found");
+  }
+
+  return db.deliveryProof.create({
+    data: {
+      ...input,
+      deliverableId,
+      createdBy: userId,
+    },
   });
 }

@@ -109,6 +109,18 @@ export const DeliveryProofResponseSchema = CreateDeliveryProofSchema.extend({
   createdAt: z.union([z.string(), z.date()]),
 });
 
+export const GenerateProofUploadUrlSchema = z.object({
+  contentType: z.enum(["image/jpeg", "image/png", "application/pdf"]),
+  filename: z.string().min(1),
+});
+
+export const UploadUrlResponseSchema = z.object({
+  uploadUrl: z.string().url(),
+  key: z.string(),
+});
+
+export const CreateDeliveryProofBodySchema = CreateDeliveryProofSchema.omit({ deliverableId: true, createdBy: true });
+
 // --- TYPES ---
 export type CreatePartnerInput = z.infer<typeof CreatePartnerSchema>;
 export type UpdatePartnerInput = z.infer<typeof UpdatePartnerSchema>;
@@ -119,6 +131,8 @@ export type CancelDealInput = z.infer<typeof CancelDealSchema>;
 export type CreateDeliverableInput = z.infer<typeof CreateDeliverableSchema>;
 export type UpdateDeliverableInput = z.infer<typeof UpdateDeliverableSchema>;
 export type CreateDeliveryProofInput = z.infer<typeof CreateDeliveryProofSchema>;
+export type GenerateProofUploadUrlInput = z.infer<typeof GenerateProofUploadUrlSchema>;
+export type CreateDeliveryProofBodyInput = z.infer<typeof CreateDeliveryProofBodySchema>;
 
 export const SponsorshipDealResponseSchema = SponsorshipDealBaseSchema.extend({
   id: z.string().uuid(),

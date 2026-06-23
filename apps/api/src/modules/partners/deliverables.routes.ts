@@ -1,6 +1,22 @@
 import type { FastifyPluginAsyncZod } from "fastify-type-provider-zod";
-import { CreateDeliverableSchema, CreateDeliverableBodySchema, UpdateDeliverableSchema, DeliverableResponseSchema, PendingDeliveryResponseSchema } from "@repo/schemas/partner";
-import { createDeliverable, updateDeliverable, getPendingDeliveries } from "./deliverables.service";
+import { 
+  CreateDeliverableSchema, 
+  CreateDeliverableBodySchema, 
+  UpdateDeliverableSchema, 
+  DeliverableResponseSchema, 
+  PendingDeliveryResponseSchema,
+  GenerateProofUploadUrlSchema,
+  UploadUrlResponseSchema,
+  CreateDeliveryProofBodySchema,
+  DeliveryProofResponseSchema
+} from "@repo/schemas/partner";
+import { 
+  createDeliverable, 
+  updateDeliverable, 
+  getPendingDeliveries,
+  generateProofUploadUrl,
+  createDeliveryProof
+} from "./deliverables.service";
 import { z } from "zod";
 
 export const deliverablesRoutes: FastifyPluginAsyncZod = async (fastify) => {
@@ -56,6 +72,44 @@ export const deliverablesRoutes: FastifyPluginAsyncZod = async (fastify) => {
     async (request, reply) => {
       const pending = await getPendingDeliveries(fastify.prisma);
       return reply.status(200).send(pending);
+    },
+  );
+
+  fastify.post(
+    "/admin/deliverables/:id/proof/upload-url",
+    {
+      schema: {
+        tags: ["partners"],
+        params: z.object({ id: z.string().uuid() }),
+        body: GenerateProofUploadUrlSchema,
+        response: {
+          200: UploadUrlResponseSchema,
+        },
+      },
+      preHandler: [fastify.authenticate, fastify.requireRole("ADMIN")],
+    },
+    async (request, reply) => {
+      const result = await generateProofUploadUrl(request.params.id, request.body, fastify.prisma);
+      return reply.status(200).send(result);
+    },
+  );
+
+  fastify.post(
+    "/admin/deliverables/:id/proof",
+    {
+      schema: {
+        tags: ["partners"],
+        params: z.object({ id: z.string().uuid() }),
+        body: CreateDeliveryProofBodySchema,
+        response: {
+          201: DeliveryProofResponseSchema,
+        },
+      },
+      preHandler: [fastify.authenticate, fastify.requireRole("ADMIN")],
+    },
+    async (request, reply) => {
+      const proof = await createDeliveryProof(request.params.id, request.user.id, request.body, fastify.prisma);
+      return reply.status(201).send(proof);
     },
   );
 };
