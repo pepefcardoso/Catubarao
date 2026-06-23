@@ -2114,9 +2114,9 @@ All templates: club logo, responsive layout, unsubscribe footer (transactional e
 
 **Acceptance criteria:**
 
-- [ ] `payment.approved` for an order sets status to `PAGO` and sends confirmation email
-- [ ] Admin receives new order email with full item details
-- [ ] Admin can update order status; customer receives shipping email when status = `ENVIADO`
+- [x] `payment.approved` for an order sets status to `PAGO` and sends confirmation email
+- [x] Admin receives new order email with full item details
+- [x] Admin can update order status; customer receives shipping email when status = `ENVIADO`
 
 ---
 

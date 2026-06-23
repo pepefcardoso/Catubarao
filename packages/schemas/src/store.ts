@@ -110,6 +110,13 @@ export const OrderItemResponseSchema = z.object({
 
 export type OrderItemResponse = z.infer<typeof OrderItemResponseSchema>;
 
+export const UpdateOrderStatusSchema = z.object({
+  status: z.enum(["EM_PRODUCAO", "ENVIADO", "ENTREGUE"]),
+  trackingCode: z.string().optional().nullable(),
+});
+
+export type UpdateOrderStatusInput = z.infer<typeof UpdateOrderStatusSchema>;
+
 export const OrderResponseSchema = z.object({
   id: z.string().uuid(),
   customerId: z.string().uuid().nullable(),

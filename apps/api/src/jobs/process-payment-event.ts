@@ -48,7 +48,12 @@ export async function processPaymentEventJob(job: Job) {
   if (mpPayment.external_reference) {
     const order = await prisma.order.findUnique({
       where: { id: mpPayment.external_reference },
-      include: { items: true }
+      include: { 
+        items: {
+          include: { product: true, variant: true }
+        },
+        customer: true
+      }
     });
     if (order) {
       orderId = order.id;
@@ -73,6 +78,38 @@ export async function processPaymentEventJob(job: Job) {
               console.error("Failed to decrement stock for item", item.id, err);
            }
         }
+
+        // Notify Admin
+        await emailQueue.add("send-email", {
+           to: (process.env.ADMIN_EMAIL as string) || "admin@catubarao.com.br",
+           template: "NewOrderEmail",
+           subject: "Novo Pedido - Clube Atlético Tubarão",
+           props: {
+             orderId: order.id,
+             customerName: order.customer?.name || "Visitante",
+             customerEmail: order.guestEmail || order.customer?.email,
+             shippingAddress: order.shippingAddress,
+             total: order.total,
+             items: order.items.map(i => ({
+               name: i.product.name,
+               variant: i.variant?.sku,
+               quantity: i.quantity,
+               unitPrice: i.unitPrice
+             }))
+           }
+        });
+
+        // Notify Customer
+        const customerEmail = order.guestEmail || order.customer?.email;
+        if (customerEmail) {
+           await emailQueue.add("send-email", {
+              to: customerEmail,
+              template: "OrderConfirmationEmail",
+              subject: "Pedido Confirmado - Clube Atlético Tubarão",
+              props: { orderId: order.id }
+           });
+        }
+
         await emailQueue.close();
       } else if ((mappedStatus === "FAILED" || mappedStatus === "REFUNDED") && order.status !== "CANCELADO") {
         await prisma.order.update({

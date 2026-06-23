@@ -146,3 +146,44 @@ export async function createOrder(
     checkoutUrl: preference.init_point
   };
 }
+
+export async function updateOrderStatus(
+  orderId: string,
+  input: { status: "EM_PRODUCAO" | "ENVIADO" | "ENTREGUE"; trackingCode?: string | null },
+  db: PrismaClient,
+  queues: any
+) {
+  const order = await db.order.findUnique({
+    where: { id: orderId },
+    include: { customer: true }
+  });
+
+  if (!order) {
+    throw new NotFoundError("Order not found");
+  }
+
+  const updatedOrder = await db.order.update({
+    where: { id: orderId },
+    data: {
+      status: input.status,
+      ...(input.trackingCode !== undefined ? { trackingCode: input.trackingCode } : {})
+    }
+  });
+
+  if (input.status === "ENVIADO" && order.status !== "ENVIADO") {
+    const customerEmail = order.guestEmail || order.customer?.email;
+    if (customerEmail && queues && queues.email) {
+      await queues.email.add("send-email", {
+        to: customerEmail,
+        template: "OrderShippedEmail",
+        subject: "Seu pedido foi enviado - Clube Atlético Tubarão",
+        props: {
+          orderId: order.id,
+          trackingCode: updatedOrder.trackingCode
+        }
+      });
+    }
+  }
+
+  return updatedOrder;
+}

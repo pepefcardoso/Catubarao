@@ -297,4 +297,89 @@ describe("Orders Routes", () => {
     expect(res.statusCode).toBe(409);
     expect(res.json().message).toContain("Estoque insuficiente");
   });
+
+  it("should allow admin to update order status", async () => {
+    const admin = await prisma.member.create({
+      data: {
+        id: "admin_1",
+        name: "Admin",
+        email: "admin@example.com",
+        role: "ADMIN",
+      },
+    });
+
+    const order = await prisma.order.create({
+      data: {
+        guestEmail: "guest@example.com",
+        shippingAddress: {
+          street: "Rua 1",
+          number: "123",
+          neighborhood: "Centro",
+          city: "Tubarão",
+          state: "SC",
+          zipCode: "88700000",
+        },
+        status: "PAGO",
+        total: 100,
+      },
+    });
+
+    (auth.api.getSession as any).mockResolvedValue({
+      user: { id: admin.id, role: "ADMIN" },
+    });
+
+    const res = await fastify.inject({
+      method: "PATCH",
+      url: `/store/orders/${order.id}/status`,
+      payload: {
+        status: "ENVIADO",
+        trackingCode: "BR123456789",
+      },
+    });
+
+    expect(res.statusCode).toBe(200);
+    const body = res.json();
+    expect(body.status).toBe("ENVIADO");
+    expect(body.trackingCode).toBe("BR123456789");
+
+    const updatedOrder = await prisma.order.findUnique({
+      where: { id: order.id },
+    });
+    expect(updatedOrder!.status).toBe("ENVIADO");
+    expect(updatedOrder!.trackingCode).toBe("BR123456789");
+  });
+
+  it("should block non-admin from updating order status", async () => {
+    const member = await prisma.member.create({
+      data: {
+        id: "mem_2",
+        name: "Member",
+        email: "member@example.com",
+        role: "MEMBER",
+      },
+    });
+
+    const order = await prisma.order.create({
+      data: {
+        guestEmail: "guest@example.com",
+        shippingAddress: { street: "Rua", number: "1", neighborhood: "Bairro", city: "Cidade", state: "SC", zipCode: "00000000" },
+        status: "PAGO",
+        total: 100,
+      },
+    });
+
+    (auth.api.getSession as any).mockResolvedValue({
+      user: { id: member.id, role: "MEMBER" },
+    });
+
+    const res = await fastify.inject({
+      method: "PATCH",
+      url: `/store/orders/${order.id}/status`,
+      payload: {
+        status: "ENVIADO",
+      },
+    });
+
+    expect(res.statusCode).toBe(403);
+  });
 });
