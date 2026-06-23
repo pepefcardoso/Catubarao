@@ -1800,8 +1800,8 @@ All templates: club logo, responsive layout, unsubscribe footer (transactional e
 
 **Acceptance criteria:**
 
-- [ ] Creating a MatchEvent generates one PendingDelivery per active POR_JOGO deliverable
-- [ ] `GET /admin/deliverables/pending` correctly identifies overdue and upcoming deliveries
+- [x] Creating a MatchEvent generates one PendingDelivery per active POR_JOGO deliverable
+- [x] `GET /admin/deliverables/pending` correctly identifies overdue and upcoming deliveries
 
 ---
 

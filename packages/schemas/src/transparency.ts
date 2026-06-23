@@ -23,8 +23,8 @@ export const CreateTransparencyPostBaseSchema = z.object({
   referenceYear: z.number().int().min(2000).max(2100).optional().nullable(),
   body: z.string().min(1),
   attachmentUrl: z.string().url().optional().nullable(),
-  publishedAt: z.string().datetime(),
-  scheduledFor: z.string().datetime().optional().nullable(),
+  publishedAt: z.union([z.string(), z.date()]),
+  scheduledFor: z.union([z.string(), z.date()]).optional().nullable(),
   supersededById: z.string().uuid().optional().nullable(),
 });
 
@@ -56,8 +56,8 @@ export const TransparencyPostResponseSchema = CreateTransparencyPostBaseSchema.e
   version: z.number().int(),
   isArchived: z.boolean(),
   createdBy: z.string().uuid(),
-  createdAt: z.string().datetime(),
-  updatedAt: z.string().datetime(),
+  createdAt: z.union([z.string(), z.date()]),
+  updatedAt: z.union([z.string(), z.date()]),
 });
 
 export type TransparencyPostResponse = z.infer<typeof TransparencyPostResponseSchema>;
@@ -80,8 +80,8 @@ export type UpdateDebtRecordInput = z.infer<typeof UpdateDebtRecordSchema>;
 
 export const DebtRecordResponseSchema = CreateDebtRecordSchema.extend({
   id: z.string().uuid(),
-  createdAt: z.string().datetime(),
-  updatedAt: z.string().datetime(),
+  createdAt: z.union([z.string(), z.date()]),
+  updatedAt: z.union([z.string(), z.date()]),
 });
 
 export type DebtRecordResponse = z.infer<typeof DebtRecordResponseSchema>;
@@ -91,15 +91,16 @@ export const CreateDebtSnapshotSchema = z.object({
   totalNegotiated: z.number().nonnegative(),
   totalPaid: z.number().nonnegative(),
   totalRemaining: z.number().nonnegative(),
-  snapshotDate: z.string().datetime(),
+  snapshotDate: z.union([z.string(), z.date()]),
 });
 
 export type CreateDebtSnapshotInput = z.infer<typeof CreateDebtSnapshotSchema>;
 
 export const DebtSnapshotResponseSchema = CreateDebtSnapshotSchema.extend({
   id: z.string().uuid(),
-  createdBy: z.string().uuid(),
-  createdAt: z.string().datetime(),
+  snapshotDate: z.union([z.string(), z.date()]),
+  createdBy: z.string().uuid().optional().nullable(),
+  createdAt: z.union([z.string(), z.date()]),
 });
 
 export type DebtSnapshotResponse = z.infer<typeof DebtSnapshotResponseSchema>;

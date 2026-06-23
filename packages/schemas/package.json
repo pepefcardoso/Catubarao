@@ -10,7 +10,9 @@
     "./gamification": "./src/gamification.ts",
     "./stats": "./src/stats.ts",
     "./webhooks": "./src/webhooks.ts",
-    "./events": "./src/events.ts"
+    "./events": "./src/events.ts",
+    "./partner": "./src/partner.ts",
+    "./transparency": "./src/transparency.ts"
   },
   "scripts": {
     "build": "tsup src/index.ts --format cjs,esm --dts",

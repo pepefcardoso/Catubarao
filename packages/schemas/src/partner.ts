@@ -33,8 +33,8 @@ export const SponsorshipDealBaseSchema = z.object({
   partnerId: z.string().uuid(),
   type: DealTypeSchema,
   financialValue: z.number().optional().nullable(),
-  startDate: z.string().date(),
-  endDate: z.string().date(),
+  startDate: z.union([z.string().date(), z.date()]),
+  endDate: z.union([z.string().date(), z.date()]),
   status: DealStatusSchema,
   ownerId: z.string().uuid(),
   notes: z.string().optional().nullable(),
@@ -73,8 +73,23 @@ export const CreateDeliverableSchema = z.object({
   ownerId: z.string().uuid(),
 });
 
+export const CreateDeliverableBodySchema = CreateDeliverableSchema.omit({ dealId: true });
+
+export const UpdateDeliverableSchema = CreateDeliverableSchema.omit({ dealId: true }).partial();
+
 export const DeliverableResponseSchema = CreateDeliverableSchema.extend({
   id: z.string().uuid(),
+});
+
+export const PendingDeliveryResponseSchema = z.object({
+  id: z.string().uuid(),
+  deliverableId: z.string().uuid(),
+  matchEventId: z.string().uuid().optional().nullable(),
+  month: z.number().int().optional().nullable(),
+  year: z.number().int().optional().nullable(),
+  isFulfilled: z.boolean(),
+  status: z.enum(["OVERDUE", "UPCOMING", "PENDING"]).optional(),
+  createdAt: z.union([z.string(), z.date()]),
 });
 
 // --- DELIVERY PROOF ---
@@ -102,6 +117,7 @@ export type CreateDealBodyInput = z.infer<typeof CreateDealBodySchema>;
 export type UpdateSponsorshipDealInput = z.infer<typeof UpdateSponsorshipDealSchema>;
 export type CancelDealInput = z.infer<typeof CancelDealSchema>;
 export type CreateDeliverableInput = z.infer<typeof CreateDeliverableSchema>;
+export type UpdateDeliverableInput = z.infer<typeof UpdateDeliverableSchema>;
 export type CreateDeliveryProofInput = z.infer<typeof CreateDeliveryProofSchema>;
 
 export const SponsorshipDealResponseSchema = SponsorshipDealBaseSchema.extend({

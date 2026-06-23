@@ -307,7 +307,8 @@ model MatchEvent {
   competition String
   createdAt   DateTime @default(now())
 
-  deliveryProofs DeliveryProof[]
+  deliveryProofs    DeliveryProof[]
+  pendingDeliveries PendingDelivery[]
 
   @@map("match_events")
 }
@@ -461,9 +462,10 @@ model Deliverable {
   frequency   DeliverableFrequency
   ownerId     String
 
-  deal   SponsorshipDeal @relation(fields: [dealId], references: [id], onDelete: Cascade)
-  owner  Member          @relation("DeliverableOwner", fields: [ownerId], references: [id])
-  proofs DeliveryProof[]
+  deal              SponsorshipDeal   @relation(fields: [dealId], references: [id], onDelete: Cascade)
+  owner             Member            @relation("DeliverableOwner", fields: [ownerId], references: [id])
+  proofs            DeliveryProof[]
+  pendingDeliveries PendingDelivery[]
 
   @@map("deliverables")
 }
@@ -485,4 +487,19 @@ model DeliveryProof {
   author      Member      @relation("ProofAuthor", fields: [createdBy], references: [id])
 
   @@map("delivery_proofs")
+}
+
+model PendingDelivery {
+  id            String   @id @default(uuid())
+  deliverableId String
+  matchEventId  String?
+  month         Int?
+  year          Int?
+  isFulfilled   Boolean  @default(false)
+  createdAt     DateTime @default(now())
+
+  deliverable Deliverable @relation(fields: [deliverableId], references: [id], onDelete: Cascade)
+  matchEvent  MatchEvent? @relation(fields: [matchEventId], references: [id], onDelete: Cascade)
+
+  @@map("pending_deliveries")
 }

@@ -100,6 +100,9 @@ fastify.register(partnersRoutes);
 import { dealsRoutes } from "./modules/partners/deals.routes";
 fastify.register(dealsRoutes);
 
+import { deliverablesRoutes } from "./modules/partners/deliverables.routes";
+fastify.register(deliverablesRoutes);
+
 // Health check endpoint
 
 fastify.get("/health", async (request, reply) => {
