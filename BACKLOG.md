@@ -1730,8 +1730,8 @@ All templates: club logo, responsive layout, unsubscribe footer (transactional e
 
 **Acceptance criteria:**
 
-- [ ] `CreateSponsorshipDealSchema.parse({ startDate: "2026-12-01", endDate: "2026-01-01" })` throws
-- [ ] CNPJ with 13 digits throws
+- [x] `CreateSponsorshipDealSchema.parse({ startDate: "2026-12-01", endDate: "2026-01-01" })` throws
+- [x] CNPJ with 13 digits throws
 
 ---
 
