@@ -94,6 +94,9 @@ fastify.register(statsRoutes);
 import { transparencyRoutes } from "./modules/transparency/transparency.routes";
 fastify.register(transparencyRoutes, { prefix: "/transparency" });
 
+import { partnersRoutes } from "./modules/partners/partners.routes";
+fastify.register(partnersRoutes);
+
 // Health check endpoint
 
 fastify.get("/health", async (request, reply) => {

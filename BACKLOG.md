@@ -1753,9 +1753,9 @@ All templates: club logo, responsive layout, unsubscribe footer (transactional e
 
 **Acceptance criteria:**
 
-- [ ] All routes return `403` without ADMIN role
-- [ ] Cancelled partner still appears in list with CANCELLED status
-- [ ] `GET /admin/partners/:id` includes `deals` relation
+- [x] All routes return `403` without ADMIN role
+- [x] Cancelled partner still appears in list with CANCELLED status
+- [x] `GET /admin/partners/:id` includes `deals` relation
 
 ---
 

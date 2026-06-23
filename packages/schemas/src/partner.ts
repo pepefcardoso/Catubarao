@@ -29,7 +29,7 @@ export const PartnerResponseSchema = CreatePartnerSchema.extend({
 });
 
 // --- SPONSORSHIP DEAL ---
-export const CreateSponsorshipDealSchema = z.object({
+export const SponsorshipDealBaseSchema = z.object({
   partnerId: z.string().uuid(),
   type: DealTypeSchema,
   financialValue: z.number().optional().nullable(),
@@ -38,7 +38,9 @@ export const CreateSponsorshipDealSchema = z.object({
   status: DealStatusSchema,
   ownerId: z.string().uuid(),
   notes: z.string().optional().nullable(),
-}).refine((data) => new Date(data.endDate) > new Date(data.startDate), {
+});
+
+export const CreateSponsorshipDealSchema = SponsorshipDealBaseSchema.refine((data) => new Date(data.endDate) > new Date(data.startDate), {
   message: "endDate must be after startDate",
   path: ["endDate"],
 });
@@ -78,3 +80,13 @@ export type UpdatePartnerInput = z.infer<typeof UpdatePartnerSchema>;
 export type CreateSponsorshipDealInput = z.infer<typeof CreateSponsorshipDealSchema>;
 export type CreateDeliverableInput = z.infer<typeof CreateDeliverableSchema>;
 export type CreateDeliveryProofInput = z.infer<typeof CreateDeliveryProofSchema>;
+
+export const SponsorshipDealResponseSchema = SponsorshipDealBaseSchema.extend({
+  id: z.string().uuid(),
+  createdAt: z.union([z.string(), z.date()]),
+  updatedAt: z.union([z.string(), z.date()]),
+});
+
+export const PartnerWithDealsResponseSchema = PartnerResponseSchema.extend({
+  deals: z.array(SponsorshipDealResponseSchema),
+});
