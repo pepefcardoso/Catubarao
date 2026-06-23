@@ -10,6 +10,13 @@ export async function listProducts(db: PrismaClient) {
   });
 }
 
+export async function listAdminProducts(db: PrismaClient) {
+  return db.product.findMany({
+    include: { variants: true },
+    orderBy: { createdAt: "desc" },
+  });
+}
+
 export async function getProductById(id: string, db: PrismaClient) {
   const product = await db.product.findUnique({
     where: { id },

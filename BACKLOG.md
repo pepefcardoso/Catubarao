@@ -2236,9 +2236,9 @@ All templates: club logo, responsive layout, unsubscribe footer (transactional e
 
 **Acceptance criteria:**
 
-- [ ] Image upload shows preview before saving
-- [ ] Variants can be added/removed dynamically in the form
-- [ ] Deactivating with open orders shows the 409 message
+- [x] Image upload shows preview before saving
+- [x] Variants can be added/removed dynamically in the form
+- [x] Deactivating with open orders shows the 409 message
 
 ---
 

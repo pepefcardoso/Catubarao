@@ -7,11 +7,14 @@ import {
 } from "@repo/schemas/store";
 import {
   listProducts,
+  listAdminProducts,
   getProductById,
   createProduct,
   updateProduct,
   deleteProduct,
 } from "./products.service";
+import { env } from "../../lib/env";
+import { getUploadUrl, buildStorageKey } from "../../lib/storage";
 
 export const productsRoutes: FastifyPluginAsyncZod = async (fastify) => {
   // Public GET endpoints
@@ -49,6 +52,51 @@ export const productsRoutes: FastifyPluginAsyncZod = async (fastify) => {
   );
 
   // Admin endpoints
+  fastify.get(
+    "/admin/store/products",
+    {
+      schema: {
+        tags: ["admin", "store", "products"],
+        response: {
+          200: z.array(ProductResponseSchema),
+        },
+      },
+      preHandler: [fastify.authenticate, fastify.requireRole("ADMIN")],
+    },
+    async (request, reply) => {
+      const products = await listAdminProducts(fastify.prisma);
+      return reply.send(products);
+    }
+  );
+
+  fastify.post(
+    "/admin/store/products/upload-url",
+    {
+      preHandler: [fastify.authenticate, fastify.requireRole("ADMIN")],
+      schema: {
+        tags: ["admin", "store", "products"],
+        body: z.object({
+          filename: z.string().min(1),
+          contentType: z.string().min(1),
+          entityId: z.string().min(1),
+        }),
+        response: {
+          200: z.object({
+            uploadUrl: z.string().url(),
+            attachmentUrl: z.string().url(),
+          }),
+        },
+      },
+    },
+    async (request, reply) => {
+      const { filename, contentType, entityId } = request.body;
+      const key = buildStorageKey("store/products", entityId, filename);
+      const uploadUrl = await getUploadUrl(key, contentType);
+      const attachmentUrl = `${env.R2_PUBLIC_URL}/${key}`;
+      return reply.send({ uploadUrl, attachmentUrl });
+    }
+  );
+
   fastify.post(
     "/admin/store/products",
     {
