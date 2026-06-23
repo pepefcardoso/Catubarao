@@ -38,11 +38,31 @@ export const SponsorshipDealBaseSchema = z.object({
   status: DealStatusSchema,
   ownerId: z.string().uuid(),
   notes: z.string().optional().nullable(),
+  cancellationReason: z.string().optional().nullable(),
 });
 
 export const CreateSponsorshipDealSchema = SponsorshipDealBaseSchema.refine((data) => new Date(data.endDate) > new Date(data.startDate), {
   message: "endDate must be after startDate",
   path: ["endDate"],
+});
+
+export const CreateDealBodySchema = SponsorshipDealBaseSchema.omit({ partnerId: true }).refine((data) => new Date(data.endDate) > new Date(data.startDate), {
+  message: "endDate must be after startDate",
+  path: ["endDate"],
+});
+
+export const UpdateSponsorshipDealSchema = SponsorshipDealBaseSchema.partial().refine((data) => {
+  if (data.startDate && data.endDate) {
+    return new Date(data.endDate) > new Date(data.startDate);
+  }
+  return true;
+}, {
+  message: "endDate must be after startDate",
+  path: ["endDate"],
+});
+
+export const CancelDealSchema = z.object({
+  cancellationReason: z.string().min(1),
 });
 
 // --- DELIVERABLE ---
@@ -78,6 +98,9 @@ export const DeliveryProofResponseSchema = CreateDeliveryProofSchema.extend({
 export type CreatePartnerInput = z.infer<typeof CreatePartnerSchema>;
 export type UpdatePartnerInput = z.infer<typeof UpdatePartnerSchema>;
 export type CreateSponsorshipDealInput = z.infer<typeof CreateSponsorshipDealSchema>;
+export type CreateDealBodyInput = z.infer<typeof CreateDealBodySchema>;
+export type UpdateSponsorshipDealInput = z.infer<typeof UpdateSponsorshipDealSchema>;
+export type CancelDealInput = z.infer<typeof CancelDealSchema>;
 export type CreateDeliverableInput = z.infer<typeof CreateDeliverableSchema>;
 export type CreateDeliveryProofInput = z.infer<typeof CreateDeliveryProofSchema>;
 
@@ -85,6 +108,10 @@ export const SponsorshipDealResponseSchema = SponsorshipDealBaseSchema.extend({
   id: z.string().uuid(),
   createdAt: z.union([z.string(), z.date()]),
   updatedAt: z.union([z.string(), z.date()]),
+});
+
+export const SponsorshipDealWithPartnerResponseSchema = SponsorshipDealResponseSchema.extend({
+  partner: PartnerResponseSchema,
 });
 
 export const PartnerWithDealsResponseSchema = PartnerResponseSchema.extend({

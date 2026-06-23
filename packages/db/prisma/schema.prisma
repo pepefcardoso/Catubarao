@@ -441,9 +441,10 @@ model SponsorshipDeal {
   endDate        DateTime   @db.Date
   status         DealStatus
   ownerId        String
-  notes          String?
-  createdAt      DateTime   @default(now())
-  updatedAt      DateTime   @updatedAt
+  notes              String?
+  cancellationReason String?
+  createdAt          DateTime   @default(now())
+  updatedAt          DateTime   @updatedAt
 
   partner      Partner       @relation(fields: [partnerId], references: [id], onDelete: Cascade)
   owner        Member        @relation("DealOwner", fields: [ownerId], references: [id])

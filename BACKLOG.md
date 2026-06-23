@@ -1777,8 +1777,8 @@ All templates: club logo, responsive layout, unsubscribe footer (transactional e
 
 **Acceptance criteria:**
 
-- [ ] Cancelled deal is preserved with cancellation reason
-- [ ] `GET /admin/deals?expiringWithinDays=30` returns only deals ending within 30 days with `status: ACTIVE`
+- [x] Cancelled deal is preserved with cancellation reason
+- [x] `GET /admin/deals?expiringWithinDays=30` returns only deals ending within 30 days with `status: ACTIVE`
 
 ---
 
