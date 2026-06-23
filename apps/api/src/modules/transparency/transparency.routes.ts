@@ -11,6 +11,7 @@ import {
 } from "@repo/schemas/transparency";
 import {
   getPosts,
+  getAdminPosts,
   getPostById,
   createPost,
   updatePost,
@@ -22,6 +23,8 @@ import {
   createDebtSnapshot,
   generateFeedXml,
 } from "./transparency.service";
+import { env } from "../../lib/env";
+import { getUploadUrl, buildStorageKey } from "../../lib/storage";
 
 export const transparencyRoutes: FastifyPluginAsyncZod = async (fastify) => {
   fastify.get(
@@ -81,6 +84,60 @@ export const transparencyRoutes: FastifyPluginAsyncZod = async (fastify) => {
     async (request, reply) => {
       const post = await getPostById(request.params.id, fastify.prisma);
       return reply.send(post);
+    }
+  );
+
+  fastify.get(
+    "/admin/posts",
+    {
+      preHandler: [fastify.authenticate, fastify.requireRole("ADMIN")],
+      schema: {
+        tags: ["transparency"],
+        querystring: z.object({
+          page: z.coerce.number().min(1).default(1),
+          limit: z.coerce.number().min(1).max(100).default(50),
+        }),
+        response: {
+          200: z.object({
+            posts: z.array(TransparencyPostResponseSchema),
+            total: z.number(),
+            page: z.number(),
+            limit: z.number(),
+          }),
+        },
+      },
+    },
+    async (request, reply) => {
+      const result = await getAdminPosts(fastify.prisma, request.query);
+      return reply.send(result);
+    }
+  );
+
+  fastify.post(
+    "/posts/upload-url",
+    {
+      preHandler: [fastify.authenticate, fastify.requireRole("ADMIN")],
+      schema: {
+        tags: ["transparency"],
+        body: z.object({
+          filename: z.string().min(1),
+          contentType: z.string().min(1),
+          entityId: z.string().min(1),
+        }),
+        response: {
+          200: z.object({
+            uploadUrl: z.string().url(),
+            attachmentUrl: z.string().url(),
+          }),
+        },
+      },
+    },
+    async (request, reply) => {
+      const { filename, contentType, entityId } = request.body;
+      const key = buildStorageKey("transparency", entityId, filename);
+      const uploadUrl = await getUploadUrl(key, contentType);
+      const attachmentUrl = `${env.R2_PUBLIC_URL}/${key}`;
+      return reply.send({ uploadUrl, attachmentUrl });
     }
   );
 

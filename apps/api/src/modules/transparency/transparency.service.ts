@@ -46,6 +46,33 @@ ${items}
 </rss>`;
 }
 
+export async function getAdminPosts(
+  db: PrismaClient,
+  options: {
+    page?: number;
+    limit?: number;
+  } = {}
+) {
+  const { page = 1, limit = 50 } = options;
+  const skip = (page - 1) * limit;
+
+  const where = {
+    supersededById: null,
+  };
+
+  const [posts, total] = await Promise.all([
+    db.transparencyPost.findMany({
+      where,
+      skip,
+      take: limit,
+      orderBy: { updatedAt: "desc" },
+    }),
+    db.transparencyPost.count({ where }),
+  ]);
+
+  return { posts, total, page, limit };
+}
+
 export async function getPosts(
   db: PrismaClient,
   options: {

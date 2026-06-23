@@ -1633,9 +1633,9 @@ All templates: club logo, responsive layout, unsubscribe footer (transactional e
 
 **Acceptance criteria:**
 
-- [ ] Markdown editor shows live preview
-- [ ] Category BALANCO_MENSAL shows month/year fields; other categories hide them
-- [ ] Saving an edit shows the new version in the list with "versão atual" badge
+- [x] Markdown editor shows live preview
+- [x] Category BALANCO_MENSAL shows month/year fields; other categories hide them
+- [x] Saving an edit shows the new version in the list with "versão atual" badge
 
 ---
 
