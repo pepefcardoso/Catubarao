@@ -109,6 +109,7 @@ export const ListMembersQuerySchema = z.object({
   limit: z.coerce.number().min(1).max(10000).default(20),
   search: z.string().optional(),
   status: z.enum(["ALL", "ACTIVE", "PENDING", "SUSPENDED", "CANCELLED"]).default("ALL"),
+  role: z.string().optional(),
 });
 
 export const AdminMemberListItemSchema = MemberResponseSchema.extend({

@@ -5,6 +5,7 @@ import { NotFoundError } from "../../lib/errors";
 export async function getDealsByPartner(partnerId: string, db: PrismaClient) {
   return db.sponsorshipDeal.findMany({
     where: { partnerId },
+    include: { deliverables: true },
     orderBy: { createdAt: "desc" },
   });
 }

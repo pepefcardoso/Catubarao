@@ -178,10 +178,10 @@ export async function getMemberPayments(
 }
 
 export async function listMembers(
-  query: { page: number; limit: number; search?: string; status: string },
+  query: { page: number; limit: number; search?: string; status: string; role?: string },
   db: PrismaClient
 ) {
-  const { page, limit, search, status } = query;
+  const { page, limit, search, status, role } = query;
   const skip = (page - 1) * limit;
 
   const where: any = {};
@@ -190,6 +190,10 @@ export async function listMembers(
       { name: { contains: search, mode: "insensitive" } },
       { email: { contains: search, mode: "insensitive" } },
     ];
+  }
+
+  if (role) {
+    where.role = role;
   }
 
   if (status && status !== "ALL") {

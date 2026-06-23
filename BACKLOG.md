@@ -1920,9 +1920,9 @@ All templates: club logo, responsive layout, unsubscribe footer (transactional e
 
 **Acceptance criteria:**
 
-- [ ] Cancelled deal shows cancellation reason in UI
-- [ ] Expiring deals (< 30 days) are visually highlighted
-- [ ] Owner select populates from list of ADMIN users
+- [x] Cancelled deal shows cancellation reason in UI
+- [x] Expiring deals (< 30 days) are visually highlighted
+- [x] Owner select populates from list of ADMIN users
 
 ---
 

@@ -139,6 +139,7 @@ export const SponsorshipDealResponseSchema = SponsorshipDealBaseSchema.extend({
   id: z.string().uuid(),
   createdAt: z.union([z.string(), z.date()]),
   updatedAt: z.union([z.string(), z.date()]),
+  deliverables: z.array(DeliverableResponseSchema).optional(),
 });
 
 export const SponsorshipDealWithPartnerResponseSchema = SponsorshipDealResponseSchema.extend({
