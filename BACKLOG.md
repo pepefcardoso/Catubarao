@@ -2166,8 +2166,8 @@ All templates: club logo, responsive layout, unsubscribe footer (transactional e
 
 **Acceptance criteria:**
 
-- [ ] Out-of-stock variant is selectable but CTA is disabled
-- [ ] Non-member trying to add a membersOnly product is shown the gate, not an error
+- [x] Out-of-stock variant is selectable but CTA is disabled
+- [x] Non-member trying to add a membersOnly product is shown the gate, not an error
 
 ---
 

@@ -8,3 +8,11 @@ export async function getProducts(): Promise<ProductResponse[]> {
     },
   });
 }
+
+export async function getProductById(id: string): Promise<ProductResponse> {
+  return apiFetch<ProductResponse>(`/store/products/${id}`, {
+    next: {
+      revalidate: 300, // 5 minutes
+    },
+  });
+}
