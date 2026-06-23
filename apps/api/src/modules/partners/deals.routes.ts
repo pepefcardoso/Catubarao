@@ -13,7 +13,12 @@ import {
   updateDeal,
   cancelDeal,
   getExpiringDeals,
+  getDealWithProofs,
 } from "./deals.service";
+import { renderToBuffer } from "@react-pdf/renderer";
+import { createElement } from "react";
+import { DeliveryProofReport } from "../../pdf/DeliveryProofReport";
+import { BadRequestError } from "../../lib/errors";
 
 export const dealsRoutes: FastifyPluginAsyncZod = async (fastify) => {
   fastify.get(
@@ -111,6 +116,51 @@ export const dealsRoutes: FastifyPluginAsyncZod = async (fastify) => {
         return reply.send(deals);
       }
       return reply.send([]);
+    }
+  );
+
+  fastify.get(
+    "/admin/deals/:id/proof-report.pdf",
+    {
+      preHandler: [fastify.authenticate, fastify.requireRole("ADMIN")],
+      schema: {
+        tags: ["deals"],
+        params: z.object({ id: z.string().uuid() }),
+      },
+    },
+    async (request, reply) => {
+      const deal = await getDealWithProofs(request.params.id, fastify.prisma);
+      
+      const totalProofs = deal.deliverables.reduce((acc, del) => acc + del.proofs.length, 0);
+      if (totalProofs === 0) {
+        throw new BadRequestError("Deal has no proof records");
+      }
+
+      const reportProps = {
+        partnerName: deal.partner.legalName,
+        dealStartDate: deal.startDate,
+        dealEndDate: deal.endDate,
+        deliverables: deal.deliverables.map(d => ({
+          id: d.id,
+          description: d.description,
+          frequency: d.frequency,
+          proofs: d.proofs.map(p => ({
+            id: p.id,
+            deliveredAt: p.deliveredAt,
+            evidenceType: p.evidenceType,
+            fileUrl: p.fileUrl,
+            linkUrl: p.linkUrl,
+            notes: p.notes,
+          })),
+        })),
+        generationDate: new Date(),
+      };
+
+      const buffer = await renderToBuffer(createElement(DeliveryProofReport, reportProps));
+      
+      reply.header("Content-Type", "application/pdf");
+      reply.header("Content-Disposition", `attachment; filename=relatorio-comprovacao-${deal.id}.pdf`);
+      return reply.send(buffer);
     }
   );
 };

@@ -73,3 +73,25 @@ export async function getExpiringDeals(days: number, db: PrismaClient) {
     orderBy: { endDate: "asc" },
   });
 }
+
+export async function getDealWithProofs(id: string, db: PrismaClient) {
+  const deal = await db.sponsorshipDeal.findUnique({
+    where: { id },
+    include: {
+      partner: true,
+      deliverables: {
+        include: {
+          proofs: {
+            orderBy: { deliveredAt: "desc" },
+          },
+        },
+      },
+    },
+  });
+
+  if (!deal) {
+    throw new NotFoundError("Deal not found");
+  }
+
+  return deal;
+}

@@ -6,6 +6,7 @@ import {
   NotFoundError,
   UnauthorizedError,
   ForbiddenError,
+  BadRequestError,
 } from "./errors";
 
 export function errorHandler(error: FastifyError, request: FastifyRequest, reply: FastifyReply) {
@@ -14,7 +15,8 @@ export function errorHandler(error: FastifyError, request: FastifyRequest, reply
     error instanceof ConflictError ||
     error instanceof NotFoundError ||
     error instanceof UnauthorizedError ||
-    error instanceof ForbiddenError
+    error instanceof ForbiddenError ||
+    error instanceof BadRequestError
   ) {
     return reply.status(error.statusCode).send({
       error: error.name,

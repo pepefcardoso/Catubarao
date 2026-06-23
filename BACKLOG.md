@@ -1845,10 +1845,10 @@ All templates: club logo, responsive layout, unsubscribe footer (transactional e
 
 **Acceptance criteria:**
 
-- [ ] `GET /admin/deals/:id/proof-report.pdf` with zero proofs returns `400`
-- [ ] Generated PDF is valid and opens without error
-- [ ] Photo evidence is embedded in PDF (not just a link)
-- [ ] Response header is `Content-Type: application/pdf; Content-Disposition: attachment; filename=...`
+- [x] `GET /admin/deals/:id/proof-report.pdf` with zero proofs returns `400`
+- [x] Generated PDF is valid and opens without error
+- [x] Photo evidence is embedded in PDF (not just a link)
+- [x] Response header is `Content-Type: application/pdf; Content-Disposition: attachment; filename=...`
 
 ---
 
