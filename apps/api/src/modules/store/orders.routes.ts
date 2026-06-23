@@ -16,6 +16,7 @@ export const ordersRoutes: FastifyPluginAsyncZod = async (fastify) => {
           201: z.object({
             orderId: z.string().uuid(),
             checkoutUrl: z.string().url().optional(),
+            preferenceId: z.string().optional(),
           }),
         },
       },

@@ -115,9 +115,9 @@ export async function createOrder(
     items: mpItems,
     external_reference: order.id,
     back_urls: {
-      success: `${env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/store/checkout/success?order_id=${order.id}`,
-      failure: `${env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/store/checkout/failure?order_id=${order.id}`,
-      pending: `${env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/store/checkout/pending?order_id=${order.id}`,
+      success: `${env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/checkout/success?order_id=${order.id}`,
+      failure: `${env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/checkout/failure?order_id=${order.id}`,
+      pending: `${env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/checkout/pending?order_id=${order.id}`,
     },
     auto_return: "approved",
   };
@@ -143,7 +143,8 @@ export async function createOrder(
 
   return {
     orderId: order.id,
-    checkoutUrl: preference.init_point
+    checkoutUrl: preference.init_point,
+    preferenceId: preference.id
   };
 }
 

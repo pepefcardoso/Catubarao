@@ -2190,9 +2190,9 @@ All templates: club logo, responsive layout, unsubscribe footer (transactional e
 
 **Acceptance criteria:**
 
-- [ ] CEP autocomplete fills address fields using ViaCEP
-- [ ] Logged-in member has email and name pre-filled
-- [ ] Successful payment redirects to order confirmation with correct order ID
+- [x] CEP autocomplete fills address fields using ViaCEP
+- [x] Logged-in member has email and name pre-filled
+- [x] Successful payment redirects to order confirmation with correct order ID
 
 ---
 
