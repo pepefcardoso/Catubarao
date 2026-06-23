@@ -13,6 +13,7 @@ import {
   updateDeal,
   cancelDeal,
   getExpiringDeals,
+  getActiveDeals,
   getDealWithProofs,
 } from "./deals.service";
 import { renderToBuffer } from "@react-pdf/renderer";
@@ -115,7 +116,8 @@ export const dealsRoutes: FastifyPluginAsyncZod = async (fastify) => {
         const deals = await getExpiringDeals(request.query.expiringWithinDays, fastify.prisma);
         return reply.send(deals);
       }
-      return reply.send([]);
+      const deals = await getActiveDeals(fastify.prisma);
+      return reply.send(deals);
     }
   );
 

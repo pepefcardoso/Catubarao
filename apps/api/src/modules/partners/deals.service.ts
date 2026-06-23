@@ -75,6 +75,18 @@ export async function getExpiringDeals(days: number, db: PrismaClient) {
   });
 }
 
+export async function getActiveDeals(db: PrismaClient) {
+  return db.sponsorshipDeal.findMany({
+    where: {
+      status: "ACTIVE",
+    },
+    include: {
+      partner: true,
+    },
+    orderBy: { createdAt: "desc" },
+  });
+}
+
 export async function getDealWithProofs(id: string, db: PrismaClient) {
   const deal = await db.sponsorshipDeal.findUnique({
     where: { id },

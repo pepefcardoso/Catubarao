@@ -10,11 +10,39 @@ export async function createDeliverable(dealId: string, input: Omit<CreateDelive
     throw new NotFoundError("Sponsorship deal not found");
   }
 
-  return db.deliverable.create({
-    data: {
-      ...input,
-      dealId,
-    },
+  return db.$transaction(async (tx) => {
+    const deliverable = await tx.deliverable.create({
+      data: {
+        ...input,
+        dealId,
+      },
+    });
+
+    if (input.frequency === "MENSAL") {
+      const start = new Date(deal.startDate);
+      const end = new Date(deal.endDate);
+      const pendingDeliveries = [];
+
+      let current = new Date(start.getFullYear(), start.getMonth(), 1);
+      const endLimit = new Date(end.getFullYear(), end.getMonth(), 1);
+
+      while (current <= endLimit) {
+        pendingDeliveries.push({
+          deliverableId: deliverable.id,
+          month: current.getMonth() + 1,
+          year: current.getFullYear(),
+        });
+        current.setMonth(current.getMonth() + 1);
+      }
+
+      if (pendingDeliveries.length > 0) {
+        await tx.pendingDelivery.createMany({
+          data: pendingDeliveries,
+        });
+      }
+    }
+
+    return deliverable;
   });
 }
 

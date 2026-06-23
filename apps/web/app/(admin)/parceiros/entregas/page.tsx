@@ -25,15 +25,19 @@ import {
   PendingDeliveryWithDetailsResponseSchema,
   DeliveryProofWithDetailsResponseSchema
 } from "@repo/schemas/partner";
-import { Building2, CheckCircle2, Clock, UploadCloud } from "lucide-react";
+import { Building2, CheckCircle2, Clock, UploadCloud, Briefcase, AlertCircle, CalendarRange } from "lucide-react";
 import { DeliveryProofSheet } from "../components/delivery-proof-sheet";
+import { SponsorshipDealWithPartnerResponseSchema } from "@repo/schemas/partner";
 
 type PendingDelivery = z.infer<typeof PendingDeliveryWithDetailsResponseSchema>;
 type CompletedDelivery = z.infer<typeof DeliveryProofWithDetailsResponseSchema>;
+type Deal = z.infer<typeof SponsorshipDealWithPartnerResponseSchema>;
 
 export default function DeliverablesDashboardPage() {
   const [pending, setPending] = useState<PendingDelivery[]>([]);
   const [completed, setCompleted] = useState<CompletedDelivery[]>([]);
+  const [activeDeals, setActiveDeals] = useState<Deal[]>([]);
+  const [expiringDeals, setExpiringDeals] = useState<Deal[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -43,15 +47,19 @@ export default function DeliverablesDashboardPage() {
   const fetchData = useCallback(async () => {
     try {
       setIsLoading(true);
-      const [pendingData, completedData] = await Promise.all([
+      const [pendingData, completedData, activeData, expiringData] = await Promise.all([
         apiFetch<PendingDelivery[]>("/admin/deliverables/pending"),
         apiFetch<CompletedDelivery[]>("/admin/deliverables/completed"),
+        apiFetch<Deal[]>("/admin/deals"),
+        apiFetch<Deal[]>("/admin/deals?expiringWithinDays=30"),
       ]);
       setPending(pendingData);
       setCompleted(completedData);
+      setActiveDeals(activeData);
+      setExpiringDeals(expiringData);
     } catch (err) {
       console.error(err);
-      toast.error("Erro ao carregar entregas.");
+      toast.error("Erro ao carregar dashboard.");
     } finally {
       setIsLoading(false);
     }
@@ -81,10 +89,40 @@ export default function DeliverablesDashboardPage() {
   return (
     <div className="flex flex-col gap-6 p-6">
       <div>
-        <h1 className="text-3xl font-bold tracking-tight">Dashboard de Entregas</h1>
+        <h1 className="text-3xl font-bold tracking-tight">Dashboard de Parcerias</h1>
         <p className="text-muted-foreground">
-          Acompanhe as entregas pendentes e concluídas de todos os negócios ativos.
+          Acompanhe o status dos acordos e as entregas pendentes.
         </p>
+      </div>
+
+      <div className="grid gap-4 md:grid-cols-3">
+        <div className="rounded-xl border bg-card text-card-foreground shadow">
+          <div className="p-6 flex flex-row items-center justify-between space-y-0 pb-2">
+            <h3 className="tracking-tight text-sm font-medium">Acordos Ativos</h3>
+            <Briefcase className="h-4 w-4 text-muted-foreground" />
+          </div>
+          <div className="p-6 pt-0">
+            {isLoading ? <Skeleton className="h-8 w-16" /> : <div className="text-2xl font-bold">{activeDeals.length}</div>}
+          </div>
+        </div>
+        <div className="rounded-xl border bg-card text-card-foreground shadow">
+          <div className="p-6 flex flex-row items-center justify-between space-y-0 pb-2">
+            <h3 className="tracking-tight text-sm font-medium">Entregas Pendentes</h3>
+            <Clock className="h-4 w-4 text-muted-foreground" />
+          </div>
+          <div className="p-6 pt-0">
+            {isLoading ? <Skeleton className="h-8 w-16" /> : <div className="text-2xl font-bold">{pending.length}</div>}
+          </div>
+        </div>
+        <div className="rounded-xl border bg-card text-card-foreground shadow">
+          <div className="p-6 flex flex-row items-center justify-between space-y-0 pb-2">
+            <h3 className="tracking-tight text-sm font-medium text-red-500">Próximos de Vencer (30d)</h3>
+            <AlertCircle className="h-4 w-4 text-red-500" />
+          </div>
+          <div className="p-6 pt-0">
+            {isLoading ? <Skeleton className="h-8 w-16" /> : <div className="text-2xl font-bold text-red-500">{expiringDeals.length}</div>}
+          </div>
+        </div>
       </div>
 
       <Tabs defaultValue="pendentes" className="w-full">
@@ -98,6 +136,11 @@ export default function DeliverablesDashboardPage() {
             <CheckCircle2 className="w-4 h-4" />
             Concluídas (Este Mês)
             <Badge variant="secondary" className="ml-2 bg-primary/10 text-primary">{completed.length}</Badge>
+          </TabsTrigger>
+          <TabsTrigger value="vencimento" className="flex items-center gap-2">
+            <CalendarRange className="w-4 h-4" />
+            Próximos de Vencer
+            <Badge variant="secondary" className="ml-2 bg-red-500/10 text-red-500">{expiringDeals.length}</Badge>
           </TabsTrigger>
         </TabsList>
 
@@ -233,6 +276,69 @@ export default function DeliverablesDashboardPage() {
                       <TableCell>{item.author.name}</TableCell>
                     </TableRow>
                   ))
+                )}
+              </TableBody>
+            </Table>
+          </div>
+        </TabsContent>
+
+        <TabsContent value="vencimento">
+          <div className="border rounded-md bg-card">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Parceiro</TableHead>
+                  <TableHead>Fim do Contrato</TableHead>
+                  <TableHead>Valor Financeiro</TableHead>
+                  <TableHead>Status</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {isLoading ? (
+                  Array.from({ length: 3 }).map((_, i) => (
+                    <TableRow key={i}>
+                      <TableCell><Skeleton className="h-5 w-32" /></TableCell>
+                      <TableCell><Skeleton className="h-5 w-24" /></TableCell>
+                      <TableCell><Skeleton className="h-5 w-24" /></TableCell>
+                      <TableCell><Skeleton className="h-6 w-20 rounded-full" /></TableCell>
+                    </TableRow>
+                  ))
+                ) : expiringDeals.length === 0 ? (
+                  <TableRow>
+                    <TableCell colSpan={4} className="h-48 text-center">
+                      <div className="flex flex-col items-center justify-center text-muted-foreground">
+                        <CheckCircle2 className="w-10 h-10 mb-4 opacity-50 text-emerald-500" />
+                        <p className="font-medium text-lg text-foreground">Nenhum vencimento próximo!</p>
+                        <p className="text-sm">Não há acordos vencendo nos próximos 30 dias.</p>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ) : (
+                  expiringDeals.map((deal) => {
+                    const daysRemaining = Math.ceil((new Date(deal.endDate).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24));
+                    return (
+                      <TableRow key={deal.id}>
+                        <TableCell className="font-medium">
+                          <div className="flex items-center gap-2">
+                            <Building2 className="w-4 h-4 text-muted-foreground" />
+                            {deal.partner.tradeName}
+                          </div>
+                        </TableCell>
+                        <TableCell>
+                          <div className="flex flex-col">
+                            <span>{new Date(deal.endDate).toLocaleDateString("pt-BR")}</span>
+                            <span className="text-xs text-red-500 font-medium">Vence em {daysRemaining} dias</span>
+                          </div>
+                        </TableCell>
+                        <TableCell>
+                          {deal.financialValue ? new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(deal.financialValue) : '-'}
+                        </TableCell>
+                        <TableCell>
+                          <Badge variant="outline" className="border-red-500/50 text-red-500 bg-red-500/10">Próximo do Vencimento</Badge>
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })
                 )}
               </TableBody>
             </Table>
