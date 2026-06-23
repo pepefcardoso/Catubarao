@@ -103,6 +103,9 @@ fastify.register(dealsRoutes);
 import { deliverablesRoutes } from "./modules/partners/deliverables.routes";
 fastify.register(deliverablesRoutes);
 
+import { productsRoutes } from "./modules/store/products.routes";
+fastify.register(productsRoutes);
+
 // Health check endpoint
 
 fastify.get("/health", async (request, reply) => {

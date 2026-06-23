@@ -2039,8 +2039,8 @@ All templates: club logo, responsive layout, unsubscribe footer (transactional e
 
 **Acceptance criteria:**
 
-- [ ] `GET /store/products` includes `membersOnly: true` products (with the flag) — they are visible to all; purchasability checked at checkout
-- [ ] Deactivating a product with open orders returns `409`
+- [x] `GET /store/products` includes `membersOnly: true` products (with the flag) — they are visible to all; purchasability checked at checkout
+- [x] Deactivating a product with open orders returns `409`
 
 ---
 
