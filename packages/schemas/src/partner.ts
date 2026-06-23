@@ -149,3 +149,25 @@ export const SponsorshipDealWithPartnerResponseSchema = SponsorshipDealResponseS
 export const PartnerWithDealsResponseSchema = PartnerResponseSchema.extend({
   deals: z.array(SponsorshipDealResponseSchema),
 });
+
+export const DeliverableWithDealResponseSchema = DeliverableResponseSchema.extend({
+  deal: SponsorshipDealWithPartnerResponseSchema,
+  owner: z.object({
+    id: z.string().uuid(),
+    name: z.string(),
+    email: z.string().email(),
+  }),
+});
+
+export const PendingDeliveryWithDetailsResponseSchema = PendingDeliveryResponseSchema.extend({
+  deliverable: DeliverableWithDealResponseSchema,
+});
+
+export const DeliveryProofWithDetailsResponseSchema = DeliveryProofResponseSchema.extend({
+  deliverable: DeliverableWithDealResponseSchema,
+  author: z.object({
+    id: z.string().uuid(),
+    name: z.string(),
+    email: z.string().email(),
+  }),
+});

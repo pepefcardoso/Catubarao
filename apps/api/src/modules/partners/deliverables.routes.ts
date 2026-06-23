@@ -4,16 +4,18 @@ import {
   CreateDeliverableBodySchema, 
   UpdateDeliverableSchema, 
   DeliverableResponseSchema, 
-  PendingDeliveryResponseSchema,
+  PendingDeliveryWithDetailsResponseSchema,
   GenerateProofUploadUrlSchema,
   UploadUrlResponseSchema,
   CreateDeliveryProofBodySchema,
-  DeliveryProofResponseSchema
+  DeliveryProofResponseSchema,
+  DeliveryProofWithDetailsResponseSchema
 } from "@repo/schemas/partner";
 import { 
   createDeliverable, 
   updateDeliverable, 
   getPendingDeliveries,
+  getCompletedDeliveries,
   generateProofUploadUrl,
   createDeliveryProof
 } from "./deliverables.service";
@@ -64,7 +66,7 @@ export const deliverablesRoutes: FastifyPluginAsyncZod = async (fastify) => {
       schema: {
         tags: ["partners"],
         response: {
-          200: z.array(PendingDeliveryResponseSchema),
+          200: z.array(PendingDeliveryWithDetailsResponseSchema),
         },
       },
       preHandler: [fastify.authenticate, fastify.requireRole("ADMIN")],
@@ -72,6 +74,23 @@ export const deliverablesRoutes: FastifyPluginAsyncZod = async (fastify) => {
     async (request, reply) => {
       const pending = await getPendingDeliveries(fastify.prisma);
       return reply.status(200).send(pending);
+    },
+  );
+
+  fastify.get(
+    "/admin/deliverables/completed",
+    {
+      schema: {
+        tags: ["partners"],
+        response: {
+          200: z.array(DeliveryProofWithDetailsResponseSchema),
+        },
+      },
+      preHandler: [fastify.authenticate, fastify.requireRole("ADMIN")],
+    },
+    async (request, reply) => {
+      const completed = await getCompletedDeliveries(fastify.prisma);
+      return reply.status(200).send(completed);
     },
   );
 

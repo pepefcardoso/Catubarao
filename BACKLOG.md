@@ -1944,8 +1944,8 @@ All templates: club logo, responsive layout, unsubscribe footer (transactional e
 
 **Acceptance criteria:**
 
-- [ ] Pendentes tab shows only current-period pending items (not future ones)
-- [ ] After registering delivery, item moves from Pendentes to Concluídas without page reload
+- [x] Pendentes tab shows only current-period pending items (not future ones)
+- [x] After registering delivery, item moves from Pendentes to Concluídas without page reload
 
 ---
 
