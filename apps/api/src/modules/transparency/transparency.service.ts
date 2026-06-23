@@ -86,10 +86,13 @@ export async function getPosts(
   const { page = 1, limit = 10, category, referenceYear, hasAttachment } = options;
   const skip = (page - 1) * limit;
 
-  const where = {
+  const where: any = {
     isArchived: false,
     supersededById: null,
-    scheduledFor: null,
+    OR: [
+      { scheduledFor: null },
+      { scheduledFor: { lte: new Date() } }
+    ],
     ...(category ? { category: Array.isArray(category) ? { in: category } : category } : {}),
     ...(referenceYear ? { referenceYear } : {}),
     ...(hasAttachment ? { attachmentUrl: { not: null } } : {}),
@@ -189,6 +192,23 @@ export async function updatePost(
 
     if (oldPost.supersededById) {
       throw new ConflictError("Cannot update a superseded post");
+    }
+
+    if (input.category === "BALANCO_MENSAL" && input.referenceMonth && input.referenceYear) {
+      const existing = await tx.transparencyPost.findFirst({
+        where: {
+          category: "BALANCO_MENSAL",
+          referenceMonth: input.referenceMonth,
+          referenceYear: input.referenceYear,
+          isArchived: false,
+          supersededById: null,
+          id: { not: id },
+        },
+      });
+
+      if (existing) {
+        throw new ConflictError("A BALANCO_MENSAL post for this month/year already exists.");
+      }
     }
 
     const newPost = await tx.transparencyPost.create({
