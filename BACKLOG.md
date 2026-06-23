@@ -2062,9 +2062,9 @@ All templates: club logo, responsive layout, unsubscribe footer (transactional e
 
 **Acceptance criteria:**
 
-- [ ] Two simultaneous requests for the last item: exactly one succeeds, the other gets `ConflictError`
-- [ ] Stock never goes below 0
-- [ ] Admin receives email when stock hits threshold
+- [x] Two simultaneous requests for the last item: exactly one succeeds, the other gets `ConflictError`
+- [x] Stock never goes below 0
+- [x] Admin receives email when stock hits threshold
 
 ---
 

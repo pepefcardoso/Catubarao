@@ -10,6 +10,7 @@ import { SuspensionEmail } from "../emails/SuspensionEmail";
 import { ReactivationEmail } from "../emails/ReactivationEmail";
 import { PollOpenEmail } from "../emails/PollOpenEmail";
 import { DealExpirationEmail } from "../emails/DealExpirationEmail";
+import { LowStockEmail } from "../emails/LowStockEmail";
 
 const templates: Record<string, React.FC<any>> = {
   DealExpirationEmail,
@@ -21,6 +22,7 @@ const templates: Record<string, React.FC<any>> = {
   SuspensionEmail,
   ReactivationEmail,
   PollOpenEmail,
+  LowStockEmail,
 };
 
 export interface SendEmailJobData {
