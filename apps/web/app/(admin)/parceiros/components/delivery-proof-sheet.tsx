@@ -5,12 +5,12 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-} from "@repo/ui/components/dialog";
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetDescription,
+} from "@repo/ui/components/sheet";
 import {
   Form,
   FormControl,
@@ -36,7 +36,7 @@ import { Loader2, Upload } from "lucide-react";
 
 type ProofFormValues = z.infer<typeof CreateDeliveryProofBodySchema>;
 
-interface DeliveryProofDialogProps {
+interface DeliveryProofSheetProps {
   deliverableId: string | null;
   matchEventId?: string | null;
   open: boolean;
@@ -44,15 +44,16 @@ interface DeliveryProofDialogProps {
   onSuccess: () => void;
 }
 
-export function DeliveryProofDialog({
+export function DeliveryProofSheet({
   deliverableId,
   matchEventId,
   open,
   onOpenChange,
   onSuccess,
-}: DeliveryProofDialogProps) {
+}: DeliveryProofSheetProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [file, setFile] = useState<File | null>(null);
+  const [uploadProgress, setUploadProgress] = useState(0);
 
   const form = useForm<ProofFormValues>({
     resolver: zodResolver(CreateDeliveryProofBodySchema),
@@ -72,7 +73,14 @@ export function DeliveryProofDialog({
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
-      setFile(e.target.files[0]);
+      const selectedFile = e.target.files[0];
+      if (selectedFile.size > 10 * 1024 * 1024) {
+        toast.error("O arquivo não pode ter mais de 10MB.");
+        e.target.value = "";
+        setFile(null);
+        return;
+      }
+      setFile(selectedFile);
     } else {
       setFile(null);
     }
@@ -92,6 +100,7 @@ export function DeliveryProofDialog({
 
     try {
       setIsSubmitting(true);
+      setUploadProgress(0);
       let fileUrl: string | null = null;
 
       // 1. Upload file if required
@@ -108,18 +117,34 @@ export function DeliveryProofDialog({
           }
         );
 
-        // Upload directly to R2
-        const uploadRes = await fetch(uploadInfo.uploadUrl, {
-          method: "PUT",
-          headers: {
-            "Content-Type": file.type || "application/octet-stream",
-          },
-          body: file,
-        });
+        // Upload directly to R2 with progress
+        await new Promise<void>((resolve, reject) => {
+          const xhr = new XMLHttpRequest();
+          xhr.open("PUT", uploadInfo.uploadUrl, true);
+          xhr.setRequestHeader("Content-Type", file.type || "application/octet-stream");
+          
+          xhr.upload.onprogress = (event) => {
+            if (event.lengthComputable) {
+              const percentComplete = (event.loaded / event.total) * 100;
+              setUploadProgress(percentComplete);
+            }
+          };
 
-        if (!uploadRes.ok) {
-          throw new Error("Falha ao fazer upload do arquivo.");
-        }
+          xhr.onload = () => {
+            if (xhr.status >= 200 && xhr.status < 300) {
+              setUploadProgress(100);
+              resolve();
+            } else {
+              reject(new Error("Falha ao fazer upload do arquivo."));
+            }
+          };
+
+          xhr.onerror = () => {
+            reject(new Error("Erro de rede ao fazer upload."));
+          };
+
+          xhr.send(file);
+        });
 
         fileUrl = `https://${process.env.NEXT_PUBLIC_R2_PUBLIC_DOMAIN}/${uploadInfo.key}`;
       }
@@ -137,28 +162,30 @@ export function DeliveryProofDialog({
       toast.success("Entrega registrada com sucesso!");
       form.reset();
       setFile(null);
+      setUploadProgress(0);
       onSuccess();
       onOpenChange(false);
     } catch (err: any) {
       console.error(err);
       toast.error(err.message || "Erro ao registrar entrega.");
+      setUploadProgress(0);
     } finally {
       setIsSubmitting(false);
     }
   };
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[425px]">
-        <DialogHeader>
-          <DialogTitle>Registrar Entrega</DialogTitle>
-          <DialogDescription>
+    <Sheet open={open} onOpenChange={onOpenChange}>
+      <SheetContent className="sm:max-w-[425px] overflow-y-auto">
+        <SheetHeader>
+          <SheetTitle>Registrar Entrega</SheetTitle>
+          <SheetDescription>
             Envie a evidência para comprovar a realização desta entrega.
-          </DialogDescription>
-        </DialogHeader>
+          </SheetDescription>
+        </SheetHeader>
 
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 mt-6">
             <FormField
               control={form.control}
               name="deliveredAt"
@@ -205,9 +232,22 @@ export function DeliveryProofDialog({
                     type="file" 
                     onChange={handleFileChange}
                     accept="image/jpeg,image/png,application/pdf"
+                    disabled={isSubmitting}
                   />
                 </div>
-                {file && <p className="text-xs text-muted-foreground">{file.name}</p>}
+                {file && <p className="text-xs text-muted-foreground">{file.name} ({(file.size / 1024 / 1024).toFixed(2)} MB)</p>}
+                
+                {isSubmitting && uploadProgress > 0 && uploadProgress < 100 && (
+                  <div className="space-y-1 mt-2">
+                    <div className="flex justify-between text-xs text-muted-foreground">
+                      <span>Enviando arquivo...</span>
+                      <span>{Math.round(uploadProgress)}%</span>
+                    </div>
+                    <div className="w-full bg-secondary rounded-full h-2">
+                      <div className="bg-primary h-2 rounded-full transition-all duration-300" style={{ width: `${uploadProgress}%` }} />
+                    </div>
+                  </div>
+                )}
               </div>
             )}
 
@@ -219,7 +259,7 @@ export function DeliveryProofDialog({
                   <FormItem>
                     <FormLabel>URL do Post / Notícia</FormLabel>
                     <FormControl>
-                      <Input placeholder="https://..." {...field} value={field.value || ""} />
+                      <Input placeholder="https://..." {...field} value={field.value || ""} disabled={isSubmitting} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -239,6 +279,7 @@ export function DeliveryProofDialog({
                       className="resize-none"
                       {...field}
                       value={field.value || ""}
+                      disabled={isSubmitting}
                     />
                   </FormControl>
                   <FormMessage />
@@ -256,13 +297,22 @@ export function DeliveryProofDialog({
                 Cancelar
               </Button>
               <Button type="submit" disabled={isSubmitting}>
-                {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                Registrar
+                {isSubmitting ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    {uploadProgress > 0 && uploadProgress < 100 ? "Enviando..." : "Processando..."}
+                  </>
+                ) : (
+                  <>
+                    <Upload className="mr-2 h-4 w-4" />
+                    Registrar
+                  </>
+                )}
               </Button>
             </div>
           </form>
         </Form>
-      </DialogContent>
-    </Dialog>
+      </SheetContent>
+    </Sheet>
   );
 }

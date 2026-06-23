@@ -23,6 +23,7 @@ export function DealCard({ deal, onRefresh }: DealCardProps) {
   const [isCancelDialogOpen, setIsCancelDialogOpen] = useState(false);
   const [cancellationReason, setCancellationReason] = useState("");
   const [isCancelling, setIsCancelling] = useState(false);
+  const [isExportingPdf, setIsExportingPdf] = useState(false);
 
   const isExpiringSoon = () => {
     if (deal.status !== "ACTIVE") return false;
@@ -52,6 +53,40 @@ export function DealCard({ deal, onRefresh }: DealCardProps) {
       toast.error("Erro ao cancelar acordo.");
     } finally {
       setIsCancelling(false);
+    }
+  };
+
+  const handleExportPdf = async () => {
+    try {
+      setIsExportingPdf(true);
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3333';
+      const response = await fetch(`${apiUrl}/admin/deals/${deal.id}/proof-report.pdf`, {
+        credentials: "include",
+      });
+      
+      if (!response.ok) {
+        if (response.status === 400) {
+          toast.error("Não é possível exportar: este acordo não possui entregas comprovadas.");
+        } else {
+          toast.error("Erro ao gerar relatório PDF.");
+        }
+        return;
+      }
+      
+      const blob = await response.blob();
+      const downloadUrl = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = downloadUrl;
+      a.download = `relatorio-entregas-${deal.id}.pdf`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(downloadUrl);
+    } catch (err) {
+      console.error(err);
+      toast.error("Erro ao gerar relatório PDF.");
+    } finally {
+      setIsExportingPdf(false);
     }
   };
 
@@ -147,10 +182,15 @@ export function DealCard({ deal, onRefresh }: DealCardProps) {
         {/* Expandable Deliverables Section */}
         {isExpanded && (
           <div className="border-t bg-muted/20 p-5">
-            <h5 className="font-semibold text-sm mb-3 flex items-center gap-2">
-              <FileText className="w-4 h-4" />
-              Entregáveis ({deal.deliverables?.length || 0})
-            </h5>
+            <div className="flex items-center justify-between mb-3">
+              <h5 className="font-semibold text-sm flex items-center gap-2">
+                <FileText className="w-4 h-4" />
+                Entregáveis ({deal.deliverables?.length || 0})
+              </h5>
+              <Button size="sm" variant="outline" onClick={handleExportPdf} disabled={isExportingPdf}>
+                {isExportingPdf ? "Exportando..." : "Exportar Relatório PDF"}
+              </Button>
+            </div>
             
             {!deal.deliverables || deal.deliverables.length === 0 ? (
               <p className="text-sm text-muted-foreground text-center py-4 bg-background rounded-md border border-dashed">

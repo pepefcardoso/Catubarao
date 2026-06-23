@@ -1967,10 +1967,10 @@ All templates: club logo, responsive layout, unsubscribe footer (transactional e
 
 **Acceptance criteria:**
 
-- [ ] File upload shows progress (0–100%)
-- [ ] Upload of >10MB file shows error before attempting upload
-- [ ] PDF download triggers browser file save dialog
-- [ ] Attempting PDF with no proofs shows clear error message
+- [x] File upload shows progress (0–100%)
+- [x] Upload of >10MB file shows error before attempting upload
+- [x] PDF download triggers browser file save dialog
+- [x] Attempting PDF with no proofs shows clear error message
 
 ---
 

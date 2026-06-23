@@ -26,7 +26,7 @@ import {
   DeliveryProofWithDetailsResponseSchema
 } from "@repo/schemas/partner";
 import { Building2, CheckCircle2, Clock, UploadCloud } from "lucide-react";
-import { DeliveryProofDialog } from "../components/delivery-proof-dialog";
+import { DeliveryProofSheet } from "../components/delivery-proof-sheet";
 
 type PendingDelivery = z.infer<typeof PendingDeliveryWithDetailsResponseSchema>;
 type CompletedDelivery = z.infer<typeof DeliveryProofWithDetailsResponseSchema>;
@@ -152,7 +152,7 @@ export default function DeliverablesDashboardPage() {
                         <div className="flex flex-col">
                           <span className="text-sm">{item.deliverable.frequency}</span>
                           <span className="text-xs text-muted-foreground">
-                            {item.matchEventId ? "Jogo Específico" : item.month && item.year ? \`\${item.month}/\${item.year}\` : "Única"}
+                            {item.matchEventId ? "Jogo Específico" : item.month && item.year ? `${item.month}/${item.year}` : "Única"}
                           </span>
                         </div>
                       </TableCell>
@@ -240,7 +240,7 @@ export default function DeliverablesDashboardPage() {
         </TabsContent>
       </Tabs>
 
-      <DeliveryProofDialog
+      <DeliveryProofSheet
         open={dialogOpen}
         onOpenChange={setDialogOpen}
         deliverableId={selectedDeliverableId}
