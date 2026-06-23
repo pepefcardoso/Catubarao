@@ -53,9 +53,10 @@ export async function getPosts(
     limit?: number;
     category?: TransparencyCategory | TransparencyCategory[];
     referenceYear?: number;
+    hasAttachment?: boolean;
   } = {}
 ) {
-  const { page = 1, limit = 10, category, referenceYear } = options;
+  const { page = 1, limit = 10, category, referenceYear, hasAttachment } = options;
   const skip = (page - 1) * limit;
 
   const where = {
@@ -64,6 +65,7 @@ export async function getPosts(
     scheduledFor: null,
     ...(category ? { category: Array.isArray(category) ? { in: category } : category } : {}),
     ...(referenceYear ? { referenceYear } : {}),
+    ...(hasAttachment ? { attachmentUrl: { not: null } } : {}),
   };
 
   const [posts, total] = await Promise.all([

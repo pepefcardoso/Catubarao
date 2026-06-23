@@ -1610,8 +1610,8 @@ All templates: club logo, responsive layout, unsubscribe footer (transactional e
 
 **Acceptance criteria:**
 
-- [ ] Search filters results as user types (no debounce needed — client-side)
-- [ ] Download link opens the file directly (not a redirect chain)
+- [x] Search filters results as user types (no debounce needed — client-side)
+- [x] Download link opens the file directly (not a redirect chain)
 
 ---
 
