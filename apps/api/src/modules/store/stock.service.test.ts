@@ -33,9 +33,9 @@ describe("Stock Service", () => {
       },
     });
 
-    await decrementStock(variant.id, 3, prisma);
+    await decrementStock(product.id, 3, prisma);
 
-    const check = await checkStock(variant.id, prisma);
+    const check = await checkStock(product.id, prisma);
     expect(check).toBe(7);
   });
 
@@ -59,7 +59,7 @@ describe("Stock Service", () => {
       },
     });
 
-    await expect(decrementStock(variant.id, 2, prisma)).rejects.toThrow(ConflictError);
+    await expect(decrementStock(product.id, 2, prisma)).rejects.toThrow(ConflictError);
   });
 
   it("should enqueue alert email when stock hits threshold", async () => {
@@ -89,7 +89,7 @@ describe("Stock Service", () => {
     };
 
     // Decrement from 5 to 2
-    await decrementStock(variant.id, 3, prisma, queues);
+    await decrementStock(product.id, 3, prisma, queues);
 
     expect(queues.email.add).toHaveBeenCalledWith("send-email", expect.objectContaining({
       template: "LowStockEmail",
@@ -116,9 +116,9 @@ describe("Stock Service", () => {
       },
     });
 
-    await incrementStock(variant.id, 5, prisma);
+    await incrementStock(product.id, 5, prisma);
 
-    const check = await checkStock(variant.id, prisma);
+    const check = await checkStock(product.id, prisma);
     expect(check).toBe(5);
   });
 
@@ -140,10 +140,10 @@ describe("Stock Service", () => {
       },
     });
 
-    await decrementStock(variant.id, 100, prisma);
-    await incrementStock(variant.id, 50, prisma);
+    await decrementStock(product.id, 100, prisma);
+    await incrementStock(product.id, 50, prisma);
 
-    const check = await checkStock(variant.id, prisma);
+    const check = await checkStock(product.id, prisma);
     expect(check).toBe(Number.POSITIVE_INFINITY);
   });
 });

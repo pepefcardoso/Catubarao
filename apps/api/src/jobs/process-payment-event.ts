@@ -10,9 +10,7 @@ export async function processPaymentEventJob(job: Job) {
   const paymentId = String(data.id);
 
   if (type !== "payment.created" && type !== "payment.updated") {
-    // Only process payment updates, but Mercado Pago sends "payment" topic actions.
-    // The spec specifically handles payment.approved, payment.rejected, etc. but those are statuses.
-    // The webhook type from MP is typically 'payment' or 'plan', and action is 'payment.created' or 'payment.updated'.
+    // Only process payment updates
   }
 
   // Fetch payment from MP
@@ -33,25 +31,61 @@ export async function processPaymentEventJob(job: Job) {
   else if (mpStatus === "rejected" || mpStatus === "cancelled") mappedStatus = "FAILED";
   else if (mpStatus === "refunded") mappedStatus = "REFUNDED";
 
-  const mappedMethod = mpPayment.payment_type_id === "ticket" || mpPayment.payment_type_id === "bank_transfer" ? "PIX" : "CREDIT_CARD"; // Assuming PIX falls under bank_transfer/ticket in MP logic for BR
-
-  const preapprovalId = mpPayment.metadata?.subscription_id || mpPayment.external_reference || null;
+  const mappedMethod = mpPayment.payment_type_id === "ticket" || mpPayment.payment_type_id === "bank_transfer" ? "PIX" : "CREDIT_CARD";
 
   const existingPayment = await prisma.payment.findUnique({
     where: { gatewayPaymentId: paymentId }
   });
 
   if (existingPayment && existingPayment.status === mappedStatus) {
-    // Already processed this exact status for this payment, return early to avoid duplicate emails/events
     return;
   }
 
   let subscriptionId: string | undefined;
-
   let subStatusBeforeUpdate: string | undefined;
+  let orderId: string | undefined;
 
-  // If there's a preapproval, find the subscription
-  if (preapprovalId) {
+  if (mpPayment.external_reference) {
+    const order = await prisma.order.findUnique({
+      where: { id: mpPayment.external_reference },
+      include: { items: true }
+    });
+    if (order) {
+      orderId = order.id;
+
+      if (mappedStatus === "PAID" && order.status !== "PAGO") {
+        await prisma.order.update({
+          where: { id: order.id },
+          data: { status: "PAGO" }
+        });
+
+        const { Queue } = await import("bullmq");
+        const { env } = await import("../lib/env.js");
+        const emailQueue = new Queue("email", { 
+          connection: { host: env.REDIS_HOST, port: Number(env.REDIS_PORT) } 
+        });
+
+        const { decrementStock } = await import("../modules/store/stock.service.js");
+        for (const item of order.items) {
+           try {
+              await decrementStock(item.productId, item.quantity, prisma, { email: emailQueue });
+           } catch (err) {
+              console.error("Failed to decrement stock for item", item.id, err);
+           }
+        }
+        await emailQueue.close();
+      } else if ((mappedStatus === "FAILED" || mappedStatus === "REFUNDED") && order.status !== "CANCELADO") {
+        await prisma.order.update({
+          where: { id: order.id },
+          data: { status: "CANCELADO" }
+        });
+      }
+    }
+  }
+
+  const preapprovalId = mpPayment.metadata?.subscription_id || (!orderId ? mpPayment.external_reference : null);
+
+  if (!orderId && preapprovalId) {
     const sub = await prisma.subscription.findFirst({
       where: { gatewaySubscriptionId: preapprovalId }
     });
@@ -59,7 +93,6 @@ export async function processPaymentEventJob(job: Job) {
       subscriptionId = sub.id;
       subStatusBeforeUpdate = sub.status;
 
-      // Update subscription status if necessary
       if (mappedStatus === "PAID") {
         await updateSubscriptionStatus(sub.id, "ACTIVE", prisma);
       } else if (mappedStatus === "FAILED" || mappedStatus === "REFUNDED") {
@@ -68,7 +101,6 @@ export async function processPaymentEventJob(job: Job) {
     }
   }
 
-  // Enqueue emails if this is a PAID event and there's a subscription
   if (mappedStatus === "PAID" && subscriptionId) {
     const sub = await prisma.subscription.findUnique({
       where: { id: subscriptionId },
@@ -90,7 +122,6 @@ export async function processPaymentEventJob(job: Job) {
       });
 
       if (!previousPaid) {
-        // It's the first paid payment for this member! Enqueue welcome email.
         await emailQueue.add("send-welcome", { 
           to: sub.member.email, 
           subject: "Bem-vindo ao Sócio-Torcedor Tubarão!",
@@ -102,7 +133,6 @@ export async function processPaymentEventJob(job: Job) {
           }
         });
 
-        // Award referral points if referred by someone
         if (sub.member.referredById) {
           try {
             await recordGamificationEvent(
@@ -136,7 +166,6 @@ export async function processPaymentEventJob(job: Job) {
       
       await emailQueue.close();
 
-      // Invalidate stats:members cache
       const redis = new Redis({
         host: env.REDIS_HOST,
         port: Number(env.REDIS_PORT)
@@ -146,7 +175,6 @@ export async function processPaymentEventJob(job: Job) {
     }
   }
 
-  // Upsert Payment record using gatewayPaymentId
   await prisma.payment.upsert({
     where: { gatewayPaymentId: paymentId },
     create: {
@@ -155,6 +183,7 @@ export async function processPaymentEventJob(job: Job) {
       status: mappedStatus,
       method: mappedMethod,
       subscriptionId,
+      orderId,
       paidAt: mappedStatus === "PAID" ? new Date() : null,
     },
     update: {

@@ -2,26 +2,17 @@ import type { PrismaClient } from "@repo/db";
 import { ConflictError, NotFoundError } from "../../lib/errors";
 
 export async function decrementStock(
-  variantId: string,
+  productId: string,
   quantity: number,
   db: PrismaClient,
   queues?: any,
 ) {
   await db.$transaction(async (tx) => {
-    const variant = await tx.productVariant.findUnique({
-      where: { id: variantId },
-      select: { productId: true },
-    });
-
-    if (!variant) {
-      throw new NotFoundError("Variant not found");
-    }
-
     // Lock the product row
     const products: any[] = await tx.$queryRaw`
       SELECT id, "stockType", "stockQuantity", "stockAlertThreshold", "name"
       FROM products
-      WHERE id = ${variant.productId}::uuid
+      WHERE id = ${productId}::uuid
       FOR UPDATE
     `;
 
@@ -70,24 +61,15 @@ export async function decrementStock(
 }
 
 export async function incrementStock(
-  variantId: string,
+  productId: string,
   quantity: number,
   db: PrismaClient,
 ) {
   await db.$transaction(async (tx) => {
-    const variant = await tx.productVariant.findUnique({
-      where: { id: variantId },
-      select: { productId: true },
-    });
-
-    if (!variant) {
-      throw new NotFoundError("Variant not found");
-    }
-
     const products: any[] = await tx.$queryRaw`
       SELECT id, "stockType"
       FROM products
-      WHERE id = ${variant.productId}::uuid
+      WHERE id = ${productId}::uuid
       FOR UPDATE
     `;
 
@@ -109,19 +91,18 @@ export async function incrementStock(
   });
 }
 
-export async function checkStock(variantId: string, db: PrismaClient) {
-  const variant = await db.productVariant.findUnique({
-    where: { id: variantId },
-    include: { product: true },
+export async function checkStock(productId: string, db: PrismaClient) {
+  const product = await db.product.findUnique({
+    where: { id: productId },
   });
 
-  if (!variant) {
-    throw new NotFoundError("Variant not found");
+  if (!product) {
+    throw new NotFoundError("Product not found");
   }
 
-  if (variant.product.stockType === "SOB_DEMANDA") {
+  if (product.stockType === "SOB_DEMANDA") {
     return Number.POSITIVE_INFINITY;
   }
 
-  return variant.product.stockQuantity || 0;
+  return product.stockQuantity || 0;
 }

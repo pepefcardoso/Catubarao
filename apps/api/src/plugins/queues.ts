@@ -79,6 +79,10 @@ export default fp(
             const { checkExpiringDealsJob } = await import("../jobs/check-expiring-deals.js");
             return checkExpiringDealsJob(job, fastify);
           }
+          if (job.name === "cancel-abandoned-order") {
+            const { cancelAbandonedOrderJob } = await import("../jobs/cancel-abandoned-order.js");
+            return cancelAbandonedOrderJob(job);
+          }
         },
         { connection },
       ),

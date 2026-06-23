@@ -2088,10 +2088,10 @@ All templates: club logo, responsive layout, unsubscribe footer (transactional e
 
 **Acceptance criteria:**
 
-- [ ] Guest can order non-membersOnly items without auth
-- [ ] MembersOnly item without ACTIVE subscription returns `403`
-- [ ] Out-of-stock variant returns `409`
-- [ ] Abandoned order (no payment in 30min) cancels the order (no stock release needed)
+- [x] Guest can order non-membersOnly items without auth
+- [x] MembersOnly item without ACTIVE subscription returns `403`
+- [x] Out-of-stock variant returns `409`
+- [x] Abandoned order (no payment in 30min) cancels the order (no stock release needed)
 
 ---
 
