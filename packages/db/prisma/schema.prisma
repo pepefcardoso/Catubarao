@@ -450,9 +450,22 @@ model SponsorshipDeal {
   partner      Partner       @relation(fields: [partnerId], references: [id], onDelete: Cascade)
   owner        Member        @relation("DealOwner", fields: [ownerId], references: [id])
   deliverables Deliverable[]
+  alerts       DealAlert[]   @relation("DealAlerts")
 
   @@index([endDate])
   @@map("sponsorship_deals")
+}
+
+model DealAlert {
+  id        String   @id @default(uuid())
+  dealId    String
+  type      String
+  sentAt    DateTime @default(now())
+
+  deal      SponsorshipDeal @relation("DealAlerts", fields: [dealId], references: [id], onDelete: Cascade)
+
+  @@unique([dealId, type])
+  @@map("deal_alerts")
 }
 
 model Deliverable {

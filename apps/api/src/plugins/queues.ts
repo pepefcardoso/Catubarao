@@ -75,6 +75,10 @@ export default fp(
             const { publishScheduledPostJob } = await import("../jobs/publish-scheduled-post.js");
             return publishScheduledPostJob(job);
           }
+          if (job.name === "check-expiring-deals") {
+            const { checkExpiringDealsJob } = await import("../jobs/check-expiring-deals.js");
+            return checkExpiringDealsJob(job, fastify);
+          }
         },
         { connection },
       ),
@@ -141,6 +145,18 @@ export default fp(
             pattern: "0 10 1 * *",
           },
           jobId: "create-debt-snapshot-job",
+        }
+      );
+
+      await queues.scheduled.add(
+        "check-expiring-deals",
+        {},
+        {
+          repeat: {
+            pattern: "0 9 * * *",
+            tz: "America/Sao_Paulo",
+          },
+          jobId: "check-expiring-deals-job",
         }
       );
     });

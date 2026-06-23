@@ -9,8 +9,10 @@ import { DelinquencyD15Email } from "../emails/DelinquencyD15Email";
 import { SuspensionEmail } from "../emails/SuspensionEmail";
 import { ReactivationEmail } from "../emails/ReactivationEmail";
 import { PollOpenEmail } from "../emails/PollOpenEmail";
+import { DealExpirationEmail } from "../emails/DealExpirationEmail";
 
 const templates: Record<string, React.FC<any>> = {
+  DealExpirationEmail,
   WelcomeEmail,
   PaymentConfirmedEmail,
   DelinquencyD1Email,

@@ -1869,9 +1869,9 @@ All templates: club logo, responsive layout, unsubscribe footer (transactional e
 
 **Acceptance criteria:**
 
-- [ ] Alert for D-30 is sent only once per deal (even if job runs multiple times)
-- [ ] D-15 alert is sent even if D-30 was already sent (separate alert type)
-- [ ] Email contains correct deal details and renewal link
+- [x] Alert for D-30 is sent only once per deal (even if job runs multiple times)
+- [x] D-15 alert is sent even if D-30 was already sent (separate alert type)
+- [x] Email contains correct deal details and renewal link
 
 ---
 
