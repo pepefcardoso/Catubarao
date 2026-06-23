@@ -1,10 +1,13 @@
 import { DebtDashboard } from "./components/DebtDashboard";
 
-export const metadata = {
-  title: "Painel de Dívidas | Portal de Transparência",
-  description: "Acompanhe a reestruturação e as dívidas do Clube Atlético Tubarão.",
-};
+import { Metadata } from "next";
 
+export async function generateMetadata(): Promise<Metadata> {
+  return {
+    title: "Painel de Dívidas | Portal de Transparência",
+    description: "Acompanhe a reestruturação e as dívidas do Clube Atlético Tubarão.",
+  };
+}
 export default function DividasPage() {
   return (
     <div className="min-h-screen pb-20 bg-background">

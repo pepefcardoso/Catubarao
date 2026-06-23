@@ -6,8 +6,16 @@ import { apiFetch } from "@/lib/api";
 import { DebtRecordResponse, TransparencyPostResponse } from "@repo/schemas/transparency";
 import { FileText, ArrowRight, TrendingDown, DollarSign, Handshake } from "lucide-react";
 
-export const revalidate = 300; // 5 minutes
+import { Metadata } from "next";
 
+export async function generateMetadata(): Promise<Metadata> {
+  return {
+    title: "Portal de Transparência | Clube Atlético Tubarão",
+    description: "Acompanhe de perto a reestruturação e as contas do Clube Atlético Tubarão.",
+  };
+}
+
+export const revalidate = 300; // 5 minutes
 async function getDebts() {
   try {
     const res = await apiFetch<Record<string, DebtRecordResponse[]>>(`${env.NEXT_PUBLIC_API_URL}/transparency/debts`);

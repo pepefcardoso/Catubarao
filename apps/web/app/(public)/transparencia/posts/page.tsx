@@ -10,6 +10,15 @@ import { FileText } from "lucide-react";
 import Link from "next/link";
 import { Skeleton } from "@repo/ui/components/skeleton";
 
+import { Metadata } from "next";
+
+export async function generateMetadata(): Promise<Metadata> {
+  return {
+    title: "Documentos e Relatórios | Portal de Transparência",
+    description: "Acesse todos os balanços, atas e documentos publicados pelo Clube Atlético Tubarão.",
+  };
+}
+
 export const revalidate = 0; // Dynamic route
 
 const CATEGORY_LABELS: Record<string, string> = {

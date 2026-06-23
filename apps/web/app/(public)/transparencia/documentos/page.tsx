@@ -3,11 +3,14 @@ import { env } from "@/lib/env";
 import { TransparencyPostResponse } from "@repo/schemas/transparency";
 import DocumentList from "./document-list";
 
-export const metadata = {
-  title: "Documentos e Balanços | Portal de Transparência | Tubarão SAF",
-  description: "Consulte os documentos públicos, atas e balanços do Clube Atlético Tubarão.",
-};
+import { Metadata } from "next";
 
+export async function generateMetadata(): Promise<Metadata> {
+  return {
+    title: "Documentos e Balanços | Portal de Transparência | Tubarão SAF",
+    description: "Consulte os documentos públicos, atas e balanços do Clube Atlético Tubarão.",
+  };
+}
 export default async function DocumentosPage() {
   // Fetch up to 1000 posts that have attachments
   const res = await apiFetch<{ posts: TransparencyPostResponse[] }>(

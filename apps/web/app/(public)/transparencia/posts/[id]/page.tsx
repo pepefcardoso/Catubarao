@@ -52,6 +52,9 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
     openGraph: {
       title: post.title,
       description,
+      type: "article",
+      url: `${env.NEXT_PUBLIC_APP_URL}/transparencia/posts/${post.id}`,
+      siteName: "Clube Atlético Tubarão SAF",
     },
   };
 }

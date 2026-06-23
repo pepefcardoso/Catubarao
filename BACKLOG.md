@@ -1680,9 +1680,9 @@ All templates: club logo, responsive layout, unsubscribe footer (transactional e
 
 **Acceptance criteria:**
 
-- [ ] `GET /sitemap.xml` returns valid XML including at least one transparency post URL
-- [ ] `GET /robots.txt` disallows `/admin` and `/member` paths
-- [ ] OG title and description are correct for a post detail page
+- [x] `GET /sitemap.xml` returns valid XML including at least one transparency post URL
+- [x] `GET /robots.txt` disallows `/admin` and `/member` paths
+- [x] OG title and description are correct for a post detail page
 
 ---
 

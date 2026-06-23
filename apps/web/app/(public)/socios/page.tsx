@@ -3,10 +3,12 @@ import { LiveCounter } from "./live-counter";
 import { env } from "@/lib/env";
 import { StatsMembersResponse } from "@repo/schemas/stats";
 
-export const metadata: Metadata = {
-  title: "Sócio-Torcedor - Clube Atlético Tubarão",
-  description: "Acompanhe nossos sócios em tempo real e ajude o Tubarão a bater as metas!",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  return {
+    title: "Sócio-Torcedor - Clube Atlético Tubarão",
+    description: "Acompanhe nossos sócios em tempo real e ajude o Tubarão a bater as metas!",
+  };
+}
 
 export default async function SociosPage() {
   // Fetch initial data for SSR
