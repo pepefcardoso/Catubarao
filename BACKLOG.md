@@ -1584,11 +1584,11 @@ All templates: club logo, responsive layout, unsubscribe footer (transactional e
 
 **Acceptance criteria:**
 
-- [ ] Chart renders with correct dates and values from snapshots
-- [ ] Table sorts by status (ATRASADO first)
-- [ ] Page renders with no chart if fewer than 2 snapshots exist (empty state)
-- [ ] Dashboard shows a skeleton loader while fetching data
-- [ ] Dashboard shows a dedicated empty state component when no data is available
+- [x] Chart renders with correct dates and values from snapshots
+- [x] Table sorts by status (ATRASADO first)
+- [x] Page renders with no chart if fewer than 2 snapshots exist (empty state)
+- [x] Dashboard shows a skeleton loader while fetching data
+- [x] Dashboard shows a dedicated empty state component when no data is available
 
 ---
 
