@@ -14,6 +14,7 @@ export const adminNavItems = [
   { name: "Eventos", href: "/admin/eventos", icon: Calendar },
   { name: "Financeiro", href: "/admin/finance", icon: Receipt },
   { name: "Transparência", href: "/admin/transparency", icon: Shield },
+  { name: "Parceiros", href: "/parceiros", icon: Shield },
   { name: "Configurações", href: "/admin/settings", icon: Settings },
 ];
 

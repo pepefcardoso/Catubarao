@@ -1893,10 +1893,10 @@ All templates: club logo, responsive layout, unsubscribe footer (transactional e
 
 **Acceptance criteria:**
 
-- [ ] Active deals count is correct for each partner
-- [ ] Cancelled partners appear with visual distinction (muted row)
-- [ ] Partner list shows a skeleton loader while fetching data
-- [ ] Partner list shows a dedicated empty state component when no partners exist
+- [x] Active deals count is correct for each partner
+- [x] Cancelled partners appear with visual distinction (muted row)
+- [x] Partner list shows a skeleton loader while fetching data
+- [x] Partner list shows a dedicated empty state component when no partners exist
 
 ---
 

@@ -26,6 +26,7 @@ export const PartnerResponseSchema = CreatePartnerSchema.extend({
   id: z.string().uuid(),
   createdAt: z.union([z.string(), z.date()]),
   updatedAt: z.union([z.string(), z.date()]),
+  activeDealsCount: z.number().optional(),
 });
 
 // --- SPONSORSHIP DEAL ---

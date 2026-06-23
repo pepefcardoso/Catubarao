@@ -14,12 +14,20 @@ export async function getPartners(db: PrismaClient, query: { page: number; limit
       skip,
       take: limit,
       orderBy: { createdAt: "desc" },
+      include: {
+        _count: {
+          select: { deals: { where: { status: "ACTIVE" } } },
+        },
+      },
     }),
     db.partner.count({ where }),
   ]);
 
   return {
-    partners,
+    partners: partners.map(p => ({
+      ...p,
+      activeDealsCount: p._count.deals,
+    })),
     total,
     page,
     limit,
