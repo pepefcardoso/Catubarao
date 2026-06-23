@@ -2139,11 +2139,11 @@ All templates: club logo, responsive layout, unsubscribe footer (transactional e
 
 **Acceptance criteria:**
 
-- [ ] MembersOnly products are visible with badge (not hidden)
-- [ ] Out-of-stock variants are visually distinct
-- [ ] ISR serves cached version to most users
-- [ ] Catalog shows a skeleton loader while fetching data
-- [ ] Catalog shows a dedicated empty state component when no products match filters
+- [x] MembersOnly products are visible with badge (not hidden)
+- [x] Out-of-stock variants are visually distinct
+- [x] ISR serves cached version to most users
+- [x] Catalog shows a skeleton loader while fetching data
+- [x] Catalog shows a dedicated empty state component when no products match filters
 
 ---
 
