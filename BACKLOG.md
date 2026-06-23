@@ -2016,8 +2016,8 @@ All templates: club logo, responsive layout, unsubscribe footer (transactional e
 
 **Acceptance criteria:**
 
-- [ ] `CreateOrderSchema.parse({ items: [] })` throws
-- [ ] `CreateOrderSchema.parse({ items: [{ quantity: 0 }] })` throws
+- [x] `CreateOrderSchema.parse({ items: [] })` throws
+- [x] `CreateOrderSchema.parse({ items: [{ quantity: 0 }] })` throws
 
 ---
 

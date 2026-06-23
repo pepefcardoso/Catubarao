@@ -5,3 +5,4 @@ export * from "./stats";
 export * from "./events";
 export * from "./transparency";
 export * from "./partner";
+export * from "./store";
