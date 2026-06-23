@@ -1,6 +1,6 @@
 import type { FastifyPluginAsyncZod } from "fastify-type-provider-zod";
 import { CreateOrderSchema, UpdateOrderStatusSchema, OrderResponseSchema } from "@repo/schemas/store";
-import { createOrder, updateOrderStatus, getOrderHistory, getOrderById } from "./orders.service";
+import { createOrder, updateOrderStatus, getOrderHistory, getOrderById, getAllOrders } from "./orders.service";
 import { auth } from "../../lib/auth";
 import { fromNodeHeaders } from "better-auth/node";
 import { z } from "zod";
@@ -30,6 +30,27 @@ export const ordersRoutes: FastifyPluginAsyncZod = async (fastify) => {
 
       const result = await createOrder(request.body, memberId, fastify.prisma, fastify.queues);
       return reply.status(201).send(result);
+    },
+  );
+
+  fastify.get(
+    "/",
+    {
+      preHandler: [fastify.authenticate, fastify.requireRole("ADMIN")],
+      schema: {
+        tags: ["store", "admin"],
+        querystring: z.object({
+          status: z.string().optional(),
+        }),
+        response: {
+          200: z.array(OrderResponseSchema),
+        },
+      },
+    },
+    async (request, reply) => {
+      const { status } = request.query as { status?: string };
+      const orders = await getAllOrders(fastify.prisma, status);
+      return reply.status(200).send(orders as any);
     },
   );
 

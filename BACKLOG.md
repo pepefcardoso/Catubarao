@@ -2261,11 +2261,11 @@ All templates: club logo, responsive layout, unsubscribe footer (transactional e
 
 **Acceptance criteria:**
 
-- [ ] Status change to `ENVIADO` requires tracking code (inline validation)
-- [ ] Status change triggers customer email
-- [ ] `SOB_DEMANDA` orders clearly marked in the table
-- [ ] Order list shows a skeleton loader while fetching data
-- [ ] Order list shows a dedicated empty state component when no orders exist
+- [x] Status change to `ENVIADO` requires tracking code (inline validation)
+- [x] Status change triggers customer email
+- [x] `SOB_DEMANDA` orders clearly marked in the table
+- [x] Order list shows a skeleton loader while fetching data
+- [x] Order list shows a dedicated empty state component when no orders exist
 
 ---
 

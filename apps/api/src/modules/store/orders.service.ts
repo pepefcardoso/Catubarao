@@ -225,3 +225,23 @@ export async function getOrderHistory(memberId: string, db: PrismaClient) {
 
   return orders;
 }
+
+export async function getAllOrders(db: PrismaClient, status?: string) {
+  const whereClause = status ? { status: status as any } : {};
+
+  const orders = await db.order.findMany({
+    where: whereClause,
+    orderBy: { createdAt: "desc" },
+    include: {
+      customer: true,
+      items: {
+        include: {
+          product: true,
+          variant: true,
+        },
+      },
+    },
+  });
+
+  return orders;
+}
