@@ -54,8 +54,31 @@ services:
       - "api:host-gateway"
     restart: unless-stopped
 
+  pg_backup:
+    image: prodrigestivill/postgres-backup-local:16
+    container_name: tubarao_pg_backup
+    restart: unless-stopped
+    volumes:
+      - postgres_backup:/backups
+      - ./scripts/encrypt-backup.sh:/hooks/encrypt-backup:ro
+    environment:
+      POSTGRES_HOST: postgres
+      POSTGRES_DB: tubarao
+      POSTGRES_USER: tubarao
+      POSTGRES_PASSWORD: password
+      SCHEDULE: "0 2 * * *"
+      TZ: America/Sao_Paulo
+      BACKUP_KEEP_DAYS: 7
+      BACKUP_KEEP_WEEKS: 0
+      BACKUP_KEEP_MONTHS: 0
+      BACKUP_ENCRYPTION_KEY: ${BACKUP_ENCRYPTION_KEY:-}
+    depends_on:
+      postgres:
+        condition: service_healthy
+
 volumes:
   postgres_data:
+  postgres_backup:
   redis_data:
   caddy_data:
   caddy_config:

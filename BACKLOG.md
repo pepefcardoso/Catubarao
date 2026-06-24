@@ -2388,9 +2388,9 @@ All templates: club logo, responsive layout, unsubscribe footer (transactional e
 
 **Acceptance criteria:**
 
-- [ ] Backup file created within 24h of setup
-- [ ] Restore procedure tested successfully against a staging database
-- [ ] Backup files are encrypted (cannot be read without key)
+- [x] Backup file created within 24h of setup
+- [x] Restore procedure tested successfully against a staging database
+- [x] Backup files are encrypted (cannot be read without key)
 
 ---
 
