@@ -12,6 +12,7 @@ import { useSession } from "@/lib/auth-client";
 import { copy } from "@/lib/copy";
 import { ReferralCard } from "@/components/member/ReferralCard";
 import { DelinquencyBanner } from "@/components/member/DelinquencyBanner";
+import { VotingRightsWidget } from "@/components/member/VotingRightsWidget";
 import { cn } from "@repo/ui/lib/utils";
 
 // Mock Data for testing the UI
@@ -48,6 +49,7 @@ export function DashboardClient() {
   const userName = session?.user?.name || MOCK_MEMBER.name;
   const [status, setStatus] = useState<string>("ACTIVE");
   const [days, setDays] = useState<number | null>(null);
+  const [streakMonths, setStreakMonths] = useState<number>(8);
   const [isLoading, setIsLoading] = useState(true);
 
   // Simulate API fetch delay
@@ -80,6 +82,14 @@ export function DashboardClient() {
           <Button variant="outline" size="sm" onClick={() => { setStatus("PENDING"); setDays(3); }}>PENDING (D+3)</Button>
           <Button variant="outline" size="sm" onClick={() => { setStatus("PENDING"); setDays(20); }}>PENDING (D+20)</Button>
           <Button variant="outline" size="sm" onClick={() => { setStatus("SUSPENDED"); setDays(30); }}>SUSPENDED</Button>
+          <div className="w-full h-0 basis-full"></div>
+          <span className="text-sm font-semibold flex items-center mr-2">Dev: Test Streak</span>
+          <Button variant="outline" size="sm" onClick={() => setStreakMonths(8)}>Streak: 8m</Button>
+          <Button variant="outline" size="sm" onClick={() => {
+            // clear localStorage so toast can re-fire if we toggle back and forth
+            localStorage.removeItem(`voting_unlocked_notified_${MOCK_MEMBER.id}`);
+            setStreakMonths(12);
+          }}>Streak: 12m</Button>
         </div>
       )}
 
@@ -87,6 +97,12 @@ export function DashboardClient() {
       <Suspense fallback={null}>
         <DelinquencyBanner status={status} daysSincePeriodEnd={days} activePlanId={MOCK_MEMBER.activePlanId} />
       </Suspense>
+
+      <VotingRightsWidget 
+        memberId={MOCK_MEMBER.id} 
+        streakMonths={streakMonths} 
+        activePollsCount={MOCK_POLLS.length} 
+      />
 
       <div className="grid md:grid-cols-3 gap-6">
         <div className="md:col-span-2 space-y-6">
@@ -165,27 +181,6 @@ export function DashboardClient() {
           </Card>
 
           <ReferralCard />
-
-          {/* Polls Widget */}
-          {MOCK_POLLS.length > 0 && (
-            <Card className="border-blue-200 bg-blue-50/50">
-              <CardHeader>
-                <CardTitle className="text-blue-900 flex items-center gap-2">
-                  <FileText className="w-5 h-5" />
-                  Votações Abertas
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                {MOCK_POLLS.map(poll => (
-                  <div key={poll.id} className="bg-white p-4 rounded-lg shadow-sm border border-blue-100">
-                    <h4 className="font-semibold mb-1">{poll.title}</h4>
-                    <p className="text-xs text-muted-foreground mb-3">Encerra em: {new Date(poll.closesAt).toLocaleDateString()}</p>
-                    <Button size="sm" className="w-full bg-blue-600 hover:bg-blue-700">Votar Agora</Button>
-                  </div>
-                ))}
-              </CardContent>
-            </Card>
-          )}
         </div>
       </div>
     </div>

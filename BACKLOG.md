@@ -627,11 +627,11 @@ Copy replacements per page (exact placements are in `strategic_analysis.md §3.2
 
 **Acceptance criteria:**
 
-- [ ] Progress bar shows correct months remaining (verified for a member with 8-month streak)
-- [ ] Unlock toast fires exactly once (localStorage check prevents re-fire on refresh)
-- [ ] Active polls badge shows correct count
-- [ ] Post-vote confirmation shows correct result date
-- [ ] `pnpm --filter web typecheck` passes
+- [x] Progress bar shows correct months remaining (verified for a member with 8-month streak)
+- [x] Unlock toast fires exactly once (localStorage check prevents re-fire on refresh)
+- [x] Active polls badge shows correct count
+- [x] Post-vote confirmation shows correct result date
+- [x] `pnpm --filter web typecheck` passes
 
 ---
 
