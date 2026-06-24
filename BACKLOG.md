@@ -599,12 +599,12 @@ Copy replacements per page (exact placements are in `strategic_analysis.md §3.2
 
 **Acceptance criteria:**
 
-- [ ] Tier gradient changes for different plan tiers
-- [ ] Shimmer animation plays continuously and is GPU-accelerated (`transform: translateX`)
-- [ ] "Mostrar na entrada" enters full-screen on mobile
-- [ ] Shareable version blurs the QR code area (not the entire card)
-- [ ] Suspended member sees the SUSPENSO watermark and no full-screen option
-- [ ] `pnpm --filter web typecheck` passes
+- [x] Tier gradient changes for different plan tiers
+- [x] Shimmer animation plays continuously and is GPU-accelerated (`transform: translateX`)
+- [x] "Mostrar na entrada" enters full-screen on mobile
+- [x] Shareable version blurs the QR code area (not the entire card)
+- [x] Suspended member sees the SUSPENSO watermark and no full-screen option
+- [x] `pnpm --filter web typecheck` passes
 
 ---
 
