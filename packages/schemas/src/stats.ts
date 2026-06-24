@@ -29,3 +29,15 @@ export const StatsMembersResponseSchema = z.object({
 });
 
 export type StatsMembersResponse = z.infer<typeof StatsMembersResponseSchema>;
+
+export const RecentMemberResponseSchema = z.object({
+  firstName: z.string(),
+  city: z.string().optional(),
+  joinedAt: z.string(),
+});
+
+export type RecentMemberResponse = z.infer<typeof RecentMemberResponseSchema>;
+
+export const RecentMembersResponseSchema = z.array(RecentMemberResponseSchema);
+
+export type RecentMembersResponse = z.infer<typeof RecentMembersResponseSchema>;

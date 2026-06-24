@@ -1,5 +1,5 @@
 import type { FastifyPluginAsyncZod } from "fastify-type-provider-zod";
-import { CreateGoalSchema, StatsMembersResponseSchema, GoalResponseSchema } from "@repo/schemas/stats";
+import { CreateGoalSchema, StatsMembersResponseSchema, GoalResponseSchema, RecentMembersResponseSchema } from "@repo/schemas/stats";
 
 export const statsRoutes: FastifyPluginAsyncZod = async (fastify) => {
   fastify.get(
@@ -63,6 +63,52 @@ export const statsRoutes: FastifyPluginAsyncZod = async (fastify) => {
       await fastify.redis.set(cacheKey, JSON.stringify(payload), "EX", 30);
 
       return reply.status(200).send(payload);
+    }
+  );
+
+  fastify.get(
+    "/stats/members/recent",
+    {
+      schema: {
+        tags: ["stats"],
+        response: {
+          200: RecentMembersResponseSchema,
+        },
+      },
+    },
+    async (request, reply) => {
+      const recentMembers = await fastify.prisma.member.findMany({
+        where: {
+          isActive: true,
+          marketingConsent: true,
+        },
+        orderBy: { createdAt: "desc" },
+        take: 10,
+      });
+
+      const response = recentMembers.map((member) => {
+        let city: string | undefined;
+        if (member.address && typeof member.address === "object" && !Array.isArray(member.address)) {
+          const addr = member.address as Record<string, any>;
+          if (typeof addr.city === "string") {
+            city = addr.city;
+          }
+        }
+
+        const parts = member.name.trim().split(" ");
+        let firstName = parts[0] || member.name;
+        if (parts.length > 1 && parts[1]) {
+          firstName += " " + parts[1][0].toUpperCase() + ".";
+        }
+
+        return {
+          firstName,
+          city,
+          joinedAt: member.createdAt.toISOString(),
+        };
+      });
+
+      return reply.status(200).send(response);
     }
   );
 

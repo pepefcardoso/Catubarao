@@ -9,54 +9,54 @@ Marketing, behavioral psychology, and conversion optimization improvements deriv
 
 ## Summary Table
 
-| ID       | Title                                                     | Phase | Size | Depends on                                         |
-| -------- | --------------------------------------------------------- | ----- | ---- | -------------------------------------------------- |
-| UX-001   | Brand identity system — design tokens & club assets       | 0     | M    | FOUND-013                                          |
-| UX-002   | Homepage — public front door                              | 0     | L    | UX-001, FOUND-016, MEMBER-015                      |
-| UX-003   | Operation Rescue — narrative copy layer                   | 0     | S    | UX-001, UX-002                                     |
-| DOC-001  | docs/ux-strategy.md — behavioral playbook                 | 0     | M    | —                                                  |
-| UX-004   | Signup — step progress indicator                          | 1     | S    | MEMBER-016                                         |
-| UX-005   | Plan selection — social proof & badges                    | 1     | M    | MEMBER-017, UX-001                                 |
-| UX-006   | Post-signup — welcome celebration page                    | 1     | M    | MEMBER-018, MEMBER-019, UX-001                     |
-| UX-007   | Referral — visibility & sharing UI                        | 1     | M    | MEMBER-013, MEMBER-019                             |
-| UX-008   | Membership checkout — trust signal sidebar                | 1     | S    | MEMBER-018, UX-001                                 |
-| UX-009   | Transparency portal — visual authority overhaul           | 1     | L    | TRANS-008, TRANS-011, UX-001                       |
-| UX-010   | Transparency — document immutability indicators           | 1     | S    | TRANS-010, TRANS-009                               |
-| UX-011   | Store — members-only scarcity gate                        | 2     | S    | STORE-007, STORE-008                               |
-| UX-012   | Store — stock scarcity indicators                         | 2     | S    | STORE-007, STORE-008, STORE-004                    |
-| UX-013   | Dashboard — delinquency recovery UX                       | 2     | M    | MEMBER-019, MEMBER-009, UX-001                     |
-| UX-014   | Dashboard — gamification redesign                         | 2     | L    | MEMBER-019, MEMBER-011                             |
-| UX-015   | Public — collective impact visualization                  | 2     | M    | MEMBER-022, MEMBER-015, UX-001                     |
-| UX-016   | Membership card — visual redesign                         | 2     | M    | MEMBER-020, UX-001                                 |
-| UX-017   | Dashboard — voting rights celebration                     | 2     | S    | MEMBER-012, MEMBER-019                             |
-| UX-018   | Homepage — recently joined social proof ticker            | 3     | S    | UX-002, MEMBER-015                                 |
-| UX-019   | Signup/plans — exit-intent capture                        | 3     | S    | MEMBER-016, MEMBER-017                             |
-| UX-020   | Dashboard — WhatsApp-first communication                  | 3     | M    | MEMBER-019, MEMBER-014                             |
-| UX-021   | Plan selection — annual pricing nudge                     | 3     | S    | MEMBER-017                                         |
-| UX-022   | Transparency — last updated indicator                     | 3     | S    | TRANS-008, UX-009                                  |
-| UX-023   | Transparency — debt reduction celebration milestones      | 3     | S    | TRANS-011                                          |
-| UX-024   | Accessibility — WCAG 2.1 AA hardening                     | 3     | L    | UX-002, UX-009, TRANS-008                          |
-| UX-025   | Public — monument wall page                               | 3     | M    | MEMBER-019, UX-001                                 |
-| UX-026   | Dashboard — match-day engagement loop                     | 3     | M    | MEMBER-028, MEMBER-011, MEMBER-019                 |
-| UX-027   | Dashboard — anniversary & milestone celebrations          | 3     | S    | MEMBER-011, MEMBER-019                             |
-| UX-028   | Profile — community identity markers                      | 3     | S    | MEMBER-019, UX-001                                 |
-| UX-029   | Email — emotional template design                         | 3     | M    | MEMBER-014                                         |
-| UX-030   | Transparency — creditor deep links                        | 3     | S    | TRANS-011                                          |
-| UX-031   | Transparency — SEO & structured data                      | 3     | M    | TRANS-015, TRANS-008                               |
-| UX-032   | Transparency — third-party validation badges              | 3     | S    | TRANS-008                                          |
-| DOC-002  | spec.md — marketing-aware persona JTBD                    | 3     | S    | DOC-001                                            |
-| DOC-003  | docs/narrative-touchpoints.md                             | 3     | S    | DOC-001                                            |
-| DOC-004  | docs/INFO.md — expand into brand bible                    | 3     | M    | DOC-001                                            |
-| DOC-005  | docs/acceptance/ — behavioral Gherkin scenarios           | 3     | M    | DOC-001                                            |
-| DOC-006  | docs/kpis.md — conversion metrics                         | 3     | S    | DOC-001                                            |
-| DOC-007  | docs/webhooks/ — Mercado Pago payload documentation       | 3     | S    | MEMBER-007                                         |
-| DOC-008  | ADR-002 to ADR-005 — behavioral design decisions          | 3     | S    | —                                                  |
-| DATA-001 | MembershipPlan — marketing schema fields                  | 4     | S    | MEMBER-001, MEMBER-002                             |
-| DATA-002 | Product — SEO & feature schema fields                     | 4     | S    | STORE-001, STORE-002                               |
-| DATA-003 | Member — memberNumber & leaderboard opt-in                | 4     | S    | MEMBER-001, MEMBER-002                             |
-| DATA-004 | Schema naming unification & address normalization         | 4     | S    | MEMBER-001, MEMBER-002, STORE-002                  |
-| DATA-005 | Testimonial model + admin CRUD                            | 4     | M    | FOUND-006, FOUND-008                               |
-| DATA-006 | AnnouncementBanner model + frontend component             | 4     | M    | FOUND-006, FOUND-008, UX-001                       |
+| ID       | Title                                                | Phase | Size | Depends on                         |
+| -------- | ---------------------------------------------------- | ----- | ---- | ---------------------------------- |
+| UX-001   | Brand identity system — design tokens & club assets  | 0     | M    | FOUND-013                          |
+| UX-002   | Homepage — public front door                         | 0     | L    | UX-001, FOUND-016, MEMBER-015      |
+| UX-003   | Operation Rescue — narrative copy layer              | 0     | S    | UX-001, UX-002                     |
+| DOC-001  | docs/ux-strategy.md — behavioral playbook            | 0     | M    | —                                  |
+| UX-004   | Signup — step progress indicator                     | 1     | S    | MEMBER-016                         |
+| UX-005   | Plan selection — social proof & badges               | 1     | M    | MEMBER-017, UX-001                 |
+| UX-006   | Post-signup — welcome celebration page               | 1     | M    | MEMBER-018, MEMBER-019, UX-001     |
+| UX-007   | Referral — visibility & sharing UI                   | 1     | M    | MEMBER-013, MEMBER-019             |
+| UX-008   | Membership checkout — trust signal sidebar           | 1     | S    | MEMBER-018, UX-001                 |
+| UX-009   | Transparency portal — visual authority overhaul      | 1     | L    | TRANS-008, TRANS-011, UX-001       |
+| UX-010   | Transparency — document immutability indicators      | 1     | S    | TRANS-010, TRANS-009               |
+| UX-011   | Store — members-only scarcity gate                   | 2     | S    | STORE-007, STORE-008               |
+| UX-012   | Store — stock scarcity indicators                    | 2     | S    | STORE-007, STORE-008, STORE-004    |
+| UX-013   | Dashboard — delinquency recovery UX                  | 2     | M    | MEMBER-019, MEMBER-009, UX-001     |
+| UX-014   | Dashboard — gamification redesign                    | 2     | L    | MEMBER-019, MEMBER-011             |
+| UX-015   | Public — collective impact visualization             | 2     | M    | MEMBER-022, MEMBER-015, UX-001     |
+| UX-016   | Membership card — visual redesign                    | 2     | M    | MEMBER-020, UX-001                 |
+| UX-017   | Dashboard — voting rights celebration                | 2     | S    | MEMBER-012, MEMBER-019             |
+| UX-018   | Homepage — recently joined social proof ticker       | 3     | S    | UX-002, MEMBER-015                 |
+| UX-019   | Signup/plans — exit-intent capture                   | 3     | S    | MEMBER-016, MEMBER-017             |
+| UX-020   | Dashboard — WhatsApp-first communication             | 3     | M    | MEMBER-019, MEMBER-014             |
+| UX-021   | Plan selection — annual pricing nudge                | 3     | S    | MEMBER-017                         |
+| UX-022   | Transparency — last updated indicator                | 3     | S    | TRANS-008, UX-009                  |
+| UX-023   | Transparency — debt reduction celebration milestones | 3     | S    | TRANS-011                          |
+| UX-024   | Accessibility — WCAG 2.1 AA hardening                | 3     | L    | UX-002, UX-009, TRANS-008          |
+| UX-025   | Public — monument wall page                          | 3     | M    | MEMBER-019, UX-001                 |
+| UX-026   | Dashboard — match-day engagement loop                | 3     | M    | MEMBER-028, MEMBER-011, MEMBER-019 |
+| UX-027   | Dashboard — anniversary & milestone celebrations     | 3     | S    | MEMBER-011, MEMBER-019             |
+| UX-028   | Profile — community identity markers                 | 3     | S    | MEMBER-019, UX-001                 |
+| UX-029   | Email — emotional template design                    | 3     | M    | MEMBER-014                         |
+| UX-030   | Transparency — creditor deep links                   | 3     | S    | TRANS-011                          |
+| UX-031   | Transparency — SEO & structured data                 | 3     | M    | TRANS-015, TRANS-008               |
+| UX-032   | Transparency — third-party validation badges         | 3     | S    | TRANS-008                          |
+| DOC-002  | spec.md — marketing-aware persona JTBD               | 3     | S    | DOC-001                            |
+| DOC-003  | docs/narrative-touchpoints.md                        | 3     | S    | DOC-001                            |
+| DOC-004  | docs/INFO.md — expand into brand bible               | 3     | M    | DOC-001                            |
+| DOC-005  | docs/acceptance/ — behavioral Gherkin scenarios      | 3     | M    | DOC-001                            |
+| DOC-006  | docs/kpis.md — conversion metrics                    | 3     | S    | DOC-001                            |
+| DOC-007  | docs/webhooks/ — Mercado Pago payload documentation  | 3     | S    | MEMBER-007                         |
+| DOC-008  | ADR-002 to ADR-005 — behavioral design decisions     | 3     | S    | —                                  |
+| DATA-001 | MembershipPlan — marketing schema fields             | 4     | S    | MEMBER-001, MEMBER-002             |
+| DATA-002 | Product — SEO & feature schema fields                | 4     | S    | STORE-001, STORE-002               |
+| DATA-003 | Member — memberNumber & leaderboard opt-in           | 4     | S    | MEMBER-001, MEMBER-002             |
+| DATA-004 | Schema naming unification & address normalization    | 4     | S    | MEMBER-001, MEMBER-002, STORE-002  |
+| DATA-005 | Testimonial model + admin CRUD                       | 4     | M    | FOUND-006, FOUND-008               |
+| DATA-006 | AnnouncementBanner model + frontend component        | 4     | M    | FOUND-006, FOUND-008, UX-001       |
 
 ---
 
@@ -78,11 +78,11 @@ Marketing, behavioral psychology, and conversion optimization improvements deriv
 
 - `apps/web/styles/globals.css` — add CSS custom properties alongside existing shadcn vars:
   ```css
-  --brand-primary:    /* TODO: official green */;
-  --brand-secondary:  /* TODO: official gold */;
-  --brand-accent:     /* TODO: deep navy */;
-  --brand-surface:    /* TODO: dark background */;
-  --brand-gradient:   /* TODO: primary gradient */;
+  --brand-primary: /* TODO: official green */;
+  --brand-secondary: /* TODO: official gold */;
+  --brand-accent: /* TODO: deep navy */;
+  --brand-surface: /* TODO: dark background */;
+  --brand-gradient: /* TODO: primary gradient */;
   ```
 - `packages/config/design/tokens.ts` — TypeScript object re-exporting the same tokens for use in `tailwind.config.ts` (extends `theme.colors`)
 - `packages/ui/src/components/ClubCrest.tsx` — SVG-based crest component accepting `size` and `className` props; renders a placeholder SVG until the official asset is provided
@@ -149,13 +149,13 @@ Marketing, behavioral psychology, and conversion optimization improvements deriv
 
 Copy replacements per page (exact placements are in `strategic_analysis.md §3.2`):
 
-| File | Location | Replace with |
-|------|----------|--------------|
-| `apps/web/app/(public)/signup/page.tsx` | Step 1 subtitle | `"Você está a 2 minutos de fazer parte da história."` |
-| `apps/web/app/(member)/plans/page.tsx` | Page subtitle | `"Cada plano é um tijolo na reconstrução. Escolha o seu."` |
-| `apps/web/app/(member)/dashboard/page.tsx` | Welcome heading | `"Sua contribuição este mês: R${amount}. Juntos já contribuímos R${total}."` |
-| `apps/web/app/(public)/transparencia/page.tsx` | Hero subheading | `"Sem segredos. Sem desculpas. Os números estão aqui."` |
-| `apps/web/app/(member)/dashboard/page.tsx` | Delinquency banner (suspended) | `"O Tubarão sente sua falta. Volte para a reconstrução."` |
+| File                                           | Location                       | Replace with                                                                 |
+| ---------------------------------------------- | ------------------------------ | ---------------------------------------------------------------------------- |
+| `apps/web/app/(public)/signup/page.tsx`        | Step 1 subtitle                | `"Você está a 2 minutos de fazer parte da história."`                        |
+| `apps/web/app/(member)/plans/page.tsx`         | Page subtitle                  | `"Cada plano é um tijolo na reconstrução. Escolha o seu."`                   |
+| `apps/web/app/(member)/dashboard/page.tsx`     | Welcome heading                | `"Sua contribuição este mês: R${amount}. Juntos já contribuímos R${total}."` |
+| `apps/web/app/(public)/transparencia/page.tsx` | Hero subheading                | `"Sem segredos. Sem desculpas. Os números estão aqui."`                      |
+| `apps/web/app/(member)/dashboard/page.tsx`     | Delinquency banner (suspended) | `"O Tubarão sente sua falta. Volte para a reconstrução."`                    |
 
 - All copy must use the member's `name` from `useSession()` where the template calls for `{name}`
 - `apps/web/lib/copy.ts` — centralized copy constants file; export all narrative strings so they can be updated without hunting through JSX
@@ -178,7 +178,7 @@ Copy replacements per page (exact placements are in `strategic_analysis.md §3.2
 **Size:** M  
 **Depends on:** —
 
-**Objective:** Create the missing behavioral design playbook so future developers understand *why* UX decisions follow persuasion psychology principles — preventing regression to generic, emotionally inert implementations.
+**Objective:** Create the missing behavioral design playbook so future developers understand _why_ UX decisions follow persuasion psychology principles — preventing regression to generic, emotionally inert implementations.
 
 **In scope:**
 
@@ -275,7 +275,7 @@ Copy replacements per page (exact placements are in `strategic_analysis.md §3.2
 - **Confetti animation**: `canvas-confetti` (3KB) triggered on page mount via `useEffect`; fires once, then cleans up
 - **Welcome message**: `"Bem-vindo à família, {name}! Você é o sócio nº {memberNumber}."` using `--font-display` and `brand-primary` accent
 - **Membership card preview**: static visual mock of the digital card (the real card requires QR; show a simplified version with name, tier, and club crest)
-- **Share buttons section**: 
+- **Share buttons section**:
   - WhatsApp: `https://api.whatsapp.com/send?text={pre-filled message}` where message = `"Acabei de me tornar sócio do Tubarão! Entra comigo: {signup_url}?ref={referralCode}"`
   - Instagram: copy template button (Instagram stories deep link is not reliable — copy-to-clipboard instead)
 - **Referral CTA**: `"Indique um amigo e ganhe {X} Escudos"` with the member's referral code visible and a copy button
@@ -361,6 +361,7 @@ Copy replacements per page (exact placements are in `strategic_analysis.md §3.2
 **In scope:**
 
 **A. Debt Dashboard (`/(public)/transparencia/dividas`):**
+
 - **Summary cards row** at top: 4 cards — Total Original, Total Pago, Total Restante, Número de Credores — with large bold numbers using `--font-display`, trend arrows (↓ in `text-green-500`, ↑ in `text-red-500`)
 - **Animated circular progress chart**: `"X% da dívida já foi paga"` using a CSS-only circular progress ring (`stroke-dasharray` / `stroke-dashoffset`); animate on scroll-into-view via `IntersectionObserver`
 - **Recharts area chart** for the timeline: gradient fill from `brand-primary` to transparent; x-axis = month labels, y-axis = total remaining; downward slope is the visual narrative
@@ -368,12 +369,14 @@ Copy replacements per page (exact placements are in `strategic_analysis.md §3.2
 - **Public notes** displayed as a quote block below each creditor row when `publicNote` is set
 
 **B. Publication Feed (`/(public)/transparencia/posts`):**
+
 - **Reading time estimate**: computed from `body.split(" ").length / 200` words-per-minute; displayed as `"X min de leitura"` next to the date
 - **Version badge**: `"Versão {N} — atualizado em {date}"` if post has prior versions (`supersededById` chain)
 - **Category icons**: map `TransparencyCategory` enum to emoji icons (📊 balance, 💰 debt, 📋 assembly minutes, 🏛️ corporate structure) — rendered inline next to the category badge
 - **Relative timestamps**: use `formatDistanceToNow` from `date-fns` for recency (`"há 3 dias"`)
 
 **C. RSS Feed visibility:**
+
 - Add `"📡 Assine o Feed RSS"` button in the transparency portal header linking to `/transparency/feed.xml`
 - Include a `<link rel="alternate" type="application/rss+xml">` tag in the `<head>` via `generateMetadata()`
 
@@ -395,7 +398,7 @@ Copy replacements per page (exact placements are in `strategic_analysis.md §3.2
 **Size:** S  
 **Depends on:** TRANS-010, TRANS-009
 
-**Objective:** Make the *mechanism* of document immutability visible to users — transforming a backend rule into a trust signal.
+**Objective:** Make the _mechanism_ of document immutability visible to users — transforming a backend rule into a trust signal.
 
 **In scope:**
 
@@ -479,19 +482,19 @@ Copy replacements per page (exact placements are in `strategic_analysis.md §3.2
 **Size:** M  
 **Depends on:** MEMBER-019, MEMBER-009, UX-001
 
-**Objective:** Replace the static red delinquency banner with a dynamic, escalating UX that frames delinquency as *losing benefits* (loss aversion) rather than a payment reminder — 2× more motivating according to Kahneman.
+**Objective:** Replace the static red delinquency banner with a dynamic, escalating UX that frames delinquency as _losing benefits_ (loss aversion) rather than a payment reminder — 2× more motivating according to Kahneman.
 
 **In scope:**
 
 - `GET /members/me` — extend response with `daysSincePeriodEnd: number | null` (computed from `subscription.currentPeriodEnd` if status is PENDING or SUSPENDED)
 - `apps/web/components/member/DelinquencyBanner.tsx` — dynamic banner with 4 states:
 
-| State | Days | Color | Content |
-|-------|------|-------|---------|
-| Warning | D+1 to D+14 | Yellow | `"Sua assinatura vence em X dias. Regularize para manter seus benefícios."` + countdown |
-| Urgent | D+15 to D+29 | Orange | `"Último aviso — sua carteirinha será desativada em X dias."` + CSS opacity animation on card preview |
-| Suspended | D+30+ | Red | List of lost benefits (✗ Carteirinha, ✗ Desconto na loja, ✗ Voto em assembleias) + one-click reactivation CTA |
-| Reactivated | just reactivated | — | Confetti animation (reuse from UX-006) + `"Que bom ter você de volta!"` |
+| State       | Days             | Color  | Content                                                                                                       |
+| ----------- | ---------------- | ------ | ------------------------------------------------------------------------------------------------------------- |
+| Warning     | D+1 to D+14      | Yellow | `"Sua assinatura vence em X dias. Regularize para manter seus benefícios."` + countdown                       |
+| Urgent      | D+15 to D+29     | Orange | `"Último aviso — sua carteirinha será desativada em X dias."` + CSS opacity animation on card preview         |
+| Suspended   | D+30+            | Red    | List of lost benefits (✗ Carteirinha, ✗ Desconto na loja, ✗ Voto em assembleias) + one-click reactivation CTA |
+| Reactivated | just reactivated | —      | Confetti animation (reuse from UX-006) + `"Que bom ter você de volta!"`                                       |
 
 - **Fading card animation** (D+15-29): renders the membership card preview at `opacity: 0.3` with a CSS `animation: pulse 2s ease-in-out infinite` to make the loss tangible
 - **One-click reactivation** (D+30+): button `"Regularize agora"` → `/checkout?planId={currentPlanId}&reactivate=true`; the checkout page detects `reactivate=true` query param and skips plan selection
@@ -522,13 +525,17 @@ Copy replacements per page (exact placements are in `strategic_analysis.md §3.2
 - `apps/web/lib/gamification.ts` — tier definitions:
   ```typescript
   const TIERS = [
-    { name: "Torcedor", min: 0,    max: 99,   color: "brand-surface" },
-    { name: "Camisa 10", min: 100, max: 499,  color: "brand-primary" },
-    { name: "Ídolo",    min: 500,  max: 999,  color: "brand-secondary" },
-    { name: "Lenda",    min: 1000, max: Infinity, color: "brand-accent" },
+    { name: "Torcedor", min: 0, max: 99, color: "brand-surface" },
+    { name: "Camisa 10", min: 100, max: 499, color: "brand-primary" },
+    { name: "Ídolo", min: 500, max: 999, color: "brand-secondary" },
+    { name: "Lenda", min: 1000, max: Infinity, color: "brand-accent" },
   ] as const;
-  export function getTier(points: number): Tier { /* ... */ }
-  export function getProgressToNextTier(points: number): { pct: number; remaining: number } { /* ... */ }
+  export function getTier(points: number): Tier {
+    /* ... */
+  }
+  export function getProgressToNextTier(points: number): { pct: number; remaining: number } {
+    /* ... */
+  }
   ```
 - `apps/web/components/member/GamificationCard.tsx`:
   - **Tier badge**: tier name + tier-colored pill background
@@ -657,11 +664,11 @@ Copy replacements per page (exact placements are in `strategic_analysis.md §3.2
 
 **Acceptance criteria:**
 
-- [ ] Ticker only shows names with `marketingConsent: true`
-- [ ] Ticker cycles through entries every 8 seconds
-- [ ] Dismiss button hides it for the session
-- [ ] Does not render on `(member)` or `(admin)` routes
-- [ ] `pnpm --filter web typecheck` passes
+- [x] Ticker only shows names with `marketingConsent: true`
+- [x] Ticker cycles through entries every 8 seconds
+- [x] Dismiss button hides it for the session
+- [x] Does not render on `(member)` or `(admin)` routes
+- [x] `pnpm --filter web typecheck` passes
 
 ---
 
@@ -946,23 +953,24 @@ Copy replacements per page (exact placements are in `strategic_analysis.md §3.2
 **In scope:**
 
 Update all templates in `apps/api/src/emails/` with:
+
 - **Club header**: `<ClubHeader />` sub-component — club crest image (R2-hosted), club name in display font, `brand-primary` background strip
 - **Footer**: contact email, unsubscribe link, LGPD notice, social media icons (WhatsApp, Instagram)
 - **Mobile-responsive layout**: `max-width: 600px` centered, `padding: 0 16px` on mobile
 
 Emotional copy per template:
 
-| Template | Subject | Key Emotional Copy |
-|----------|---------|-------------------|
-| `WelcomeEmail` | `"Bem-vindo à família, {name}! 🦈"` | `"A torcida ficou maior. Você agora é parte da reconstrução."` |
-| `PaymentConfirmedEmail` | `"Mais um mês de reconstrução. Obrigado."` | `"Sua contribuição de R${amount} chegou. O Tubarão avança."` |
-| `DelinquencyD1Email` | `"O Tubarão sente sua falta, {name}"` | `"Sua contribuição faz diferença. Regularize para continuar fazendo parte."` |
-| `DelinquencyD15Email` | `"Último aviso — sua carteirinha será desativada"` | `"Em {suspensionDate}, sua carteirinha e acesso à loja serão suspensos."` |
-| `SuspensionEmail` | `"Sua carteirinha foi desativada"` | `"Clique abaixo para reativar e voltar à reconstrução."` |
-| `ReactivationEmail` | `"Que bom ter você de volta! 🎉"` | `"O Tubarão é mais forte com você. Sua carteirinha está ativa novamente."` |
-| `ReferralSuccessEmail` | `"{ReferredName} entrou por sua indicação!"` | `"+{N} Escudos creditados. Obrigado por trazer mais um tijolo."` |
-| `VotingUnlockedEmail` | `"🗳️ Seu voto agora conta, {name}"` | `"12 meses de contribuição ininterrupta. A democracia do Tubarão te espera."` |
-| `AnniversaryEmail` | `"1 ano juntos, {name}! 🦈"` | `"Um ano de reconstrução. Você é parte da história do Tubarão."` |
+| Template                | Subject                                            | Key Emotional Copy                                                            |
+| ----------------------- | -------------------------------------------------- | ----------------------------------------------------------------------------- |
+| `WelcomeEmail`          | `"Bem-vindo à família, {name}! 🦈"`                | `"A torcida ficou maior. Você agora é parte da reconstrução."`                |
+| `PaymentConfirmedEmail` | `"Mais um mês de reconstrução. Obrigado."`         | `"Sua contribuição de R${amount} chegou. O Tubarão avança."`                  |
+| `DelinquencyD1Email`    | `"O Tubarão sente sua falta, {name}"`              | `"Sua contribuição faz diferença. Regularize para continuar fazendo parte."`  |
+| `DelinquencyD15Email`   | `"Último aviso — sua carteirinha será desativada"` | `"Em {suspensionDate}, sua carteirinha e acesso à loja serão suspensos."`     |
+| `SuspensionEmail`       | `"Sua carteirinha foi desativada"`                 | `"Clique abaixo para reativar e voltar à reconstrução."`                      |
+| `ReactivationEmail`     | `"Que bom ter você de volta! 🎉"`                  | `"O Tubarão é mais forte com você. Sua carteirinha está ativa novamente."`    |
+| `ReferralSuccessEmail`  | `"{ReferredName} entrou por sua indicação!"`       | `"+{N} Escudos creditados. Obrigado por trazer mais um tijolo."`              |
+| `VotingUnlockedEmail`   | `"🗳️ Seu voto agora conta, {name}"`                | `"12 meses de contribuição ininterrupta. A democracia do Tubarão te espera."` |
+| `AnniversaryEmail`      | `"1 ano juntos, {name}! 🦈"`                       | `"Um ano de reconstrução. Você é parte da história do Tubarão."`              |
 
 **Acceptance criteria:**
 
@@ -1058,18 +1066,18 @@ Emotional copy per template:
 **Size:** S  
 **Depends on:** DOC-001
 
-**Objective:** Extend each persona in `spec.md` with emotional and social jobs-to-be-done — so future developers understand the *why* behind every UX decision.
+**Objective:** Extend each persona in `spec.md` with emotional and social jobs-to-be-done — so future developers understand the _why_ behind every UX decision.
 
 **In scope:**
 
 - Edit `spec.md` § Personas — add a `JTBD` table after each persona definition:
 
-| Persona | Functional Job | Emotional Job | Social Job |
-|---------|---------------|---------------|------------|
-| Sócio-Torcedor | Join a plan, pay monthly | Feel like I'm *saving* my club, not just subscribing | Tell friends I'm part of the rescue |
-| Visitante Cético | Verify financial data | Feel reassured this isn't another empty promise | Share credible data with other skeptics |
-| Parceiro/Patrocinador | Receive proof of ad delivery | Feel like a local hero, not just a vendor | Be seen as a "savior of a cultural asset" |
-| Admin | Manage members and publish reports | Feel empowered to run the club well despite a small team | Demonstrate good governance to stakeholders |
+| Persona               | Functional Job                     | Emotional Job                                            | Social Job                                  |
+| --------------------- | ---------------------------------- | -------------------------------------------------------- | ------------------------------------------- |
+| Sócio-Torcedor        | Join a plan, pay monthly           | Feel like I'm _saving_ my club, not just subscribing     | Tell friends I'm part of the rescue         |
+| Visitante Cético      | Verify financial data              | Feel reassured this isn't another empty promise          | Share credible data with other skeptics     |
+| Parceiro/Patrocinador | Receive proof of ad delivery       | Feel like a local hero, not just a vendor                | Be seen as a "savior of a cultural asset"   |
+| Admin                 | Manage members and publish reports | Feel empowered to run the club well despite a small team | Demonstrate good governance to stakeholders |
 
 - Add a `§ Behavioral Design Principles` section (2 paragraphs) referencing `docs/ux-strategy.md` as the authoritative guide
 
@@ -1179,16 +1187,16 @@ At minimum 3 scenarios per feature file (21 total scenarios across 7 files).
 
 - `docs/kpis.md` with the following KPI definitions (each with: name, formula, current value, target, measurement method):
 
-| KPI | Target |
-|-----|--------|
-| Signup conversion rate (visitor → payment completed) | 15–20% |
-| Monthly churn rate (D+30 suspended / total active) | < 5% |
-| Referral rate (new members via referral code) | > 25% |
-| Transparency portal engagement (unique visitors/month) | Baseline TBD |
-| Reactivation rate (suspended → active within 30 days) | > 40% |
-| Check-in rate (members checking in per home match) | > 50% of local members |
-| Annual plan adoption rate | > 60% of paid plans |
-| WhatsApp opt-in rate | > 70% of members |
+| KPI                                                    | Target                 |
+| ------------------------------------------------------ | ---------------------- |
+| Signup conversion rate (visitor → payment completed)   | 15–20%                 |
+| Monthly churn rate (D+30 suspended / total active)     | < 5%                   |
+| Referral rate (new members via referral code)          | > 25%                  |
+| Transparency portal engagement (unique visitors/month) | Baseline TBD           |
+| Reactivation rate (suspended → active within 30 days)  | > 40%                  |
+| Check-in rate (members checking in per home match)     | > 50% of local members |
+| Annual plan adoption rate                              | > 60% of paid plans    |
+| WhatsApp opt-in rate                                   | > 70% of members       |
 
 - For each KPI: data source (which API endpoint / database table / analytics event provides the data), recommended measurement cadence, and owner (admin role)
 - Add a `§ Anti-Metrics` section: metrics the team should NOT optimize for (e.g., do not optimize for raw page views — optimize for member activations)
@@ -1217,12 +1225,12 @@ At minimum 3 scenarios per feature file (21 total scenarios across 7 files).
   - State machine diagram (Mermaid) showing webhook → subscription status transitions
   - **Member lifecycle mapping table**:
 
-| Event | Previous Status | New Status | Side Effects |
-|-------|----------------|------------|--------------|
-| `payment.approved` (first) | PENDING | ACTIVE | Generate card, send WelcomeEmail, record REFERRAL for referrer |
-| `payment.approved` (recurring) | ACTIVE | ACTIVE | Renew card, send PaymentConfirmedEmail |
-| `payment.rejected` | ACTIVE | PENDING | Begin delinquency counter |
-| `payment.cancelled` | any | CANCELLED | Invalidate card, cancel MP preapproval |
+| Event                          | Previous Status | New Status | Side Effects                                                   |
+| ------------------------------ | --------------- | ---------- | -------------------------------------------------------------- |
+| `payment.approved` (first)     | PENDING         | ACTIVE     | Generate card, send WelcomeEmail, record REFERRAL for referrer |
+| `payment.approved` (recurring) | ACTIVE          | ACTIVE     | Renew card, send PaymentConfirmedEmail                         |
+| `payment.rejected`             | ACTIVE          | PENDING    | Begin delinquency counter                                      |
+| `payment.cancelled`            | any             | CANCELLED  | Invalidate card, cancel MP preapproval                         |
 
 - Note: the actual payload schemas are already in `src/modules/webhooks/` — this document adds human-readable context
 
@@ -1249,7 +1257,7 @@ Create 4 ADR files in `docs/adr/`:
 
 - `ADR-002-annual-plan-pricing-display.md`: Why annual plans are displayed as monthly-equivalent prices → anchoring effect; include the research reference (Ariely's decoy effect)
 - `ADR-003-loss-framing-delinquency.md`: Why the delinquency flow uses loss framing (`"Você perdeu: Carteirinha..."`) instead of payment reminders → Kahneman's loss aversion; cite that loss framing is 2× more motivating than equivalent gain framing
-- `ADR-004-referral-credits-on-payment.md`: Why referral points are credited on *first payment* rather than *registration* → prevents gaming (a person could create fake accounts to farm referral points); trade-off: slower referral flywheel but more reliable data
+- `ADR-004-referral-credits-on-payment.md`: Why referral points are credited on _first payment_ rather than _registration_ → prevents gaming (a person could create fake accounts to farm referral points); trade-off: slower referral flywheel but more reliable data
 - `ADR-005-socio-solidario-plan.md`: Why the lowest-tier "Sócio Solidário" plan exists despite minimal revenue → inclusion > revenue; the counter grows (social proof); community trust; fans who can't pay today may be able to pay next year; positions the club as values-driven
 
 Each ADR follows the standard format: Status, Context, Decision, Consequences.

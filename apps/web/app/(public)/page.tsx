@@ -7,6 +7,7 @@ import { GoalProgressSection } from "@/components/home/goal-progress-section";
 import { TransparencyTeaserSection } from "@/components/home/transparency-teaser-section";
 import { StoreTeaserSection } from "@/components/home/store-teaser-section";
 import { CtaFooterSection } from "@/components/home/cta-footer-section";
+import { RecentJoinTicker } from "@/components/home/RecentJoinTicker";
 
 export const revalidate = 60;
 
@@ -68,6 +69,7 @@ export default async function PublicPage() {
       <TransparencyTeaserSection latestPost={latestPost} />
       <StoreTeaserSection products={products} />
       <CtaFooterSection initialData={stats} />
+      <RecentJoinTicker />
     </main>
   );
 }

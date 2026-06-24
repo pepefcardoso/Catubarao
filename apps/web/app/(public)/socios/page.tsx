@@ -2,6 +2,7 @@ import { Metadata } from "next";
 import { LiveCounter } from "./live-counter";
 import { env } from "@/lib/env";
 import { StatsMembersResponse } from "@repo/schemas/stats";
+import { RecentJoinTicker } from "@/components/home/RecentJoinTicker";
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
@@ -36,6 +37,7 @@ export default async function SociosPage() {
 
         <LiveCounter initialData={initialData} />
       </div>
+      <RecentJoinTicker />
     </div>
   );
 }
