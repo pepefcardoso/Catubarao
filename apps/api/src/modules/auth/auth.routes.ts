@@ -28,7 +28,7 @@ export const authRoutes: FastifyPluginAsyncZod = async (fastify) => {
     {
       config: {
         rateLimit: {
-          max: 5,
+          max: 10,
           timeWindow: 15 * 60 * 1000,
         },
       },

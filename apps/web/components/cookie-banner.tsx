@@ -16,6 +16,8 @@ export function CookieBanner() {
       if (!consent && !session?.user) {
         setIsVisible(true);
       }
+    }
+  }, [isPending, session]);
 
   const handleConsent = (type: "all" | "essential") => {
     localStorage.setItem("cookie-consent", type);
