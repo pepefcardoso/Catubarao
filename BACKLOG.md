@@ -569,12 +569,12 @@ Copy replacements per page (exact placements are in `strategic_analysis.md §3.2
 
 **Acceptance criteria:**
 
-- [ ] Count-up animation completes without jitter (no layout shift)
-- [ ] Impact phrases rotate every 4 seconds
-- [ ] "Your brick" indicator is visible to logged-in members and absent for anonymous visitors
-- [ ] Stadium fill percentage corresponds to `(memberCount / 1000) * 100` (cap at 100%)
-- [ ] Page is accessible to unauthenticated visitors
-- [ ] `pnpm --filter web typecheck` passes
+- [x] Count-up animation completes without jitter (no layout shift)
+- [x] Impact phrases rotate every 4 seconds
+- [x] "Your brick" indicator is visible to logged-in members and absent for anonymous visitors
+- [x] Stadium fill percentage corresponds to `(memberCount / 1000) * 100` (cap at 100%)
+- [x] Page is accessible to unauthenticated visitors
+- [x] `pnpm --filter web typecheck` passes
 
 ---
 

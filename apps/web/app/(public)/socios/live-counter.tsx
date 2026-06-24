@@ -1,11 +1,52 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { env } from "@/lib/env";
 import { StatsMembersResponse } from "@repo/schemas/stats";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@repo/ui/components/card";
 import { Button } from "@repo/ui/components/button";
 import Link from "next/link";
+import { useSession } from "@/lib/auth-client";
+import { StadiumFill } from "@/components/socios/StadiumFill";
+
+function useCountUp(end: number, durationMs: number = 1500) {
+  const [count, setCount] = useState(0);
+  const prevEndRef = useRef(0);
+
+  useEffect(() => {
+    const startValue = prevEndRef.current;
+    if (startValue === end) {
+      setCount(end);
+      return;
+    }
+
+    let startTime: number | null = null;
+    let animationFrameId: number;
+
+    const animate = (timestamp: number) => {
+      if (!startTime) startTime = timestamp;
+      const progress = timestamp - startTime;
+      const percentage = Math.min(progress / durationMs, 1);
+      
+      const easeOut = percentage === 1 ? 1 : 1 - Math.pow(2, -10 * percentage);
+      
+      setCount(Math.floor(startValue + (end - startValue) * easeOut));
+
+      if (progress < durationMs) {
+        animationFrameId = requestAnimationFrame(animate);
+      } else {
+        setCount(end);
+        prevEndRef.current = end;
+      }
+    };
+
+    animationFrameId = requestAnimationFrame(animate);
+
+    return () => cancelAnimationFrame(animationFrameId);
+  }, [end, durationMs]);
+
+  return count;
+}
 
 interface LiveCounterProps {
   initialData: StatsMembersResponse;
@@ -13,6 +54,10 @@ interface LiveCounterProps {
 
 export function LiveCounter({ initialData }: LiveCounterProps) {
   const [data, setData] = useState<StatsMembersResponse>(initialData);
+  const animatedTotal = useCountUp(data.total);
+  const { data: session } = useSession();
+  
+  const [phraseIndex, setPhraseIndex] = useState(0);
 
   useEffect(() => {
     const interval = setInterval(async () => {
@@ -30,17 +75,30 @@ export function LiveCounter({ initialData }: LiveCounterProps) {
     return () => clearInterval(interval);
   }, []);
 
+  useEffect(() => {
+    if (!data.goals || data.goals.length === 0) return;
+    const phraseInterval = setInterval(() => {
+      setPhraseIndex((prev) => (prev + 1) % data.goals.length);
+    }, 4000);
+    return () => clearInterval(phraseInterval);
+  }, [data.goals]);
+
+  const fillPercentage = Math.min(100, Math.max(0, (data.total / 1000) * 100));
+
+  // Determine member number:
+  const memberNumber = (session?.user as any)?.memberNumber || session?.user?.id?.substring(0, 5) || "???";
+
   return (
     <div className="space-y-12">
       {/* Live Counter Display */}
-      <Card className="border-2 border-primary/20 shadow-xl dark:border-primary/40 dark:bg-card/50 backdrop-blur-sm">
+      <Card className="border-2 border-primary/20 shadow-xl dark:border-primary/40 dark:bg-card/50 backdrop-blur-sm overflow-hidden relative">
         <CardHeader>
           <CardTitle className="text-2xl text-muted-foreground font-medium">Sócios Ativos</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="flex flex-col items-center justify-center">
+          <div className="flex flex-col items-center justify-center relative z-10">
             <span className="text-7xl font-black tabular-nums tracking-tighter sm:text-9xl text-primary">
-              {data.total}
+              {animatedTotal}
             </span>
             <div className="mt-4 flex items-center space-x-2">
               <span className="relative flex h-3 w-3">
@@ -51,6 +109,41 @@ export function LiveCounter({ initialData }: LiveCounterProps) {
                 Atualizado em tempo real
               </span>
             </div>
+
+            {/* Rotating impact phrases */}
+            {data.goals && data.goals.length > 0 && (
+              <div className="h-8 mt-6 relative overflow-hidden flex justify-center w-full max-w-md">
+                {data.goals.map((goal, idx) => (
+                  <div
+                    key={goal.id}
+                    className={`absolute transition-opacity duration-1000 ${
+                      idx === phraseIndex ? "opacity-100" : "opacity-0"
+                    } text-lg text-foreground font-medium text-center w-full`}
+                  >
+                    {goal.label}
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {/* Your brick indicator */}
+            {session && (
+              <div className="mt-8 flex flex-col items-center animate-in fade-in slide-in-from-bottom-4 duration-700">
+                <span className="text-muted-foreground text-sm font-medium">
+                  Você é o sócio nº {memberNumber}. Sua contribuição está aqui →
+                </span>
+                <div className="text-primary mt-2 animate-bounce">
+                  ↓
+                </div>
+              </div>
+            )}
+          </div>
+          
+          <div className="mt-8 pt-8 border-t border-border/50">
+             <div className="text-center mb-6">
+                <h3 className="text-lg font-semibold text-muted-foreground">O Caldeirão está enchendo</h3>
+             </div>
+             <StadiumFill fill={fillPercentage} />
           </div>
         </CardContent>
       </Card>
