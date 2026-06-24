@@ -438,12 +438,12 @@ Copy replacements per page (exact placements are in `strategic_analysis.md §3.2
 
 **Acceptance criteria:**
 
-- [ ] Non-member sees blurred CTA and overlay (not a blank button)
-- [ ] Active member sees no overlay and can add to cart normally
-- [ ] Suspended member sees the regularization message (not the signup message)
-- [ ] Product image and price are visible to all users
-- [ ] No layout shift while session loads (skeleton CTA placeholder)
-- [ ] `pnpm --filter web typecheck` passes
+- [x] Non-member sees blurred CTA and overlay (not a blank button)
+- [x] Active member sees no overlay and can add to cart normally
+- [x] Suspended member sees the regularization message (not the signup message)
+- [x] Product image and price are visible to all users
+- [x] No layout shift while session loads (skeleton CTA placeholder)
+- [x] `pnpm --filter web typecheck` passes
 
 ---
 

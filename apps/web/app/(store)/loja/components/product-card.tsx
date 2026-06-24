@@ -1,8 +1,12 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 import { ProductResponse } from "@repo/schemas/store";
 import { Card, CardContent } from "@repo/ui/components/card";
 import { Badge } from "@repo/ui/components/badge";
+import { CheckCircle } from "lucide-react";
+import { useMemberStatus } from "@/lib/use-member-status";
 
 interface ProductCardProps {
   product: ProductResponse;
@@ -10,6 +14,7 @@ interface ProductCardProps {
 
 export function ProductCard({ product }: ProductCardProps) {
   const isOutOfStock = product.stockType === "ESTOQUE_FIXO" && product.stockQuantity === 0;
+  const { isMember, isActive } = useMemberStatus();
 
   const formatter = new Intl.NumberFormat("pt-BR", {
     style: "currency",
@@ -34,11 +39,18 @@ export function ProductCard({ product }: ProductCardProps) {
             </div>
           )}
 
-          <div className="absolute left-2 top-2 flex flex-col gap-2">
+          <div className="absolute left-2 top-2 flex flex-col gap-2 z-10">
             {product.membersOnly && (
-              <Badge className="bg-primary text-primary-foreground">
-                Exclusivo para sócios
-              </Badge>
+              isMember && isActive ? (
+                <Badge className="bg-amber-500 hover:bg-amber-500 text-white shadow-md flex items-center gap-1.5 px-2.5 py-1">
+                  <CheckCircle className="w-3.5 h-3.5" />
+                  Sócio
+                </Badge>
+              ) : (
+                <Badge className="bg-primary text-primary-foreground shadow-sm">
+                  Exclusivo para sócios
+                </Badge>
+              )
             )}
             {isOutOfStock && (
               <Badge variant="destructive">

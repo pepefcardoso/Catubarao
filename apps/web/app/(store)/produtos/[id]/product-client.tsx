@@ -7,7 +7,8 @@ import { ProductResponse, ProductVariantResponse } from "@repo/schemas/store";
 import { useSession } from "@/lib/auth-client";
 import { Button } from "@repo/ui/components/button";
 import { Badge } from "@repo/ui/components/badge";
-import { ShoppingCart } from "lucide-react";
+import { ShoppingCart, CheckCircle } from "lucide-react";
+import { useMemberStatus } from "@/lib/use-member-status";
 
 interface ProductClientProps {
   product: ProductResponse;
@@ -21,9 +22,10 @@ export function ProductClient({ product }: ProductClientProps) {
     product.variants?.[0] || null
   );
 
+  const { isMember, isActive, isSuspended, isLoading } = useMemberStatus();
+
   const isOutOfStock = product.stockType === "ESTOQUE_FIXO" && product.stockQuantity === 0;
   const isMemberOnly = product.membersOnly;
-  const isUserMember = !!session?.user;
 
   // Final price depends on selected variant
   const basePrice = Number(product.basePrice);
@@ -49,16 +51,10 @@ export function ProductClient({ product }: ProductClientProps) {
   };
 
   const renderCTA = () => {
-    if (isPending) {
+    if (isLoading) {
       return <Button disabled className="w-full h-12 text-lg">Carregando...</Button>;
     }
-    if (isMemberOnly && !isUserMember) {
-      return (
-        <Button onClick={handleGateClick} className="w-full h-12 text-lg bg-primary hover:bg-primary/90 text-primary-foreground font-semibold">
-          Exclusivo para sócios — faça seu cadastro
-        </Button>
-      );
-    }
+    
     if (isOutOfStock) {
       return (
         <Button disabled variant="destructive" className="w-full h-12 text-lg">
@@ -66,12 +62,47 @@ export function ProductClient({ product }: ProductClientProps) {
         </Button>
       );
     }
-    return (
-      <Button onClick={handleAddToCart} className="w-full h-12 text-lg font-semibold">
+
+    const ctaButton = (
+      <Button 
+        onClick={handleAddToCart} 
+        className={`w-full h-12 text-lg font-semibold ${isMemberOnly && (!isMember || isSuspended) ? "blur-sm pointer-events-none" : ""}`}
+        tabIndex={isMemberOnly && (!isMember || isSuspended) ? -1 : 0}
+      >
         <ShoppingCart className="mr-2 h-5 w-5" />
         Adicionar ao carrinho
       </Button>
     );
+
+    if (isMemberOnly) {
+      if (!isMember) {
+        return (
+          <div className="relative w-full">
+            {ctaButton}
+            <div className="absolute inset-0 flex items-center justify-center">
+              <Button onClick={() => router.push("/signup")} className="absolute w-[105%] h-[110%] text-sm sm:text-base font-semibold shadow-lg bg-slate-900/90 hover:bg-slate-900 text-white border border-primary/20 backdrop-blur-sm z-10 transition-transform hover:scale-[1.02]">
+                🔒 Exclusivo para Sócios — Seja Sócio para comprar
+              </Button>
+            </div>
+          </div>
+        );
+      }
+
+      if (isSuspended) {
+        return (
+          <div className="relative w-full">
+            {ctaButton}
+            <div className="absolute inset-0 flex items-center justify-center">
+              <Button onClick={() => router.push("/dashboard")} variant="destructive" className="absolute w-[105%] h-[110%] text-sm sm:text-base font-semibold shadow-lg z-10 transition-transform hover:scale-[1.02]">
+                Regularize sua assinatura para desbloquear
+              </Button>
+            </div>
+          </div>
+        );
+      }
+    }
+
+    return ctaButton;
   };
 
   return (
@@ -94,10 +125,17 @@ export function ProductClient({ product }: ProductClientProps) {
             </div>
           )}
           {isMemberOnly && (
-            <div className="absolute left-4 top-4">
-              <Badge className="bg-primary text-primary-foreground px-3 py-1.5 text-sm font-semibold shadow-sm">
-                Exclusivo para sócios
-              </Badge>
+            <div className="absolute left-4 top-4 z-10">
+              {isMember && isActive ? (
+                <Badge className="bg-amber-500 hover:bg-amber-500 text-white px-3 py-1.5 text-sm font-bold shadow-md flex items-center gap-1.5">
+                  <CheckCircle className="w-4 h-4" />
+                  Sócio
+                </Badge>
+              ) : (
+                <Badge className="bg-primary text-primary-foreground px-3 py-1.5 text-sm font-semibold shadow-sm">
+                  Exclusivo para sócios
+                </Badge>
+              )}
             </div>
           )}
         </div>
