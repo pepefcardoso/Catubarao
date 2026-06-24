@@ -3,15 +3,69 @@ import { NotFoundError, ConflictError } from "../../lib/errors";
 import type { CreateMembershipPlanInput, UpdateMembershipPlanInput } from "@repo/schemas/member";
 
 export async function getActivePlans(db: PrismaClient) {
-  return db.membershipPlan.findMany({
+  const plans = await db.membershipPlan.findMany({
     where: { isActive: true },
     orderBy: { price: "asc" },
+    include: {
+      _count: {
+        select: {
+          subscriptions: { where: { status: "ACTIVE" } }
+        }
+      }
+    }
+  });
+
+  let maxSubscribers = -1;
+  let mostPopularPlanId: string | null = null;
+  for (const plan of plans) {
+    if (plan._count.subscriptions > maxSubscribers) {
+      maxSubscribers = plan._count.subscriptions;
+      mostPopularPlanId = plan.id;
+    }
+  }
+
+  return plans.map(plan => {
+    const subscriberCount = plan._count.subscriptions;
+    const isMostPopular = subscriberCount > 0 && plan.id === mostPopularPlanId;
+    const { _count, ...rest } = plan;
+    return {
+      ...rest,
+      subscriberCount,
+      isMostPopular,
+    };
   });
 }
 
 export async function getAllPlans(db: PrismaClient) {
-  return db.membershipPlan.findMany({
+  const plans = await db.membershipPlan.findMany({
     orderBy: { createdAt: "desc" },
+    include: {
+      _count: {
+        select: {
+          subscriptions: { where: { status: "ACTIVE" } }
+        }
+      }
+    }
+  });
+
+  let maxSubscribers = -1;
+  let mostPopularPlanId: string | null = null;
+  for (const plan of plans) {
+    if (plan._count.subscriptions > maxSubscribers) {
+      maxSubscribers = plan._count.subscriptions;
+      mostPopularPlanId = plan.id;
+    }
+  }
+
+  return plans.map(plan => {
+    const subscriberCount = plan._count.subscriptions;
+    const isMostPopular = subscriberCount > 0 && plan.id === mostPopularPlanId;
+    const { _count, ...rest } = plan;
+    return {
+      ...rest,
+      subscriberCount,
+      isMostPopular,
+    };
   });
 }
 

@@ -252,11 +252,11 @@ Copy replacements per page (exact placements are in `strategic_analysis.md §3.2
 
 **Acceptance criteria:**
 
-- [ ] Only one plan has the `"Mais Popular"` badge at a time
-- [ ] `subscriberCount` is correct for each plan (verified against database)
-- [ ] Annual savings callout only appears when an annual variant exists
-- [ ] Sócio Solidário card is visually distinct and positioned last
-- [ ] `pnpm --filter web typecheck` passes
+- [x] Only one plan has the `"Mais Popular"` badge at a time
+- [x] `subscriberCount` is correct for each plan (verified against database)
+- [x] Annual savings callout only appears when an annual variant exists
+- [x] Sócio Solidário card is visually distinct and positioned last
+- [x] `pnpm --filter web typecheck` passes
 
 ---
 

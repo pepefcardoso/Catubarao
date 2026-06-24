@@ -6,7 +6,7 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter }
 import { Button } from "@repo/ui/components/button";
 import { Badge } from "@repo/ui/components/badge";
 import { Tabs, TabsList, TabsTrigger } from "@repo/ui/components/tabs";
-import { Check } from "lucide-react";
+import { Check, Heart } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { copy } from "@/lib/copy";
 interface MembershipPlan {
@@ -17,6 +17,8 @@ interface MembershipPlan {
   benefits: string[];
   isActive: boolean;
   isCorporate: boolean;
+  subscriberCount?: number;
+  isMostPopular?: boolean;
 }
 
 interface MeResponse {
@@ -65,6 +67,9 @@ export function PlansClient({ initialPlans }: PlansClientProps) {
   const standardPlans = displayedPlans.filter((p) => !p.isCorporate);
   const corporatePlans = activePlans.filter((p) => p.isCorporate);
 
+  const solidarioPlan = standardPlans.find(p => p.name.toLowerCase().includes("solidário"));
+  const regularPlans = standardPlans.filter(p => p.id !== solidarioPlan?.id);
+
   const formatPrice = (price: any) => {
     const numPrice = typeof price === "number" ? price : parseFloat(price as string);
     return new Intl.NumberFormat("pt-BR", {
@@ -97,12 +102,34 @@ export function PlansClient({ initialPlans }: PlansClientProps) {
         </Tabs>
       </div>
 
-      <div className="grid md:grid-cols-3 gap-6 pt-8">
-        {standardPlans.map((plan) => {
+      <div className="grid md:grid-cols-3 gap-6 pt-8 items-end">
+        {regularPlans.map((plan) => {
           const isActivePlan = activePlanId === plan.id;
+          const isRecommended = plan.isMostPopular; // Tied to isMostPopular as no separate flag exists
+
+          let annualSavings = 0;
+          let monthlyEquivalentPrice = 0;
+          if (interval === "ANNUAL") {
+            const monthlyEquivalent = activePlans.find(p => p.name === plan.name && p.interval === "MONTHLY");
+            if (monthlyEquivalent) {
+              annualSavings = (monthlyEquivalent.price * 12) - plan.price;
+              monthlyEquivalentPrice = monthlyEquivalent.price * 12;
+            }
+          }
+
           return (
-            <Card key={plan.id} className={`flex flex-col relative ${isActivePlan ? "border-primary shadow-md" : ""}`}>
-              {isActivePlan && (
+            <Card key={plan.id} className={`flex flex-col relative ${isActivePlan ? "border-primary shadow-md" : ""} ${isRecommended ? "ring-2 ring-brand-primary scale-105 z-10" : ""}`}>
+              {isRecommended && (
+                <div className="absolute -top-3 right-4 flex justify-center">
+                  <Badge className="bg-brand-primary text-primary-foreground font-bold text-xs uppercase tracking-wider shadow-sm">Recomendado</Badge>
+                </div>
+              )}
+              {plan.isMostPopular && (
+                <div className="absolute -top-3 left-4 flex justify-center">
+                  <Badge className="bg-brand-primary text-primary-foreground font-bold text-xs uppercase tracking-wider shadow-sm">Mais Popular</Badge>
+                </div>
+              )}
+              {isActivePlan && !isRecommended && !plan.isMostPopular && (
                 <div className="absolute -top-3 left-0 right-0 flex justify-center">
                   <Badge className="bg-primary text-primary-foreground">Seu Plano Atual</Badge>
                 </div>
@@ -110,8 +137,25 @@ export function PlansClient({ initialPlans }: PlansClientProps) {
               <CardHeader>
                 <CardTitle className="text-2xl">{plan.name}</CardTitle>
                 <CardDescription>
-                  <span className="text-3xl font-bold text-foreground">{formatPrice(plan.price)}</span>
-                  <span className="text-muted-foreground">/{interval === "MONTHLY" ? "mês" : "ano"}</span>
+                  {plan.subscriberCount !== undefined && plan.subscriberCount > 0 && (
+                    <div className="text-sm font-medium text-muted-foreground mb-2">
+                      {plan.subscriberCount} {plan.subscriberCount === 1 ? "sócio neste plano" : "sócios neste plano"}
+                    </div>
+                  )}
+                  {interval === "ANNUAL" && annualSavings > 0 && (
+                    <div className="text-sm text-green-600 font-semibold mb-1">
+                      Economize {formatPrice(annualSavings)}/ano
+                    </div>
+                  )}
+                  <div className="flex items-baseline gap-2">
+                    <span className="text-3xl font-bold text-foreground">{formatPrice(plan.price)}</span>
+                    <span className="text-muted-foreground">/{interval === "MONTHLY" ? "mês" : "ano"}</span>
+                  </div>
+                  {interval === "ANNUAL" && annualSavings > 0 && (
+                    <div className="text-xs text-muted-foreground line-through mt-1">
+                      {formatPrice(monthlyEquivalentPrice)}/ano
+                    </div>
+                  )}
                 </CardDescription>
               </CardHeader>
               <CardContent className="flex-1">
@@ -127,7 +171,7 @@ export function PlansClient({ initialPlans }: PlansClientProps) {
               <CardFooter>
                 <Button
                   className="w-full"
-                  variant={isActivePlan ? "secondary" : "default"}
+                  variant={isRecommended && !isActivePlan ? "default" : (isActivePlan ? "secondary" : "outline")}
                   disabled={isActivePlan}
                   onClick={() => handleCheckout(plan.id)}
                 >
@@ -137,6 +181,51 @@ export function PlansClient({ initialPlans }: PlansClientProps) {
             </Card>
           );
         })}
+
+        {solidarioPlan && (
+          <Card key={solidarioPlan.id} className={`flex flex-col relative scale-95 opacity-90 hover:opacity-100 transition-opacity ${activePlanId === solidarioPlan.id ? "border-primary shadow-md" : ""}`}>
+            {activePlanId === solidarioPlan.id && (
+              <div className="absolute -top-3 left-0 right-0 flex justify-center">
+                <Badge className="bg-primary text-primary-foreground">Seu Plano Atual</Badge>
+              </div>
+            )}
+            <CardHeader className="pb-4">
+              <div className="flex items-center gap-2 mb-2">
+                <Heart className="h-5 w-5 text-red-500 fill-red-500" />
+                <CardTitle className="text-xl">{solidarioPlan.name}</CardTitle>
+              </div>
+              <CardDescription className="text-xs">
+                Não pode pagar? Sem problema. Você ainda faz parte.
+              </CardDescription>
+              <div className="mt-4">
+                <div className="flex items-baseline gap-2">
+                  <span className="text-2xl font-bold text-foreground">{formatPrice(solidarioPlan.price)}</span>
+                  <span className="text-muted-foreground">/{interval === "MONTHLY" ? "mês" : "ano"}</span>
+                </div>
+              </div>
+            </CardHeader>
+            <CardContent className="flex-1 text-xs">
+              <ul className="space-y-2 text-muted-foreground">
+                {solidarioPlan.benefits.map((benefit, i) => (
+                  <li key={i} className="flex items-center gap-2">
+                    <Check className="h-3 w-3 text-primary" />
+                    {benefit}
+                  </li>
+                ))}
+              </ul>
+            </CardContent>
+            <CardFooter>
+              <Button
+                className="w-full"
+                variant={activePlanId === solidarioPlan.id ? "secondary" : "outline"}
+                disabled={activePlanId === solidarioPlan.id}
+                onClick={() => handleCheckout(solidarioPlan.id)}
+              >
+                {activePlanId === solidarioPlan.id ? "Plano Atual" : "Assinar"}
+              </Button>
+            </CardFooter>
+          </Card>
+        )}
       </div>
 
       {corporatePlans.length > 0 && (

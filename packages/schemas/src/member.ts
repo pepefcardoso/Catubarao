@@ -170,6 +170,8 @@ export const MembershipPlanResponseSchema = z.object({
   maxCards: z.number().int().nullable(),
   isActive: z.boolean(),
   createdAt: z.date(),
+  subscriberCount: z.number().int().nonnegative().optional(),
+  isMostPopular: z.boolean().optional(),
 });
 
 export const CreateSubscriptionSchema = z.object({
