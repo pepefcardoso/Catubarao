@@ -2412,9 +2412,9 @@ All templates: club logo, responsive layout, unsubscribe footer (transactional e
 
 **Acceptance criteria:**
 
-- [ ] Port scan of VPS shows only 22 (or custom SSH port), 80, 443 open
-- [ ] SSH with password returns permission denied
-- [ ] `fail2ban` is active: `fail2ban-client status sshd` shows active jail
+- [x] Port scan of VPS shows only 22 (or custom SSH port), 80, 443 open
+- [x] SSH with password returns permission denied
+- [x] `fail2ban` is active: `fail2ban-client status sshd` shows active jail
 
 ---
 
