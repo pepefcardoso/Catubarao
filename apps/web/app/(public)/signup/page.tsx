@@ -8,6 +8,7 @@ import { z } from "zod";
 import { toast } from "sonner";
 import { RegisterMemberSchema, type RegisterMemberInput } from "@repo/schemas/member";
 
+import { StepIndicator } from "@repo/ui/components/StepIndicator";
 import { Button } from "@repo/ui/components/button";
 import { Input } from "@repo/ui/components/input";
 import { Label } from "@repo/ui/components/label";
@@ -128,6 +129,15 @@ export default function SignupPage() {
           </CardDescription>
         </CardHeader>
         <CardContent>
+          <div className="mb-8">
+            <StepIndicator current={step} total={2} labels={["Seus Dados", "Escolha seu Plano"]} />
+            <div className="mt-6 text-center space-y-2">
+              <p className="text-sm text-muted-foreground">Leva menos de 2 minutos</p>
+              <div className="inline-block bg-muted/50 rounded-full px-4 py-1.5 text-xs text-muted-foreground font-medium border border-border/50">
+                🔒 Seus dados estão protegidos pela LGPD
+              </div>
+            </div>
+          </div>
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6" noValidate>
             {step === 1 && (
               <div className="space-y-4 animate-in fade-in slide-in-from-right-4 duration-300">

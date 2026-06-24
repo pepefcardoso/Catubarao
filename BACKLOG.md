@@ -222,11 +222,11 @@ Copy replacements per page (exact placements are in `strategic_analysis.md §3.2
 
 **Acceptance criteria:**
 
-- [ ] Step 1 renders indicator with step 1 active, step 2 unfilled
-- [ ] Step 2 renders indicator with both steps filled (or step 2 active depending on design)
-- [ ] Indicator is visible on mobile (375px) without horizontal overflow
-- [ ] `"Leva menos de 2 minutos"` and LGPD notice are present on both steps
-- [ ] `pnpm --filter web typecheck` passes
+- [x] Step 1 renders indicator with step 1 active, step 2 unfilled
+- [x] Step 2 renders indicator with both steps filled (or step 2 active depending on design)
+- [x] Indicator is visible on mobile (375px) without horizontal overflow
+- [x] `"Leva menos de 2 minutos"` and LGPD notice are present on both steps
+- [x] `pnpm --filter web typecheck` passes
 
 ---
 
