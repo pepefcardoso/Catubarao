@@ -2516,5 +2516,5 @@ All templates: club logo, responsive layout, unsubscribe footer (transactional e
 
 **Acceptance criteria:**
 
-- [ ] A developer unfamiliar with the project can deploy to production using only the runbook
-- [ ] Go-live checklist is fully checked before any real member data is collected
+- [x] A developer unfamiliar with the project can deploy to production using only the runbook
+- [x] Go-live checklist is fully checked before any real member data is collected
