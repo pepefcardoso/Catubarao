@@ -55,6 +55,8 @@ model Member {
   deliveryProofs      DeliveryProof[]     @relation("ProofAuthor")
   orders              Order[]
 
+  consentLogs         ConsentLog[]
+
   @@unique([email])
   @@map("members")
 }
@@ -620,5 +622,18 @@ model AuditLog {
   @@index([memberId])
   @@index([action])
   @@map("audit_logs")
+}
+
+model ConsentLog {
+  id        String   @id @default(uuid())
+  memberId  String?
+  ipAddress String?
+  userAgent String?
+  choices   Json
+  createdAt DateTime @default(now())
+
+  member    Member?  @relation(fields: [memberId], references: [id])
+
+  @@map("consent_logs")
 }
 

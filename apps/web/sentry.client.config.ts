@@ -6,4 +6,5 @@ Sentry.init({
     process.env.SENTRY_ENVIRONMENT || process.env.NEXT_PUBLIC_SENTRY_ENVIRONMENT || "development",
   tracesSampleRate: 1,
   debug: false,
+  enabled: false,
 });

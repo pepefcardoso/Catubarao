@@ -2364,9 +2364,9 @@ All templates: club logo, responsive layout, unsubscribe footer (transactional e
 
 **Acceptance criteria:**
 
-- [ ] Banner does not appear on `(admin)` or `(member)` routes (authenticated users already consented at registration)
-- [ ] Sentry JS is not loaded until consent is given
-- [ ] Consent choice persists across page reloads
+- [x] Banner does not appear on `(admin)` or `(member)` routes (authenticated users already consented at registration)
+- [x] Sentry JS is not loaded until consent is given
+- [x] Consent choice persists across page reloads
 
 ---
 

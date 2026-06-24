@@ -88,6 +88,9 @@ fastify.register(authRoutes, { prefix: "/auth" });
 import { membersRoutes } from "./modules/members/members.routes";
 fastify.register(membersRoutes, { prefix: "/members" });
 
+import { consentRoutes } from "./modules/members/consent.routes";
+fastify.register(consentRoutes, { prefix: "/consent" });
+
 import { plansRoutes } from "./modules/members/plans.routes";
 fastify.register(plansRoutes);
 

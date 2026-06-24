@@ -6,3 +6,4 @@ export * from "./events";
 export * from "./transparency";
 export * from "./partner";
 export * from "./store";
+export * from "./consent";
