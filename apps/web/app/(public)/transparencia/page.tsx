@@ -13,6 +13,11 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title: "Portal de Transparência | Clube Atlético Tubarão",
     description: "Acompanhe de perto a reestruturação e as contas do Clube Atlético Tubarão.",
+    alternates: {
+      types: {
+        'application/rss+xml': '/transparency/feed.xml',
+      },
+    },
   };
 }
 
@@ -63,8 +68,8 @@ export default async function TransparenciaPage() {
     return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value);
   };
 
-  const formatDate = (dateString: string) => {
-    return new Intl.DateTimeFormat('pt-BR', { dateStyle: 'long' }).format(new Date(dateString));
+  const formatDate = (dateInput: string | Date) => {
+    return new Intl.DateTimeFormat('pt-BR', { dateStyle: 'long' }).format(new Date(dateInput));
   };
 
   return (
@@ -73,6 +78,13 @@ export default async function TransparenciaPage() {
       <section className="relative overflow-hidden bg-muted/30 py-24 px-4 sm:px-6 lg:px-8 border-b">
         <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-background to-secondary/5 -z-10" />
         <div className="max-w-4xl mx-auto text-center space-y-8">
+          <div className="flex justify-center mb-6">
+            <Button variant="outline" size="sm" asChild className="rounded-full shadow-sm hover:shadow-md transition-shadow gap-2 bg-background/80 backdrop-blur-md border-primary/20 hover:bg-primary/5 text-foreground hover:text-primary">
+              <Link href="/transparency/feed.xml">
+                <span className="text-base">📡</span> Assine o Feed RSS
+              </Link>
+            </Button>
+          </div>
           <h1 className="text-5xl font-extrabold tracking-tight lg:text-6xl bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/60">
             Contas claras, futuro sólido
           </h1>

@@ -379,13 +379,13 @@ Copy replacements per page (exact placements are in `strategic_analysis.md §3.2
 
 **Acceptance criteria:**
 
-- [ ] Summary cards render correct values matching `GET /transparency/debts`
-- [ ] Circular progress animation triggers on scroll, not on page load
-- [ ] Area chart renders with at least 2 data points (graceful no-data state if fewer)
-- [ ] Reading time estimate is present on every post card
-- [ ] RSS link tag is in the page `<head>`
-- [ ] Page scores 90+ on Lighthouse performance (run against staging)
-- [ ] `pnpm --filter web typecheck` passes
+- [x] Summary cards render correct values matching `GET /transparency/debts`
+- [x] Circular progress animation triggers on scroll, not on page load
+- [x] Area chart renders with at least 2 data points (graceful no-data state if fewer)
+- [x] Reading time estimate is present on every post card
+- [x] RSS link tag is in the page `<head>`
+- [x] Page scores 90+ on Lighthouse performance (run against staging)
+- [x] `pnpm --filter web typecheck` passes
 
 ---
 

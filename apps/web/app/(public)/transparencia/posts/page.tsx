@@ -9,6 +9,8 @@ import { Badge } from "@repo/ui/components/badge";
 import { FileText } from "lucide-react";
 import Link from "next/link";
 import { Skeleton } from "@repo/ui/components/skeleton";
+import { formatDistanceToNow, format } from "date-fns";
+import { ptBR } from "date-fns/locale";
 
 import { Metadata } from "next";
 
@@ -28,6 +30,15 @@ const CATEGORY_LABELS: Record<string, string> = {
   COMPOSICAO_SOCIETARIA: "Composição Societária",
   DOCUMENTO_SAF: "Documento SAF",
   OUTRO: "Outros",
+};
+
+const CATEGORY_ICONS: Record<string, string> = {
+  BALANCO_MENSAL: "📊",
+  STATUS_DIVIDAS: "💰",
+  ATA_ASSEMBLEIA: "📋",
+  COMPOSICAO_SOCIETARIA: "🏛️",
+  DOCUMENTO_SAF: "🏛️",
+  OUTRO: "📄",
 };
 
 async function fetchPosts(searchParams: { [key: string]: string | string[] | undefined }) {
@@ -91,7 +102,9 @@ async function PostList({ searchParams }: { searchParams: { [key: string]: strin
       <div className="space-y-4">
         {data.posts.map(post => {
           const categoryLabel = CATEGORY_LABELS[post.category] || post.category;
-          const dateLabel = new Intl.DateTimeFormat('pt-BR', { dateStyle: 'long' }).format(new Date(post.publishedAt));
+          const categoryIcon = CATEGORY_ICONS[post.category] || "📄";
+          const relativeDate = formatDistanceToNow(new Date(post.publishedAt), { addSuffix: true, locale: ptBR });
+          const readingTime = Math.ceil(post.body.split(/\s+/).length / 200);
           
           let refLabel = null;
           if (post.referenceMonth && post.referenceYear) {
@@ -107,15 +120,24 @@ async function PostList({ searchParams }: { searchParams: { [key: string]: strin
               <Card className="group-hover:border-primary/50 transition-colors bg-card/50">
                 <CardHeader className="pb-3">
                   <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4 mb-2">
-                    <CardTitle className="text-lg group-hover:text-primary transition-colors">
+                    <CardTitle className="text-lg group-hover:text-primary transition-colors flex items-center gap-2">
                       {post.title}
                     </CardTitle>
-                    <Badge variant="secondary" className="shrink-0 w-fit">
-                      {categoryLabel}
-                    </Badge>
+                    <div className="flex flex-wrap items-center gap-2 shrink-0">
+                      {post.version > 1 && (
+                        <Badge variant="outline" className="text-xs">
+                          Versão {post.version} — atualizado em {format(new Date(post.updatedAt), "dd/MM/yyyy")}
+                        </Badge>
+                      )}
+                      <Badge variant="secondary" className="w-fit">
+                        <span className="mr-1">{categoryIcon}</span> {categoryLabel}
+                      </Badge>
+                    </div>
                   </div>
-                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                    <CardDescription>{dateLabel}</CardDescription>
+                  <div className="flex items-center gap-2 text-sm text-muted-foreground flex-wrap">
+                    <CardDescription>{relativeDate}</CardDescription>
+                    <span>•</span>
+                    <span>{readingTime} min de leitura</span>
                     {refLabel && (
                       <>
                         <span>•</span>

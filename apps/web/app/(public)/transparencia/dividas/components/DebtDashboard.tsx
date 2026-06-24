@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import {
   Card,
   CardContent,
@@ -18,14 +18,15 @@ import {
 } from "@repo/ui/components/table";
 import { Skeleton } from "@repo/ui/components/skeleton";
 import {
-  LineChart,
-  Line,
+  AreaChart,
+  Area,
   XAxis,
   YAxis,
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
+import { ArrowDown, ArrowUp } from "lucide-react";
 import { DebtStatusBadge } from "./DebtStatusBadge";
 import { EmptyState } from "./EmptyState";
 import { DebtRecordResponse, DebtSnapshotResponse } from "@repo/schemas/transparency";
@@ -38,8 +39,8 @@ function formatCurrency(value: number) {
   }).format(value);
 }
 
-function formatDate(dateString: string) {
-  const date = new Date(dateString);
+function formatDate(dateInput: string | Date) {
+  const date = new Date(dateInput);
   return new Intl.DateTimeFormat("pt-BR", {
     month: "short",
     year: "numeric",
@@ -57,6 +58,23 @@ export function DebtDashboard() {
   const [debts, setDebts] = useState<Record<string, DebtRecordResponse[]>>({});
   const [snapshots, setSnapshots] = useState<DebtSnapshotResponse[]>([]);
   const [loading, setLoading] = useState(true);
+  const chartRef = useRef<HTMLDivElement>(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    if (!chartRef.current) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          setIsVisible(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.1 }
+    );
+    observer.observe(chartRef.current);
+    return () => observer.disconnect();
+  }, [loading]);
 
   useEffect(() => {
     async function fetchData() {
@@ -115,6 +133,8 @@ export function DebtDashboard() {
   const totalNegotiated = allDebts.reduce((acc, curr) => acc + (curr.negotiatedAmount ?? curr.originalAmount), 0);
   const totalPaid = allDebts.reduce((acc, curr) => acc + curr.paidAmount, 0);
   const totalRemaining = totalNegotiated - totalPaid;
+  const numCreditors = allDebts.length;
+  const percentPaid = totalNegotiated > 0 ? Math.round((totalPaid / totalNegotiated) * 100) : 0;
 
   const sortedDebts = [...allDebts].sort((a, b) => {
     const statusA = STATUS_ORDER[a.status as keyof typeof STATUS_ORDER] || 99;
@@ -133,41 +153,90 @@ export function DebtDashboard() {
       <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-            <CardTitle className="text-sm font-medium">Passivo Original</CardTitle>
+            <CardTitle className="text-sm font-medium">Total Original</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{formatCurrency(totalOriginal)}</div>
+            <div className="text-3xl font-black font-display tracking-tight">{formatCurrency(totalOriginal)}</div>
           </CardContent>
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-            <CardTitle className="text-sm font-medium">Valor Negociado</CardTitle>
+            <CardTitle className="text-sm font-medium">Total Pago</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{formatCurrency(totalNegotiated)}</div>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-            <CardTitle className="text-sm font-medium">Pago até o Momento</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-emerald-600 dark:text-emerald-400">
-              {formatCurrency(totalPaid)}
+            <div className="flex items-baseline gap-2">
+              <div className="text-3xl font-black font-display tracking-tight text-emerald-600 dark:text-emerald-400">
+                {formatCurrency(totalPaid)}
+              </div>
+              <ArrowUp className="w-4 h-4 text-emerald-500" />
             </div>
           </CardContent>
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-            <CardTitle className="text-sm font-medium">Saldo Devedor</CardTitle>
+            <CardTitle className="text-sm font-medium">Total Restante</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-red-600 dark:text-red-400">
-              {formatCurrency(totalRemaining)}
+            <div className="flex items-baseline gap-2">
+              <div className="text-3xl font-black font-display tracking-tight text-red-600 dark:text-red-400">
+                {formatCurrency(totalRemaining)}
+              </div>
+              <ArrowDown className="w-4 h-4 text-emerald-500" />
+            </div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
+            <CardTitle className="text-sm font-medium">Número de Credores</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-3xl font-black font-display tracking-tight">
+              {numCreditors}
             </div>
           </CardContent>
         </Card>
       </div>
+
+      {/* Progress Chart */}
+      <Card className="overflow-hidden">
+        <CardContent className="p-0">
+          <div className="flex flex-col md:flex-row items-center justify-between p-6 bg-muted/20">
+            <div className="space-y-2">
+              <h3 className="text-lg font-semibold tracking-tight">Progresso da Reestruturação</h3>
+              <p className="text-muted-foreground text-sm max-w-md">
+                Acompanhe o percentual da dívida que já foi quitada graças ao apoio dos sócios e à responsabilidade fiscal do clube.
+              </p>
+            </div>
+            <div className="mt-6 md:mt-0 relative flex items-center justify-center shrink-0" ref={chartRef}>
+              <svg className="w-32 h-32 transform -rotate-90">
+                <circle
+                  cx="64"
+                  cy="64"
+                  r="56"
+                  stroke="currentColor"
+                  strokeWidth="12"
+                  fill="transparent"
+                  className="text-muted/30"
+                />
+                <circle
+                  cx="64"
+                  cy="64"
+                  r="56"
+                  stroke="currentColor"
+                  strokeWidth="12"
+                  fill="transparent"
+                  strokeDasharray={2 * Math.PI * 56}
+                  strokeDashoffset={(2 * Math.PI * 56) * (1 - (isVisible ? percentPaid : 0) / 100)}
+                  className="text-primary transition-all duration-1000 ease-out"
+                />
+              </svg>
+              <div className="absolute inset-0 flex items-center justify-center flex-col">
+                <span className="text-2xl font-black font-display">{isVisible ? percentPaid : 0}%</span>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
 
       {/* Historical Chart */}
       {snapshots.length >= 2 && (
@@ -181,10 +250,16 @@ export function DebtDashboard() {
           <CardContent>
             <div className="h-[400px] w-full">
               <ResponsiveContainer width="100%" height="100%">
-                <LineChart
+                <AreaChart
                   data={chartData}
                   margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
                 >
+                  <defs>
+                    <linearGradient id="colorRemaining" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="hsl(var(--primary))" stopOpacity={0.3}/>
+                      <stop offset="95%" stopColor="hsl(var(--primary))" stopOpacity={0}/>
+                    </linearGradient>
+                  </defs>
                   <CartesianGrid strokeDasharray="3 3" className="stroke-muted" />
                   <XAxis 
                     dataKey="name" 
@@ -202,15 +277,16 @@ export function DebtDashboard() {
                     formatter={(value: any) => [formatCurrency(Number(value) || 0), "Saldo Devedor"]}
                     contentStyle={{ borderRadius: '8px', border: '1px solid hsl(var(--border))' }}
                   />
-                  <Line
+                  <Area
                     type="monotone"
                     dataKey="totalRemaining"
                     stroke="hsl(var(--primary))"
                     strokeWidth={2}
-                    dot={{ fill: "hsl(var(--primary))" }}
+                    fillOpacity={1}
+                    fill="url(#colorRemaining)"
                     activeDot={{ r: 6 }}
                   />
-                </LineChart>
+                </AreaChart>
               </ResponsiveContainer>
             </div>
           </CardContent>
@@ -262,9 +338,9 @@ export function DebtDashboard() {
                         </div>
                       )}
                       {debt.publicNote && (
-                        <div className="mt-1 text-xs italic text-muted-foreground">
-                          Note: {debt.publicNote}
-                        </div>
+                        <blockquote className="mt-2 border-l-2 border-primary/50 pl-3 italic text-xs text-muted-foreground bg-muted/30 py-1.5 px-2 rounded-r-md">
+                          "{debt.publicNote}"
+                        </blockquote>
                       )}
                     </TableCell>
                     <TableCell>{formatCurrency(debt.originalAmount)}</TableCell>
