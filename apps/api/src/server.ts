@@ -40,9 +40,26 @@ Sentry.setupFastifyErrorHandler(fastify);
 // Global Error Handler
 fastify.setErrorHandler(errorHandler);
 
+import helmet from "@fastify/helmet";
+import { ForbiddenError } from "./lib/errors";
+
 // Plugins
+fastify.register(helmet, {
+  contentSecurityPolicy: false, // Disabling because API usually doesn't serve HTML, but we apply other headers
+});
+
 fastify.register(cors, {
-  origin: env.NEXT_PUBLIC_APP_URL || "http://localhost:3000",
+  origin: (origin, cb) => {
+    // allow server-to-server requests (no origin)
+    if (!origin) {
+      return cb(null, true);
+    }
+    const allowedOrigin = env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
+    if (origin === allowedOrigin || origin === "http://localhost:3000") {
+      return cb(null, true);
+    }
+    cb(new ForbiddenError("CORS request from unknown origin"), false);
+  },
   credentials: true,
 });
 

@@ -2316,9 +2316,9 @@ All templates: club logo, responsive layout, unsubscribe footer (transactional e
 
 **Acceptance criteria:**
 
-- [ ] `https://securityheaders.com` scan returns A grade
-- [ ] Mercado Pago Brick renders correctly with CSP applied
-- [ ] API returns `403` on CORS request from an unknown origin
+- [x] `https://securityheaders.com` scan returns A grade
+- [x] Mercado Pago Brick renders correctly with CSP applied
+- [x] API returns `403` on CORS request from an unknown origin
 
 ---
 
