@@ -25,10 +25,10 @@ export default function PartnerDetailsPage() {
   const fetchPartnerData = useCallback(async () => {
     try {
       setIsLoading(true);
-      const [partnerData, dealsData] = await Promise.all([
+      const [partnerData, dealsData] = (await Promise.all([
         apiFetch(`/admin/partners/${partnerId}`),
-        apiFetch(`/admin/partners/${partnerId}/deals`)
-      ]);
+        apiFetch(`/admin/partners/${partnerId}/deals`),
+      ])) as [any, any[]];
       setPartner(partnerData);
       setDeals(dealsData);
     } catch (err) {

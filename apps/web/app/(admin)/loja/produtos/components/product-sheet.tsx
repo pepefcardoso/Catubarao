@@ -40,8 +40,8 @@ export function ProductSheet({ open, onOpenChange, product, onSaved }: ProductSh
   const [isPending, startTransition] = useTransition();
   const [isUploading, setIsUploading] = useState(false);
 
-  const form = useForm<CreateProductInput>({
-    resolver: zodResolver(CreateProductSchema),
+  const form = useForm<any>({
+    resolver: zodResolver(CreateProductSchema) as any,
     defaultValues: {
       name: product?.name || "",
       description: product?.description || "",
@@ -114,7 +114,7 @@ export function ProductSheet({ open, onOpenChange, product, onSaved }: ProductSh
     form.setValue("images", newImages);
   };
 
-  const onSubmit = (data: CreateProductInput) => {
+  const onSubmit = (data: any) => {
     startTransition(async () => {
       try {
         if (product) {
@@ -243,7 +243,7 @@ export function ProductSheet({ open, onOpenChange, product, onSaved }: ProductSh
             <div className="space-y-4">
               <FormLabel>Imagens</FormLabel>
               <div className="flex flex-wrap gap-4">
-                {images.map((img, idx) => (
+                {images.map((img: string, idx: number) => (
                   <div key={idx} className="relative w-24 h-24 rounded-lg overflow-hidden border border-white/10 group">
                     <img src={img} alt={`Preview ${idx}`} className="w-full h-full object-cover" />
                     <button

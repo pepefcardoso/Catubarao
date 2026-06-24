@@ -201,7 +201,7 @@ export function CheckoutClient() {
             <CardContent>
               <Wallet
                 initialization={{ preferenceId, redirectMode: "self" }}
-                customization={{ texts: { action: "pay", valueProp: "security_details" } }}
+                customization={{ texts: { action: "pay", valueProp: "security_details" } } as any}
                 onReady={() => console.log("Wallet Brick is ready")}
                 onError={(error) => console.error(error)}
               />

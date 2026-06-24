@@ -21,7 +21,7 @@ import { ptBR } from "date-fns/locale";
 interface OrderSheetProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  order: OrderResponse | null;
+  order: any;
   onSaved: () => void;
 }
 
@@ -179,7 +179,7 @@ export function OrderSheet({ open, onOpenChange, order, onSaved }: OrderSheetPro
               <Package className="w-4 h-4" /> Itens do Pedido
             </h3>
             <div className="space-y-3">
-              {order.items?.map((item) => (
+              {order.items?.map((item: any) => (
                 <div key={item.id} className="flex gap-4 p-3 bg-white/5 rounded-xl border border-white/10 items-center">
                   <div className="w-12 h-12 rounded-md bg-white/10 overflow-hidden shrink-0 border border-white/10">
                     {item.product?.images?.[0] ? (

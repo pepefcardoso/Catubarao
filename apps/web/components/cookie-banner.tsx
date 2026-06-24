@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useSession } from "@/lib/auth-client";
-import { Button } from "@/components/ui/button";
+import { Button } from "@repo/ui/components/button";
 import { CookieIcon } from "lucide-react";
 import Link from "next/link";
 

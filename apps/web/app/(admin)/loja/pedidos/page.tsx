@@ -66,8 +66,8 @@ export default function AdminOrdersPage() {
     return <Badge variant="outline" className={info.className}>{info.label}</Badge>;
   };
 
-  const hasSobDemanda = (order: OrderResponse) => {
-    return order.items?.some((item) => item.product?.stockType === "SOB_DEMANDA");
+  const hasSobDemanda = (order: any) => {
+    return order.items?.some((item: any) => item.product?.stockType === "SOB_DEMANDA");
   };
 
   return (
@@ -136,8 +136,8 @@ export default function AdminOrdersPage() {
                 </TableCell>
               </TableRow>
             ) : (
-              orders.map((order) => {
-                  const itemsCount = order.items?.reduce((acc, item) => acc + item.quantity, 0) || 0;
+              orders.map((order: any) => {
+                  const itemsCount = order.items?.reduce((acc: number, item: any) => acc + item.quantity, 0) || 0;
                   const isSobDemanda = hasSobDemanda(order);
 
                   return (

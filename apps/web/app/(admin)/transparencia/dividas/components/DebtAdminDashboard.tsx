@@ -38,7 +38,7 @@ function parseCurrencyInput(value: string) {
   return parseFloat(numeric) || 0;
 }
 
-function formatDate(dateString: string) {
+function formatDate(dateString: string | Date) {
   return new Intl.DateTimeFormat("pt-BR", {
     day: "2-digit",
     month: "2-digit",
@@ -122,7 +122,7 @@ function EditableDebtRow({
           className="h-8 w-32 rounded-md border border-input bg-transparent px-2 text-sm shadow-sm outline-none focus:ring-1 focus:ring-ring dark:bg-input/30"
           value={status}
           onChange={(e) => {
-            setStatus(e.target.value);
+            setStatus(e.target.value as any);
             setIsEditing(true);
           }}
           onBlur={handleSave}

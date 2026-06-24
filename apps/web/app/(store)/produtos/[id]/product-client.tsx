@@ -24,7 +24,7 @@ export function ProductClient({ product }: ProductClientProps) {
 
   const { isMember, isActive, isSuspended, isLoading } = useMemberStatus();
 
-  const isOutOfStock = product.stockType === "ESTOQUE_FIXO" && product.stockQuantity === 0;
+  const isOutOfStock = product.stockType === "ESTOQUE_FIXO" && (product.variants ?? []).reduce((acc, v) => acc + (v.stockQuantity ?? 0), 0) === 0;
   const isMemberOnly = product.membersOnly;
 
   // Final price depends on selected variant

@@ -34,7 +34,7 @@ export function DebtRecordSheet({ open, onOpenChange, onSaved }: DebtRecordSheet
     reset,
     formState: { errors },
   } = useForm<CreateDebtRecordInput>({
-    resolver: zodResolver(CreateDebtRecordSchema),
+    resolver: zodResolver(CreateDebtRecordSchema) as any,
     defaultValues: {
       status: "EM_NEGOCIACAO",
       paidAmount: 0,

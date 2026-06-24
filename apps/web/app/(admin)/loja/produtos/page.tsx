@@ -144,65 +144,69 @@ export default function AdminProductsPage() {
                   </TableCell>
                 </TableRow>
               ) : (
-                products.map((product) => (
-                  <TableRow key={product.id} className="hover:bg-muted/50 transition-colors border-white/5 group">
-                    <TableCell>
-                      {product.images && product.images.length > 0 ? (
-                        <img src={product.images[0]} alt={product.name} className="w-10 h-10 object-cover rounded-md border border-white/10" />
-                      ) : (
-                        <div className="w-10 h-10 bg-muted/50 rounded-md border border-white/10 flex items-center justify-center">
-                          <ImageIcon className="w-4 h-4 text-muted-foreground/50" />
+                products.map((product) => {
+                  const totalStock = product.variants?.reduce((acc, v) => acc + (v.stockQuantity ?? 0), 0) ?? 0;
+                  const isLowStock = product.variants?.some(v => (v.stockQuantity ?? 0) <= (v.stockAlertThreshold ?? 0)) ?? false;
+                  return (
+                    <TableRow key={product.id} className="hover:bg-muted/50 transition-colors border-white/5 group">
+                      <TableCell>
+                        {product.images && product.images.length > 0 ? (
+                          <img src={product.images[0]} alt={product.name} className="w-10 h-10 object-cover rounded-md border border-white/10" />
+                        ) : (
+                          <div className="w-10 h-10 bg-muted/50 rounded-md border border-white/10 flex items-center justify-center">
+                            <ImageIcon className="w-4 h-4 text-muted-foreground/50" />
+                          </div>
+                        )}
+                      </TableCell>
+                      <TableCell className="font-medium max-w-[200px] truncate">
+                        {product.name}
+                        {product.membersOnly && (
+                          <Badge variant="outline" className="ml-2 text-[10px] bg-primary/10 text-primary border-primary/20">Sócios</Badge>
+                        )}
+                      </TableCell>
+                      <TableCell className="text-muted-foreground text-sm">
+                        {product.category}
+                      </TableCell>
+                      <TableCell className="font-mono">
+                        R$ {product.basePrice.toFixed(2)}
+                      </TableCell>
+                      <TableCell>
+                        {product.stockType === "ESTOQUE_FIXO" ? (
+                          <div className="flex flex-col">
+                            <span className="text-sm">{totalStock} un.</span>
+                            {isLowStock && (
+                              <span className="text-[10px] text-red-500">Estoque Baixo</span>
+                            )}
+                          </div>
+                        ) : (
+                          <span className="text-sm text-muted-foreground italic">Sob Demanda</span>
+                        )}
+                      </TableCell>
+                      <TableCell>{getStatusBadge(product)}</TableCell>
+                      <TableCell className="text-right">
+                        <div className="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                          <Button 
+                            variant="ghost" 
+                            size="sm" 
+                            onClick={() => handleEdit(product)}
+                            className="h-8 px-2 text-muted-foreground hover:text-foreground"
+                          >
+                            <Edit className="w-4 h-4" />
+                          </Button>
+                          <Button 
+                            variant="ghost" 
+                            size="sm" 
+                            onClick={() => setProductToDeactivate(product)}
+                            disabled={!product.isActive}
+                            className="h-8 px-2 text-red-500/50 hover:text-red-500 hover:bg-red-500/10 disabled:opacity-30"
+                          >
+                            <Archive className="w-4 h-4" />
+                          </Button>
                         </div>
-                      )}
-                    </TableCell>
-                    <TableCell className="font-medium max-w-[200px] truncate">
-                      {product.name}
-                      {product.membersOnly && (
-                        <Badge variant="outline" className="ml-2 text-[10px] bg-primary/10 text-primary border-primary/20">Sócios</Badge>
-                      )}
-                    </TableCell>
-                    <TableCell className="text-muted-foreground text-sm">
-                      {product.category}
-                    </TableCell>
-                    <TableCell className="font-mono">
-                      R$ {product.basePrice.toFixed(2)}
-                    </TableCell>
-                    <TableCell>
-                      {product.stockType === "ESTOQUE_FIXO" ? (
-                        <div className="flex flex-col">
-                          <span className="text-sm">{product.stockQuantity} un.</span>
-                          {(product.stockQuantity ?? 0) <= (product.stockAlertThreshold ?? 0) && (
-                            <span className="text-[10px] text-red-500">Estoque Baixo</span>
-                          )}
-                        </div>
-                      ) : (
-                        <span className="text-sm text-muted-foreground italic">Sob Demanda</span>
-                      )}
-                    </TableCell>
-                    <TableCell>{getStatusBadge(product)}</TableCell>
-                    <TableCell className="text-right">
-                      <div className="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                        <Button 
-                          variant="ghost" 
-                          size="sm" 
-                          onClick={() => handleEdit(product)}
-                          className="h-8 px-2 text-muted-foreground hover:text-foreground"
-                        >
-                          <Edit className="w-4 h-4" />
-                        </Button>
-                        <Button 
-                          variant="ghost" 
-                          size="sm" 
-                          onClick={() => setProductToDeactivate(product)}
-                          disabled={!product.isActive}
-                          className="h-8 px-2 text-red-500/50 hover:text-red-500 hover:bg-red-500/10 disabled:opacity-30"
-                        >
-                          <Archive className="w-4 h-4" />
-                        </Button>
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                ))
+                      </TableCell>
+                    </TableRow>
+                  );
+                })
               )}
             </TableBody>
           </Table>
