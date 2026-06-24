@@ -103,6 +103,7 @@ export const MeResponseSchema = MemberResponseSchema.extend({
   activePlanId: z.string().nullable(),
   adimplenciaStreak: z.number().int().nonnegative(),
   memberNumber: z.number().int(),
+  daysSincePeriodEnd: z.number().int().nullable(),
 });
 
 export const ListMembersQuerySchema = z.object({

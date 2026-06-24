@@ -42,7 +42,12 @@ export function CheckoutClient({ plan, mpPublicKey }: CheckoutClientProps) {
             if (sub.isFirstSubscription) {
               router.push("/welcome");
             } else {
-              router.push("/dashboard");
+              const params = new URLSearchParams(window.location.search);
+              if (params.get("reactivate") === "true") {
+                router.push("/dashboard?reactivated=true");
+              } else {
+                router.push("/dashboard");
+              }
             }
           } else if (sub.status === "CANCELLED" || sub.status === "FAILED") {
             clearInterval(interval);

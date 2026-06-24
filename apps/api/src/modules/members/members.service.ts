@@ -41,12 +41,21 @@ export async function getMe(memberId: string, db: PrismaClient) {
     where: { createdAt: { lte: member.createdAt } }
   });
 
+  const sub = member.subscriptions[0];
+  let daysSincePeriodEnd = null;
+
+  if (sub && (sub.status === "PENDING" || sub.status === "SUSPENDED") && sub.currentPeriodEnd) {
+    const diffTime = Date.now() - sub.currentPeriodEnd.getTime();
+    daysSincePeriodEnd = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+  }
+
   return {
     ...memberData,
-    subscriptionStatus: member.subscriptions[0]?.status ?? null,
-    activePlanId: member.subscriptions[0]?.planId ?? null,
+    subscriptionStatus: sub?.status ?? null,
+    activePlanId: sub?.planId ?? null,
     adimplenciaStreak: member.adimplenciaStreakMonths,
     memberNumber,
+    daysSincePeriodEnd,
   };
 }
 

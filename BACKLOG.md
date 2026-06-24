@@ -499,13 +499,13 @@ Copy replacements per page (exact placements are in `strategic_analysis.md §3.2
 
 **Acceptance criteria:**
 
-- [ ] Yellow banner renders correctly for a subscription at D+3 (mocked API)
-- [ ] Orange banner renders correctly for D+20 with the fading card animation
-- [ ] Red banner shows the correct lost-benefits list for D+30+
-- [ ] Reactivation button navigates to the correct checkout URL
-- [ ] Reactivation confetti fires after the checkout success redirect
-- [ ] ACTIVE members see no banner
-- [ ] `pnpm --filter web typecheck` passes
+- [x] Yellow banner renders correctly for a subscription at D+3 (mocked API)
+- [x] Orange banner renders correctly for D+20 with the fading card animation
+- [x] Red banner shows the correct lost-benefits list for D+30+
+- [x] Reactivation button navigates to the correct checkout URL
+- [x] Reactivation confetti fires after the checkout success redirect
+- [x] ACTIVE members see no banner
+- [x] `pnpm --filter web typecheck` passes
 
 ---
 

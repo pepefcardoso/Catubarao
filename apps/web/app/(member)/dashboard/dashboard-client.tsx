@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@repo/ui/components/card";
 import { Button } from "@repo/ui/components/button";
 import { Badge } from "@repo/ui/components/badge";
@@ -11,6 +11,8 @@ import { env } from "@/lib/env";
 import { useSession } from "@/lib/auth-client";
 import { copy } from "@/lib/copy";
 import { ReferralCard } from "@/components/member/ReferralCard";
+import { DelinquencyBanner } from "@/components/member/DelinquencyBanner";
+import { cn } from "@repo/ui/lib/utils";
 
 // Mock Data for testing the UI
 const MOCK_MEMBER = {
@@ -45,6 +47,7 @@ export function DashboardClient() {
   const { data: session } = useSession();
   const userName = session?.user?.name || MOCK_MEMBER.name;
   const [status, setStatus] = useState<string>("ACTIVE");
+  const [days, setDays] = useState<number | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   // Simulate API fetch delay
@@ -71,22 +74,28 @@ export function DashboardClient() {
     <div className="space-y-6 max-w-5xl mx-auto">
       {/* Dev toggle for testing states */}
       {process.env.NODE_ENV === "development" && (
-        <div className="flex gap-2 p-4 bg-muted rounded-md mb-6">
+        <div className="flex flex-wrap gap-2 p-4 bg-muted rounded-md mb-6">
           <span className="text-sm font-semibold flex items-center mr-2">Dev: Test Status</span>
-          <Button variant="outline" size="sm" onClick={() => setStatus("ACTIVE")}>ACTIVE</Button>
-          <Button variant="outline" size="sm" onClick={() => setStatus("PENDING")}>PENDING</Button>
-          <Button variant="outline" size="sm" onClick={() => setStatus("SUSPENDED")}>SUSPENDED</Button>
+          <Button variant="outline" size="sm" onClick={() => { setStatus("ACTIVE"); setDays(null); }}>ACTIVE</Button>
+          <Button variant="outline" size="sm" onClick={() => { setStatus("PENDING"); setDays(3); }}>PENDING (D+3)</Button>
+          <Button variant="outline" size="sm" onClick={() => { setStatus("PENDING"); setDays(20); }}>PENDING (D+20)</Button>
+          <Button variant="outline" size="sm" onClick={() => { setStatus("SUSPENDED"); setDays(30); }}>SUSPENDED</Button>
         </div>
       )}
 
       {/* Subscription Banner */}
-      <StatusBanner status={status} />
+      <Suspense fallback={null}>
+        <DelinquencyBanner status={status} daysSincePeriodEnd={days} activePlanId={MOCK_MEMBER.activePlanId} />
+      </Suspense>
 
       <div className="grid md:grid-cols-3 gap-6">
         <div className="md:col-span-2 space-y-6">
           {/* Card Preview Widget - Hidden if SUSPENDED */}
           {status !== "SUSPENDED" && (
-            <Card className="bg-gradient-to-br from-primary/10 to-primary/5 border-primary/20 shadow-md">
+            <Card className={cn(
+              "bg-gradient-to-br from-primary/10 to-primary/5 border-primary/20 shadow-md transition-all duration-500",
+              (days !== null && days >= 15 && days <= 29) && "opacity-30 animate-pulse"
+            )}>
               <CardContent className="p-6 flex items-center justify-between">
                 <div className="space-y-2">
                   <h2 className="text-2xl font-bold">{copy.dashboard.welcome(userName, "50,00", "150.000,00")}</h2>
@@ -183,55 +192,7 @@ export function DashboardClient() {
   );
 }
 
-function StatusBanner({ status }: { status: string }) {
-  if (status === "ACTIVE") {
-    return (
-      <div className="bg-green-100 border border-green-200 text-green-800 px-6 py-4 rounded-xl flex items-center gap-3">
-        <CheckCircle className="w-6 h-6 text-green-600" />
-        <div>
-          <h3 className="font-bold">Sua assinatura está Ativa!</h3>
-          <p className="text-sm">Obrigado por fazer parte do Sócio-Torcedor.</p>
-        </div>
-      </div>
-    );
-  }
 
-  if (status === "PENDING") {
-    return (
-      <div className="bg-yellow-100 border border-yellow-200 text-yellow-800 px-6 py-4 rounded-xl flex flex-col sm:flex-row items-center gap-4 justify-between">
-        <div className="flex items-center gap-3">
-          <AlertCircle className="w-6 h-6 text-yellow-600" />
-          <div>
-            <h3 className="font-bold">Pagamento Pendente</h3>
-            <p className="text-sm">Aguardando a confirmação do pagamento para liberar sua carteirinha.</p>
-          </div>
-        </div>
-        <Button variant="default" className="bg-yellow-600 hover:bg-yellow-700 text-white shrink-0">
-          Realizar Pagamento
-        </Button>
-      </div>
-    );
-  }
-
-  if (status === "SUSPENDED") {
-    return (
-      <div className="bg-red-100 border border-red-200 text-red-800 px-6 py-4 rounded-xl flex flex-col sm:flex-row items-center gap-4 justify-between">
-        <div className="flex items-center gap-3">
-          <AlertCircle className="w-6 h-6 text-red-600" />
-          <div>
-            <h3 className="font-bold">Assinatura Suspensa</h3>
-            <p className="text-sm">{copy.dashboard.delinquencyBanner}</p>
-          </div>
-        </div>
-        <Button variant="destructive" className="shrink-0">
-          Regularizar Débitos
-        </Button>
-      </div>
-    );
-  }
-
-  return null;
-}
 
 function QuickLink({ href, icon, label }: { href: string; icon: React.ReactNode; label: string }) {
   return (
