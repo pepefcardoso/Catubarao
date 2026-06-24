@@ -1,11 +1,12 @@
 import "./globals.css";
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Oswald } from "next/font/google";
 import { SentryProvider } from "@/components/sentry-provider";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "sonner";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
+const oswald = Oswald({ subsets: ["latin"], variable: "--font-display" });
 
 export const metadata: Metadata = {
   title: "Clube Atlético Tubarão",
@@ -19,7 +20,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-BR" suppressHydrationWarning>
-      <body className={`${inter.variable} font-sans antialiased`}>
+      <body className={`${inter.variable} ${oswald.variable} font-sans antialiased`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
