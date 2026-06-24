@@ -127,13 +127,13 @@ Marketing, behavioral psychology, and conversion optimization improvements deriv
 
 **Acceptance criteria:**
 
-- [ ] `/(public)` renders all 7 sections without errors (verified via `pnpm --filter web dev`)
-- [ ] Live counter hydrates client-side without layout shift (CLS < 0.1)
-- [ ] Page is accessible without authentication
-- [ ] Goal progress bars reflect data from `GET /stats/members`
-- [ ] Store teaser shows only `isFeatured` products (requires DATA-002)
-- [ ] ISR revalidation set to 60s (`export const revalidate = 60`)
-- [ ] `pnpm --filter web build` passes with no TypeScript errors
+- [x] `/(public)` renders all 7 sections without errors (verified via `pnpm --filter web dev`)
+- [x] Live counter hydrates client-side without layout shift (CLS < 0.1)
+- [x] Page is accessible without authentication
+- [x] Goal progress bars reflect data from `GET /stats/members`
+- [x] Store teaser shows only `isFeatured` products (requires DATA-002)
+- [x] ISR revalidation set to 60s (`export const revalidate = 60`)
+- [x] `pnpm --filter web build` passes with no TypeScript errors
 
 ---
 
