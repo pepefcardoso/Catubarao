@@ -284,12 +284,12 @@ Copy replacements per page (exact placements are in `strategic_analysis.md §3.2
 
 **Acceptance criteria:**
 
-- [ ] Confetti fires once on page mount and does not repeat on re-render
-- [ ] Member number is displayed correctly (not 0 or undefined)
-- [ ] WhatsApp share URL pre-fills the correct referral link
-- [ ] Referral code copy button copies to clipboard and shows `"Copiado!"` toast
-- [ ] Returning to `/welcome` after the first visit still works (no 404)
-- [ ] `pnpm --filter web typecheck` passes
+- [x] Confetti fires once on page mount and does not repeat on re-render
+- [x] Member number is displayed correctly (not 0 or undefined)
+- [x] WhatsApp share URL pre-fills the correct referral link
+- [x] Referral code copy button copies to clipboard and shows `"Copiado!"` toast
+- [x] Returning to `/welcome` after the first visit still works (no 404)
+- [x] `pnpm --filter web typecheck` passes
 
 ---
 

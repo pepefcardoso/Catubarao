@@ -44,6 +44,7 @@ export const subscriptionsRoutes: FastifyPluginAsyncZod = async (fastify) => {
             status: z.string(),
             planId: z.string(),
             createdAt: z.date(),
+            isFirstSubscription: z.boolean(),
           }),
           403: z.object({ message: z.string() }),
           404: z.object({ message: z.string() }),
@@ -62,7 +63,16 @@ export const subscriptionsRoutes: FastifyPluginAsyncZod = async (fastify) => {
       if (subscription.memberId !== request.user.id) {
         return reply.status(403).send({ message: "Forbidden" });
       }
-      return reply.status(200).send(subscription);
+
+      const subscriptionCount = await prisma.subscription.count({
+        where: { memberId: request.user.id }
+      });
+      const isFirstSubscription = subscriptionCount === 1;
+
+      return reply.status(200).send({
+        ...subscription,
+        isFirstSubscription,
+      });
     },
   );
 

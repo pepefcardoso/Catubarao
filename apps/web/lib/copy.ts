@@ -12,4 +12,9 @@ export const copy = {
   transparency: {
     heroSubheading: "Sem segredos. Sem desculpas. Os números estão aqui.",
   },
+  welcome: {
+    title: (name: string, memberNumber: string | number) => `Bem-vindo à família, ${name}! Você é o sócio nº ${memberNumber}.`,
+    referralCta: (points: number) => `Indique um amigo e ganhe ${points} Escudos`,
+    shareMessage: (url: string, code: string) => `Acabei de me tornar sócio do Tubarão! Entra comigo: ${url}?ref=${code}`,
+  },
 };

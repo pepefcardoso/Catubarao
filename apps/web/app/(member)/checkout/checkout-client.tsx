@@ -39,7 +39,11 @@ export function CheckoutClient({ plan, mpPublicKey }: CheckoutClientProps) {
           if (sub.status === "ACTIVE") {
             clearInterval(interval);
             toast.success("Pagamento confirmado! Bem-vindo(a)!");
-            router.push("/dashboard");
+            if (sub.isFirstSubscription) {
+              router.push("/welcome");
+            } else {
+              router.push("/dashboard");
+            }
           } else if (sub.status === "CANCELLED" || sub.status === "FAILED") {
             clearInterval(interval);
             setStatus("FAILED");

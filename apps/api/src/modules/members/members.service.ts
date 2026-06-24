@@ -37,11 +37,16 @@ export async function getMe(memberId: string, db: PrismaClient) {
   // Remove subscriptions from return to match MemberResponseSchema
   const { subscriptions, ...memberData } = member;
 
+  const memberNumber = await db.member.count({
+    where: { createdAt: { lte: member.createdAt } }
+  });
+
   return {
     ...memberData,
     subscriptionStatus: member.subscriptions[0]?.status ?? null,
     activePlanId: member.subscriptions[0]?.planId ?? null,
     adimplenciaStreak: member.adimplenciaStreakMonths,
+    memberNumber,
   };
 }
 
