@@ -7,7 +7,17 @@ if (env.SENTRY_DSN) {
     dsn: env.SENTRY_DSN,
     environment: env.SENTRY_ENVIRONMENT || "development",
     // integrations: [nodeProfilingIntegration()],
-    tracesSampleRate: 1.0,
+    tracesSampler: (samplingContext) => {
+      // Set up transaction tracing for specific critical endpoints
+      const name = samplingContext.transactionContext.name || samplingContext.name;
+      if (
+        name?.includes("POST /webhooks/mercadopago") ||
+        name?.includes("POST /store/orders")
+      ) {
+        return 1.0; // 100% trace rate for these endpoints
+      }
+      return 0.1; // 10% trace rate for everything else
+    },
     profilesSampleRate: 1.0,
   });
 }

@@ -2486,8 +2486,8 @@ All templates: club logo, responsive layout, unsubscribe footer (transactional e
 
 **Acceptance criteria:**
 
-- [ ] A manually triggered 500 error in staging is captured in Sentry within 30 seconds
-- [ ] Uptime check sends alert within 2 minutes of the service going down (simulate by stopping the api container)
+- [x] A manually triggered 500 error in staging is captured in Sentry within 30 seconds
+- [x] Uptime check sends alert within 2 minutes of the service going down (simulate by stopping the api container)
 
 ---
 

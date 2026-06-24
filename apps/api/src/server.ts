@@ -139,6 +139,11 @@ fastify.get("/health", async (request, reply) => {
   return { status: "ok", timestamp: new Date().toISOString() };
 });
 
+// Debug endpoint to manually trigger a 500 error for Sentry
+fastify.get("/debug-sentry", async (request, reply) => {
+  throw new Error("Manually triggered Sentry test error");
+});
+
 const start = async () => {
   try {
     const port = Number(process.env.PORT) || 3001;
