@@ -2437,10 +2437,10 @@ All templates: club logo, responsive layout, unsubscribe footer (transactional e
 
 **Acceptance criteria:**
 
-- [ ] Push to `main` triggers staging deploy automatically
-- [ ] Staging deploy completes without downtime (health check remains `200` during deploy)
-- [ ] `git tag v1.0.0 && git push --tags` triggers production deploy
-- [ ] Rollback procedure documented: `docker compose up -d --scale api=0 && docker compose up -d` with previous image tag
+- [x] Push to `main` triggers staging deploy automatically
+- [x] Staging deploy completes without downtime (health check remains `200` during deploy)
+- [x] `git tag v1.0.0 && git push --tags` triggers production deploy
+- [x] Rollback procedure documented: `docker compose up -d --scale api=0 && docker compose up -d` with previous image tag
 
 ---
 

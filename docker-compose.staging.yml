@@ -1,0 +1,14 @@
+services:
+  api:
+    build: !reset
+    image: ghcr.io/pepefcardoso/catubarao-api:main
+    ports: !reset
+    env_file:
+      - .env.staging
+
+  web:
+    build: !reset
+    image: ghcr.io/pepefcardoso/catubarao-web:main
+    ports: !reset
+    env_file:
+      - .env.staging

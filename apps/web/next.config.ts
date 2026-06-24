@@ -24,6 +24,7 @@ const cspHeader = `
 `.replace(/\n/g, '').replace(/\s{2,}/g, ' ').trim();
 
 const nextConfig: NextConfig = {
+  output: "standalone",
   async headers() {
     return [
       {
