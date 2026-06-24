@@ -2462,10 +2462,10 @@ All templates: club logo, responsive layout, unsubscribe footer (transactional e
 
 **Acceptance criteria:**
 
-- [ ] p95 response time < 500ms under 500 concurrent users
-- [ ] Error rate < 0.1% under load
-- [ ] Redis cache hit rate > 90% for `/stats/members` under load (verify via Redis INFO)
-- [ ] No OOM or container crash during the test
+- [x] p95 response time < 500ms under 500 concurrent users
+- [x] Error rate < 0.1% under load
+- [x] Redis cache hit rate > 90% for `/stats/members` under load (verify via Redis INFO)
+- [x] No OOM or container crash during the test
 
 ---
 

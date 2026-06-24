@@ -12,7 +12,9 @@
     "./webhooks": "./src/webhooks.ts",
     "./events": "./src/events.ts",
     "./partner": "./src/partner.ts",
-    "./transparency": "./src/transparency.ts"
+    "./transparency": "./src/transparency.ts",
+    "./consent": "./src/consent.ts",
+    "./store": "./src/store.ts"
   },
   "scripts": {
     "build": "tsup src/index.ts --format cjs,esm --dts",

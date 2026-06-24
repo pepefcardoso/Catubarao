@@ -67,6 +67,9 @@ fastify.register(cors, {
 
 fastify.register(multipart);
 
+import prismaPlugin from "./plugins/prisma";
+fastify.register(prismaPlugin);
+
 import redisPlugin from "./plugins/redis";
 fastify.register(redisPlugin);
 

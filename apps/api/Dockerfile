@@ -6,7 +6,7 @@ RUN corepack enable
 
 FROM alpine AS builder
 WORKDIR /app
-RUN pnpm install -g turbo
+RUN npm install -g turbo
 COPY . .
 RUN turbo prune api --docker
 
