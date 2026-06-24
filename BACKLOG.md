@@ -690,12 +690,12 @@ Copy replacements per page (exact placements are in `strategic_analysis.md §3.2
 
 **Acceptance criteria:**
 
-- [ ] Modal fires when cursor exits the top of the viewport on desktop
-- [ ] Modal does not fire on mobile (touch devices)
-- [ ] Modal fires at most once per session
-- [ ] Email submission returns `201` and shows a confirmation toast
-- [ ] Duplicate email returns `200` (silent dedup — not a 409)
-- [ ] `pnpm --filter web typecheck` passes
+- [x] Modal fires when cursor exits the top of the viewport on desktop
+- [x] Modal does not fire on mobile (touch devices)
+- [x] Modal fires at most once per session
+- [x] Email submission returns `201` and shows a confirmation toast
+- [x] Duplicate email returns `200` (silent dedup — not a 409)
+- [x] `pnpm --filter web typecheck` passes
 
 ---
 

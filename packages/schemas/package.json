@@ -14,7 +14,8 @@
     "./partner": "./src/partner.ts",
     "./transparency": "./src/transparency.ts",
     "./consent": "./src/consent.ts",
-    "./store": "./src/store.ts"
+    "./store": "./src/store.ts",
+    "./waitlist": "./src/waitlist.ts"
   },
   "scripts": {
     "build": "tsup src/index.ts --format cjs,esm --dts",

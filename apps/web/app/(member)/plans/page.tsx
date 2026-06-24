@@ -1,6 +1,7 @@
 import { env } from "@/lib/env";
 import { PlansClient } from "./plans-client";
 import { MembershipPlanResponseSchema } from "@repo/schemas/member";
+import { ExitIntentModal } from "@/components/shared/ExitIntentModal";
 
 export const metadata = {
   title: "Planos | Sócio-Torcedor",
@@ -24,6 +25,7 @@ export default async function PlansPage() {
   return (
     <div className="py-8">
       <PlansClient initialPlans={plans} />
+      <ExitIntentModal />
     </div>
   );
 }

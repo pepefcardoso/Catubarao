@@ -12,6 +12,7 @@ import { StepIndicator } from "@repo/ui/components/StepIndicator";
 import { Button } from "@repo/ui/components/button";
 import { Input } from "@repo/ui/components/input";
 import { Label } from "@repo/ui/components/label";
+import { ExitIntentModal } from "@/components/shared/ExitIntentModal";
 import { Checkbox } from "@repo/ui/components/checkbox";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@repo/ui/components/card";
 import { Loader2, ArrowRight, ArrowLeft } from "lucide-react";
@@ -336,6 +337,7 @@ export default function SignupPage() {
           </form>
         </CardContent>
       </Card>
+      <ExitIntentModal />
     </div>
   );
 }

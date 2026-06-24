@@ -133,6 +133,10 @@ fastify.register(productsRoutes);
 import { ordersRoutes } from "./modules/store/orders.routes";
 fastify.register(ordersRoutes, { prefix: "/store/orders" });
 
+import { waitlistRoutes } from "./modules/waitlist/waitlist.routes";
+fastify.register(waitlistRoutes);
+
+
 // Health check endpoint
 
 fastify.get("/health", async (request, reply) => {

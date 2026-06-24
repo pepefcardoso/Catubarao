@@ -650,3 +650,12 @@ model StockNotification {
   @@index([variantId])
   @@map("stock_notifications")
 }
+
+model Waitlist {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  source    String
+  createdAt DateTime @default(now())
+
+  @@map("waitlist")
+}
