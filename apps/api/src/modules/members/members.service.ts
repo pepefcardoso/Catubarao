@@ -129,16 +129,21 @@ export async function getMemberReferral(memberId: string, db: PrismaClient) {
     throw new NotFoundError("Member not found");
   }
 
-  const referralCount = await db.gamificationEvent.count({
+  const referralEvents = await db.gamificationEvent.findMany({
     where: {
       memberId,
       type: "REFERRAL",
     },
+    select: { points: true }
   });
 
+  const successfulReferrals = referralEvents.length;
+  const pointsEarned = referralEvents.reduce((sum, event) => sum + event.points, 0);
+
   return {
-    referralCode: member.referralCode,
-    referralCount,
+    code: member.referralCode,
+    successfulReferrals,
+    pointsEarned,
   };
 }
 

@@ -10,6 +10,7 @@ import Link from "next/link";
 import { env } from "@/lib/env";
 import { useSession } from "@/lib/auth-client";
 import { copy } from "@/lib/copy";
+import { ReferralCard } from "@/components/member/ReferralCard";
 
 // Mock Data for testing the UI
 const MOCK_MEMBER = {
@@ -153,6 +154,8 @@ export function DashboardClient() {
               </div>
             </CardContent>
           </Card>
+
+          <ReferralCard />
 
           {/* Polls Widget */}
           {MOCK_POLLS.length > 0 && (

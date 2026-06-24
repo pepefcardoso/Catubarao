@@ -314,11 +314,11 @@ Copy replacements per page (exact placements are in `strategic_analysis.md §3.2
 
 **Acceptance criteria:**
 
-- [ ] Referral card is visible on the dashboard without any additional navigation
-- [ ] Copy button copies the raw code (not the full URL)
-- [ ] WhatsApp share opens with pre-filled message on mobile
-- [ ] Stats are accurate (verified against database)
-- [ ] `pnpm --filter web typecheck` passes
+- [x] Referral card is visible on the dashboard without any additional navigation
+- [x] Copy button copies the raw code (not the full URL)
+- [x] WhatsApp share opens with pre-filled message on mobile
+- [x] Stats are accurate (verified against database)
+- [x] `pnpm --filter web typecheck` passes
 
 ---
 

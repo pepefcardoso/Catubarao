@@ -141,8 +141,9 @@ export const PaginatedMembersResponseSchema = z.object({
 });
 
 export const MemberReferralResponseSchema = z.object({
-  referralCode: z.string().nullable(),
-  referralCount: z.number().int().nonnegative(),
+  code: z.string().nullable(),
+  successfulReferrals: z.number().int().nonnegative(),
+  pointsEarned: z.number().int().nonnegative(),
 });
 
 export const SubscriptionIntervalSchema = z.enum(["MONTHLY", "ANNUAL"]);

@@ -8,6 +8,7 @@ export const copy = {
   dashboard: {
     welcome: (name: string, amount: string | number, total: string | number) => `Olá, ${name}. Sua contribuição este mês: R$${amount}. Juntos já contribuímos R$${total}.`,
     delinquencyBanner: "O Tubarão sente sua falta. Volte para a reconstrução.",
+    referralShareMessage: (url: string, code: string) => `Fala, torcida! Eu já sou sócio do Tubarão. Usa meu código ${code} e entra comigo: ${url}?ref=${code}`,
   },
   transparency: {
     heroSubheading: "Sem segredos. Sem desculpas. Os números estão aqui.",
