@@ -192,11 +192,11 @@ Copy replacements per page (exact placements are in `strategic_analysis.md §3.2
 
 **Acceptance criteria:**
 
-- [ ] Document is created at `docs/ux-strategy.md`
-- [ ] Mermaid funnel diagram renders correctly in GitHub markdown
-- [ ] All 7 Cialdini principles are mapped to at least one specific UI component or page
-- [ ] Copy guidelines section explicitly lists at least 5 forbidden phrases and 5 required anchors
-- [ ] Referenced by `AGENTS.md` in the documentation index (add one-line entry)
+- [x] Document is created at `docs/ux-strategy.md`
+- [x] Mermaid funnel diagram renders correctly in GitHub markdown
+- [x] All 7 Cialdini principles are mapped to at least one specific UI component or page
+- [x] Copy guidelines section explicitly lists at least 5 forbidden phrases and 5 required anchors
+- [x] Referenced by `AGENTS.md` in the documentation index (add one-line entry)
 
 ---
 

@@ -46,7 +46,8 @@ If there is a conflict between spec.md and BACKLOG.md, spec.md wins; document th
 ├── docs/
 │   ├── adr/                   ← Architecture Decision Records
 │   ├── acceptance/            ← Gherkin acceptance tests by module
-│   └── webhooks/              ← Mercado Pago payload reference
+│   ├── webhooks/              ← Mercado Pago payload reference
+│   └── ux-strategy.md         ← Behavioral design playbook
 ├── apps/
 │   ├── web/                   ← Next.js 15 (App Router)
 │   │   ├── app/               ← routes (App Router convention)
