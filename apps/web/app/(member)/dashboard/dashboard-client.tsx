@@ -8,6 +8,8 @@ import { Skeleton } from "@repo/ui/components/skeleton";
 import { QrCode, AlertCircle, CheckCircle, ChevronRight, History, Settings, UserPlus, FileText } from "lucide-react";
 import Link from "next/link";
 import { env } from "@/lib/env";
+import { useSession } from "@/lib/auth-client";
+import { copy } from "@/lib/copy";
 
 // Mock Data for testing the UI
 const MOCK_MEMBER = {
@@ -39,6 +41,8 @@ const MOCK_POLLS = [
 ];
 
 export function DashboardClient() {
+  const { data: session } = useSession();
+  const userName = session?.user?.name || MOCK_MEMBER.name;
   const [status, setStatus] = useState<string>("ACTIVE");
   const [isLoading, setIsLoading] = useState(true);
 
@@ -84,7 +88,7 @@ export function DashboardClient() {
             <Card className="bg-gradient-to-br from-primary/10 to-primary/5 border-primary/20 shadow-md">
               <CardContent className="p-6 flex items-center justify-between">
                 <div className="space-y-2">
-                  <h2 className="text-2xl font-bold">{MOCK_MEMBER.name}</h2>
+                  <h2 className="text-2xl font-bold">{copy.dashboard.welcome(userName, "50,00", "150.000,00")}</h2>
                   <div className="flex items-center gap-2">
                     <Badge variant="secondary">Sócio-Torcedor</Badge>
                     <span className="text-sm text-muted-foreground">Válido até: {new Date(MOCK_CARD.validUntil).toLocaleDateString()}</span>
@@ -213,7 +217,7 @@ function StatusBanner({ status }: { status: string }) {
           <AlertCircle className="w-6 h-6 text-red-600" />
           <div>
             <h3 className="font-bold">Assinatura Suspensa</h3>
-            <p className="text-sm">Sua assinatura foi suspensa por falta de pagamento. Regularize agora para voltar a aproveitar seus benefícios.</p>
+            <p className="text-sm">{copy.dashboard.delinquencyBanner}</p>
           </div>
         </div>
         <Button variant="destructive" className="shrink-0">

@@ -15,6 +15,7 @@ import { Checkbox } from "@repo/ui/components/checkbox";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@repo/ui/components/card";
 import { Loader2, ArrowRight, ArrowLeft } from "lucide-react";
 import { signUp } from "@/lib/auth-client";
+import { copy } from "@/lib/copy";
 
 const SignupFormSchema = RegisterMemberSchema.extend({
   passwordConfirmation: z.string(),
@@ -123,7 +124,7 @@ export default function SignupPage() {
         <CardHeader>
           <CardTitle className="text-2xl font-bold text-center">Seja Sócio-Torcedor</CardTitle>
           <CardDescription className="text-center">
-            {step === 1 ? "Preencha seus dados pessoais" : "Crie seu acesso"}
+            {step === 1 ? copy.signup.subtitle : "Crie seu acesso"}
           </CardDescription>
         </CardHeader>
         <CardContent>

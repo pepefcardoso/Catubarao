@@ -8,6 +8,7 @@ import { Badge } from "@repo/ui/components/badge";
 import { Tabs, TabsList, TabsTrigger } from "@repo/ui/components/tabs";
 import { Check } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { copy } from "@/lib/copy";
 interface MembershipPlan {
   id: string;
   name: string;
@@ -83,7 +84,7 @@ export function PlansClient({ initialPlans }: PlansClientProps) {
       <div className="text-center space-y-4">
         <h1 className="text-4xl font-bold tracking-tight">Escolha seu plano</h1>
         <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-          Faça parte do Tubarão e aproveite benefícios exclusivos.
+          {copy.plans.subtitle}
         </p>
       </div>
 

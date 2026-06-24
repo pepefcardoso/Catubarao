@@ -165,10 +165,10 @@ Copy replacements per page (exact placements are in `strategic_analysis.md §3.2
 
 **Acceptance criteria:**
 
-- [ ] All 5 copy replacements are live and rendered correctly
-- [ ] `{name}` and `{amount}` templates resolve to real data (not empty strings)
-- [ ] All copy strings are importable from `@/lib/copy`
-- [ ] `pnpm --filter web typecheck` passes
+- [x] All 5 copy replacements are live and rendered correctly
+- [x] `{name}` and `{amount}` templates resolve to real data (not empty strings)
+- [x] All copy strings are importable from `@/lib/copy`
+- [x] `pnpm --filter web typecheck` passes
 
 ---
 

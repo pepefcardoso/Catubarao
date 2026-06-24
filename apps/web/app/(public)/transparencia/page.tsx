@@ -5,6 +5,7 @@ import { env } from "@/lib/env";
 import { apiFetch } from "@/lib/api";
 import { DebtRecordResponse, TransparencyPostResponse } from "@repo/schemas/transparency";
 import { FileText, ArrowRight, TrendingDown, DollarSign, Handshake } from "lucide-react";
+import { copy } from "@/lib/copy";
 
 import { Metadata } from "next";
 
@@ -76,7 +77,7 @@ export default async function TransparenciaPage() {
             Contas claras, futuro sólido
           </h1>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-            Acompanhe de perto a reestruturação do Clube Atlético Tubarão. Nosso compromisso é com a transparência absoluta e responsabilidade com cada centavo, garantindo um futuro próspero para o nosso clube.
+            {copy.transparency.heroSubheading}
           </p>
         </div>
       </section>
