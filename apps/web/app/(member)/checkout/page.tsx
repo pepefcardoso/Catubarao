@@ -1,6 +1,7 @@
 import { env } from "@/lib/env";
 import { CheckoutClient } from "./checkout-client";
 import { redirect } from "next/navigation";
+import { CheckoutTrustSidebar } from "@/components/checkout/CheckoutTrustSidebar";
 
 export const metadata = {
   title: "Checkout | Sócio-Torcedor",
@@ -37,9 +38,16 @@ export default async function CheckoutPage({
   }
 
   return (
-    <div className="py-8 max-w-4xl mx-auto">
+    <div className="py-8 max-w-6xl mx-auto px-4">
       <h1 className="text-3xl font-bold mb-8">Checkout</h1>
-      <CheckoutClient plan={plan} mpPublicKey={env.NEXT_PUBLIC_MP_PUBLIC_KEY || ""} />
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="lg:col-span-2">
+          <CheckoutClient plan={plan} mpPublicKey={env.NEXT_PUBLIC_MP_PUBLIC_KEY || ""} />
+        </div>
+        <div className="lg:col-span-1">
+          <CheckoutTrustSidebar />
+        </div>
+      </div>
     </div>
   );
 }

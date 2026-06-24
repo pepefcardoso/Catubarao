@@ -343,10 +343,10 @@ Copy replacements per page (exact placements are in `strategic_analysis.md §3.2
 
 **Acceptance criteria:**
 
-- [ ] Sidebar is visible on the checkout page on desktop (>= lg breakpoint)
-- [ ] Sidebar stacks below payment form on mobile (375px)
-- [ ] Active member count is rendered (may be stale by up to 30s — acceptable)
-- [ ] `pnpm --filter web typecheck` passes
+- [x] Sidebar is visible on the checkout page on desktop (>= lg breakpoint)
+- [x] Sidebar stacks below payment form on mobile (375px)
+- [x] Active member count is rendered (may be stale by up to 30s — acceptable)
+- [x] `pnpm --filter web typecheck` passes
 
 ---
 
