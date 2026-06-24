@@ -466,10 +466,10 @@ Copy replacements per page (exact placements are in `strategic_analysis.md §3.2
 
 **Acceptance criteria:**
 
-- [ ] "Últimas X unidades!" badge only appears when `stockQuantity <= stockAlertThreshold`
-- [ ] "Avise-me" email capture stores the record and confirms via toast
-- [ ] `SOB_DEMANDA` variants show no stock indicators
-- [ ] `pnpm --filter web typecheck` passes
+- [x] "Últimas X unidades!" badge only appears when `stockQuantity <= stockAlertThreshold`
+- [x] "Avise-me" email capture stores the record and confirms via toast
+- [x] `SOB_DEMANDA` variants show no stock indicators
+- [x] `pnpm --filter web typecheck` passes
 
 ---
 

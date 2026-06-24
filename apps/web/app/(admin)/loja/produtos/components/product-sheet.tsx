@@ -49,8 +49,6 @@ export function ProductSheet({ open, onOpenChange, product, onSaved }: ProductSh
       images: product?.images || [],
       basePrice: product?.basePrice || 0,
       stockType: product?.stockType || "SOB_DEMANDA",
-      stockQuantity: product?.stockQuantity || undefined,
-      stockAlertThreshold: product?.stockAlertThreshold || undefined,
       membersOnly: product?.membersOnly || false,
       isActive: product?.isActive ?? true,
       variants: product?.variants?.map(v => ({
@@ -58,6 +56,9 @@ export function ProductSheet({ open, onOpenChange, product, onSaved }: ProductSh
         size: v.size || undefined,
         color: v.color || undefined,
         priceAdjustment: v.priceAdjustment,
+        stockQuantity: v.stockQuantity ?? undefined,
+        stockAlertThreshold: v.stockAlertThreshold ?? undefined,
+        initialStockQuantity: v.initialStockQuantity ?? undefined,
       })) || [],
     },
   });
@@ -237,48 +238,7 @@ export function ProductSheet({ open, onOpenChange, product, onSaved }: ProductSh
               )}
             />
 
-            {stockType === "ESTOQUE_FIXO" && (
-              <div className="grid grid-cols-2 gap-4">
-                <FormField
-                  control={form.control}
-                  name="stockQuantity"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Quantidade em Estoque</FormLabel>
-                      <FormControl>
-                        <Input 
-                          type="number" 
-                          {...field} 
-                          value={field.value || ""}
-                          onChange={(e) => field.onChange(e.target.value ? parseInt(e.target.value, 10) : undefined)} 
-                          className="bg-background/50" 
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="stockAlertThreshold"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Alerta de Estoque Baixo</FormLabel>
-                      <FormControl>
-                        <Input 
-                          type="number" 
-                          {...field} 
-                          value={field.value || ""}
-                          onChange={(e) => field.onChange(e.target.value ? parseInt(e.target.value, 10) : undefined)} 
-                          className="bg-background/50" 
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-            )}
+            {/* Stock fields removed from Product level, now on Variants */}
 
             <div className="space-y-4">
               <FormLabel>Imagens</FormLabel>
@@ -376,26 +336,90 @@ export function ProductSheet({ open, onOpenChange, product, onSaved }: ProductSh
                           </FormItem>
                         )}
                       />
-                      <FormField
-                        control={form.control}
-                        name={`variants.${index}.priceAdjustment`}
-                        render={({ field: inputField }) => (
-                          <FormItem className="col-span-3">
-                            <FormLabel className="text-xs">Ajuste (R$)</FormLabel>
-                            <FormControl>
-                              <Input 
-                                type="number" 
-                                step="0.01" 
-                                {...inputField} 
-                                onChange={(e) => inputField.onChange(parseFloat(e.target.value) || 0)} 
-                                className="h-8 text-sm" 
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                      <div className="col-span-1 flex justify-center pb-1">
+                        <FormField
+                          control={form.control}
+                          name={`variants.${index}.priceAdjustment`}
+                          render={({ field: inputField }) => (
+                            <FormItem className="col-span-3">
+                              <FormLabel className="text-xs">Ajuste (R$)</FormLabel>
+                              <FormControl>
+                                <Input 
+                                  type="number" 
+                                  step="0.01" 
+                                  {...inputField} 
+                                  onChange={(e) => inputField.onChange(parseFloat(e.target.value) || 0)} 
+                                  className="h-8 text-sm" 
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+                      
+                      {stockType === "ESTOQUE_FIXO" && (
+                        <div className="grid grid-cols-12 gap-3 items-end mt-2">
+                          <FormField
+                            control={form.control}
+                            name={`variants.${index}.stockQuantity`}
+                            render={({ field: inputField }) => (
+                              <FormItem className="col-span-4">
+                                <FormLabel className="text-xs">Estoque Atual</FormLabel>
+                                <FormControl>
+                                  <Input 
+                                    type="number" 
+                                    {...inputField} 
+                                    value={inputField.value ?? ""}
+                                    onChange={(e) => inputField.onChange(e.target.value ? parseInt(e.target.value, 10) : undefined)} 
+                                    className="h-8 text-sm" 
+                                  />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                          <FormField
+                            control={form.control}
+                            name={`variants.${index}.initialStockQuantity`}
+                            render={({ field: inputField }) => (
+                              <FormItem className="col-span-4">
+                                <FormLabel className="text-xs">Estoque Inicial</FormLabel>
+                                <FormControl>
+                                  <Input 
+                                    type="number" 
+                                    {...inputField} 
+                                    value={inputField.value ?? ""}
+                                    onChange={(e) => inputField.onChange(e.target.value ? parseInt(e.target.value, 10) : undefined)} 
+                                    className="h-8 text-sm" 
+                                  />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                          <FormField
+                            control={form.control}
+                            name={`variants.${index}.stockAlertThreshold`}
+                            render={({ field: inputField }) => (
+                              <FormItem className="col-span-4">
+                                <FormLabel className="text-xs">Alerta Baixo</FormLabel>
+                                <FormControl>
+                                  <Input 
+                                    type="number" 
+                                    {...inputField} 
+                                    value={inputField.value ?? ""}
+                                    onChange={(e) => inputField.onChange(e.target.value ? parseInt(e.target.value, 10) : undefined)} 
+                                    className="h-8 text-sm" 
+                                  />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                        </div>
+                      )}
+
+                      <div className="flex justify-end mt-2 pb-1">
                         <Button
                           type="button"
                           variant="ghost"

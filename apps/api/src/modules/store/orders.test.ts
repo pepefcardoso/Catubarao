@@ -264,8 +264,15 @@ describe("Orders Routes", () => {
         category: "Test",
         basePrice: 100,
         stockType: "ESTOQUE_FIXO",
-        stockQuantity: 1,
         membersOnly: false,
+      },
+    });
+
+    const variant = await prisma.productVariant.create({
+      data: {
+        productId: product.id,
+        sku: "LIMITED-1",
+        stockQuantity: 1,
       },
     });
 
@@ -288,6 +295,7 @@ describe("Orders Routes", () => {
         items: [
           {
             productId: product.id,
+            variantId: variant.id,
             quantity: 2, // Only 1 available
           },
         ],

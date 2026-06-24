@@ -5,15 +5,25 @@ import Link from "next/link";
 import { ProductResponse } from "@repo/schemas/store";
 import { Card, CardContent } from "@repo/ui/components/card";
 import { Badge } from "@repo/ui/components/badge";
-import { CheckCircle } from "lucide-react";
+import { CheckCircle, Flame } from "lucide-react";
 import { useMemberStatus } from "@/lib/use-member-status";
+import { StockNotificationModal } from "./stock-notification-modal";
 
 interface ProductCardProps {
   product: ProductResponse;
 }
 
 export function ProductCard({ product }: ProductCardProps) {
-  const isOutOfStock = product.stockType === "ESTOQUE_FIXO" && product.stockQuantity === 0;
+  const isEstoqueFixo = product.stockType === "ESTOQUE_FIXO";
+  
+  const totalStock = product.variants?.reduce((acc, v) => acc + (v.stockQuantity || 0), 0) || 0;
+  const initialStock = product.variants?.reduce((acc, v) => acc + (v.initialStockQuantity || 0), 0) || 0;
+  const alertThreshold = product.variants?.reduce((acc, v) => acc + (v.stockAlertThreshold || 0), 0) || 0;
+
+  const isOutOfStock = isEstoqueFixo && product.variants && product.variants.length > 0 && totalStock === 0;
+  const isScarce = !isOutOfStock && isEstoqueFixo && totalStock <= alertThreshold && totalStock > 0;
+  const isSellingFast = !isOutOfStock && !isScarce && isEstoqueFixo && initialStock > 0 && totalStock < initialStock * 0.2;
+
   const { isMember, isActive } = useMemberStatus();
 
   const formatter = new Intl.NumberFormat("pt-BR", {
@@ -70,6 +80,22 @@ export function ProductCard({ product }: ProductCardProps) {
           <div className="font-bold text-xl">
             {formatter.format(product.basePrice)}
           </div>
+          
+          {isScarce && (
+            <div className="mt-2 text-xs font-semibold text-amber-500 bg-amber-500/10 px-2 py-1 rounded w-fit">
+              Últimas {totalStock} unidades!
+            </div>
+          )}
+          {isSellingFast && (
+            <div className="mt-2 text-xs font-semibold text-orange-500 flex items-center gap-1 w-fit bg-orange-500/10 px-2 py-1 rounded">
+              <Flame className="w-3.5 h-3.5" />
+              Vendendo rápido
+            </div>
+          )}
+
+          {isOutOfStock && product.variants?.[0]?.id && (
+            <StockNotificationModal variantId={product.variants[0].id} productName={product.name} />
+          )}
         </CardContent>
       </Card>
     </Link>

@@ -39,8 +39,6 @@ export async function createProduct(input: CreateProductInput, db: PrismaClient)
       images: input.images,
       basePrice: input.basePrice,
       stockType: input.stockType,
-      stockQuantity: input.stockQuantity,
-      stockAlertThreshold: input.stockAlertThreshold,
       membersOnly: input.membersOnly,
       isActive: input.isActive,
       variants: {
@@ -111,11 +109,17 @@ export async function updateProduct(id: string, input: UpdateProductInput, db: P
             size: variant.size,
             color: variant.color,
             priceAdjustment: variant.priceAdjustment,
+            stockQuantity: variant.stockQuantity,
+            stockAlertThreshold: variant.stockAlertThreshold,
+            initialStockQuantity: variant.initialStockQuantity,
           },
           update: {
             size: variant.size,
             color: variant.color,
             priceAdjustment: variant.priceAdjustment,
+            stockQuantity: variant.stockQuantity,
+            stockAlertThreshold: variant.stockAlertThreshold,
+            initialStockQuantity: variant.initialStockQuantity,
           },
         });
       }

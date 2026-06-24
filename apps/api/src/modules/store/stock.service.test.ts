@@ -20,8 +20,6 @@ describe("Stock Service", () => {
         category: "Clothing",
         basePrice: 100,
         stockType: "ESTOQUE_FIXO",
-        stockQuantity: 10,
-        stockAlertThreshold: 2,
       },
     });
 
@@ -30,12 +28,14 @@ describe("Stock Service", () => {
         productId: product.id,
         sku: "SHIRT-M",
         size: "M",
+        stockQuantity: 10,
+        stockAlertThreshold: 2,
       },
     });
 
-    await decrementStock(product.id, 3, prisma);
+    await decrementStock(product.id, variant.id, 3, prisma);
 
-    const check = await checkStock(product.id, prisma);
+    const check = await checkStock(product.id, variant.id, prisma);
     expect(check).toBe(7);
   });
 
@@ -47,7 +47,6 @@ describe("Stock Service", () => {
         category: "Clothing",
         basePrice: 100,
         stockType: "ESTOQUE_FIXO",
-        stockQuantity: 1,
       },
     });
 
@@ -56,10 +55,11 @@ describe("Stock Service", () => {
         productId: product.id,
         sku: "SHIRT-S",
         size: "S",
+        stockQuantity: 1,
       },
     });
 
-    await expect(decrementStock(product.id, 2, prisma)).rejects.toThrow(ConflictError);
+    await expect(decrementStock(product.id, variant.id, 2, prisma)).rejects.toThrow(ConflictError);
   });
 
   it("should enqueue alert email when stock hits threshold", async () => {
@@ -70,8 +70,6 @@ describe("Stock Service", () => {
         category: "Accessories",
         basePrice: 50,
         stockType: "ESTOQUE_FIXO",
-        stockQuantity: 5,
-        stockAlertThreshold: 2,
       },
     });
 
@@ -79,6 +77,8 @@ describe("Stock Service", () => {
       data: {
         productId: product.id,
         sku: "MUG-1",
+        stockQuantity: 5,
+        stockAlertThreshold: 2,
       },
     });
 
@@ -89,7 +89,7 @@ describe("Stock Service", () => {
     };
 
     // Decrement from 5 to 2
-    await decrementStock(product.id, 3, prisma, queues);
+    await decrementStock(product.id, variant.id, 3, prisma, queues);
 
     expect(queues.email.add).toHaveBeenCalledWith("send-email", expect.objectContaining({
       template: "LowStockEmail",
@@ -105,7 +105,6 @@ describe("Stock Service", () => {
         category: "Accessories",
         basePrice: 30,
         stockType: "ESTOQUE_FIXO",
-        stockQuantity: 0,
       },
     });
 
@@ -113,12 +112,13 @@ describe("Stock Service", () => {
       data: {
         productId: product.id,
         sku: "HAT-1",
+        stockQuantity: 0,
       },
     });
 
-    await incrementStock(product.id, 5, prisma);
+    await incrementStock(product.id, variant.id, 5, prisma);
 
-    const check = await checkStock(product.id, prisma);
+    const check = await checkStock(product.id, variant.id, prisma);
     expect(check).toBe(5);
   });
 
@@ -140,10 +140,10 @@ describe("Stock Service", () => {
       },
     });
 
-    await decrementStock(product.id, 100, prisma);
-    await incrementStock(product.id, 50, prisma);
+    await decrementStock(product.id, variant.id, 100, prisma);
+    await incrementStock(product.id, variant.id, 50, prisma);
 
-    const check = await checkStock(product.id, prisma);
+    const check = await checkStock(product.id, variant.id, prisma);
     expect(check).toBe(Number.POSITIVE_INFINITY);
   });
 });

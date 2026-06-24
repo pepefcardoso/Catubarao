@@ -4,6 +4,7 @@ import {
   CreateProductSchema,
   UpdateProductSchema,
   ProductResponseSchema,
+  CreateStockNotificationSchema,
 } from "@repo/schemas/store";
 import {
   listProducts,
@@ -60,6 +61,45 @@ export const productsRoutes: FastifyPluginAsyncZod = async (fastify) => {
     async (request, reply) => {
       const product = await getProductById(request.params.id, fastify.prisma);
       return reply.send(product);
+    }
+  );
+
+  fastify.post(
+    "/store/products/notify-stock",
+    {
+      config: {
+        rateLimit: {
+          max: 10,
+          timeWindow: 60 * 1000,
+        },
+      },
+      schema: {
+        tags: ["store", "products"],
+        body: CreateStockNotificationSchema,
+        response: {
+          201: z.object({ success: z.boolean() }),
+        },
+      },
+    },
+    async (request, reply) => {
+      const { email, variantId } = request.body;
+      
+      const variant = await fastify.prisma.productVariant.findUnique({
+        where: { id: variantId },
+      });
+
+      if (!variant) {
+        return reply.status(404).send({ success: false });
+      }
+
+      await fastify.prisma.stockNotification.create({
+        data: {
+          email,
+          variantId,
+        },
+      });
+
+      return reply.status(201).send({ success: true });
     }
   );
 

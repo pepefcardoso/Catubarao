@@ -73,7 +73,7 @@ export async function processPaymentEventJob(job: Job) {
         const { decrementStock } = await import("../modules/store/stock.service.js");
         for (const item of order.items) {
            try {
-              await decrementStock(item.productId, item.quantity, prisma, { email: emailQueue });
+              await decrementStock(item.productId, item.variantId, item.quantity, prisma, { email: emailQueue });
            } catch (err) {
               console.error("Failed to decrement stock for item", item.id, err);
            }

@@ -15,6 +15,9 @@ export const CreateProductVariantSchema = z.object({
   size: z.string().optional().nullable(),
   color: z.string().optional().nullable(),
   priceAdjustment: z.coerce.number().optional().default(0),
+  stockQuantity: z.number().int().nonnegative().optional().nullable(),
+  stockAlertThreshold: z.number().int().nonnegative().optional().nullable(),
+  initialStockQuantity: z.number().int().nonnegative().optional().nullable(),
 });
 
 export const CreateProductSchema = z.object({
@@ -24,8 +27,6 @@ export const CreateProductSchema = z.object({
   images: z.array(z.string().url()).default([]),
   basePrice: z.coerce.number().positive(),
   stockType: StockTypeEnum,
-  stockQuantity: z.number().int().nonnegative().optional().nullable(),
-  stockAlertThreshold: z.number().int().nonnegative().optional().nullable(),
   membersOnly: z.boolean().default(false),
   isActive: z.boolean().default(true),
   variants: z.array(CreateProductVariantSchema).default([]),
@@ -44,6 +45,9 @@ export const ProductVariantResponseSchema = z.object({
   size: z.string().nullable(),
   color: z.string().nullable(),
   priceAdjustment: z.coerce.number(),
+  stockQuantity: z.number().nullable(),
+  stockAlertThreshold: z.number().nullable(),
+  initialStockQuantity: z.number().nullable(),
 });
 
 export type ProductVariantResponse = z.infer<typeof ProductVariantResponseSchema>;
@@ -56,8 +60,6 @@ export const ProductResponseSchema = z.object({
   images: z.array(z.string()),
   basePrice: z.coerce.number(),
   stockType: StockTypeEnum,
-  stockQuantity: z.number().nullable(),
-  stockAlertThreshold: z.number().nullable(),
   membersOnly: z.boolean(),
   isActive: z.boolean(),
   createdAt: z.union([z.string(), z.date()]).transform((v) => new Date(v)),
@@ -132,3 +134,10 @@ export const OrderResponseSchema = z.object({
 });
 
 export type OrderResponse = z.infer<typeof OrderResponseSchema>;
+
+export const CreateStockNotificationSchema = z.object({
+  email: z.string().email(),
+  variantId: z.string().uuid(),
+});
+
+export type CreateStockNotificationInput = z.infer<typeof CreateStockNotificationSchema>;
