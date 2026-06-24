@@ -206,6 +206,61 @@ describe("Members Profile Routes", () => {
       expect(res.body.message).toBe("Card not found or suspended");
     });
   });
+
+  describe("LGPD Compliance", () => {
+    it("GET /members/me/export returns all member data in JSON", async () => {
+      const res = await request.get("/members/me/export").set("Cookie", memberToken);
+      
+      expect(res.status).toBe(200);
+      expect(res.headers["content-type"]).toContain("application/json");
+      expect(res.headers["content-disposition"]).toContain("attachment; filename=\"member-data-");
+      
+      // Basic structure validation
+      expect(res.body).toHaveProperty("id", memberId);
+      expect(res.body).toHaveProperty("name");
+      expect(res.body).toHaveProperty("email");
+      expect(res.body).toHaveProperty("subscriptions");
+      expect(res.body).toHaveProperty("orders");
+      expect(res.body).toHaveProperty("gamificationEvents");
+
+      // Verify AuditLog was created
+      const logs = await prisma.auditLog.findMany({ where: { memberId, action: "DATA_EXPORT" } });
+      expect(logs.length).toBeGreaterThanOrEqual(1);
+    });
+
+    it("DELETE /members/me anonymizes the member and creates audit log", async () => {
+      // First, capture the original email and cpf to compute expected hashes
+      const dbMemberBefore = await prisma.member.findUnique({ where: { id: memberId } });
+      expect(dbMemberBefore).toBeDefined();
+
+      const res = await request.delete("/members/me").set("Cookie", memberToken);
+      expect(res.status).toBe(200);
+      expect(res.body.success).toBe(true);
+
+      const dbMemberAfter = await prisma.member.findUnique({ where: { id: memberId } });
+      expect(dbMemberAfter?.name).toBe("Sócio Removido");
+      expect(dbMemberAfter?.isAnonymized).toBe(true);
+      expect(dbMemberAfter?.isActive).toBe(false);
+      expect(dbMemberAfter?.phone).toBeNull();
+      expect(dbMemberAfter?.address).toBeNull();
+
+      // Check the hashes
+      const crypto = await import("crypto");
+      const expectedEmailHash = crypto.createHash("sha256").update(dbMemberBefore!.email).digest("hex");
+      const expectedCpfHash = dbMemberBefore!.cpf ? crypto.createHash("sha256").update(dbMemberBefore!.cpf).digest("hex") : null;
+      
+      expect(dbMemberAfter?.email).toBe(expectedEmailHash);
+      expect(dbMemberAfter?.cpf).toBe(expectedCpfHash);
+
+      // Verify AuditLog
+      const logs = await prisma.auditLog.findMany({ where: { memberId, action: "ACCOUNT_ANONYMIZED" } });
+      expect(logs.length).toBe(1);
+
+      // Verify sessions and accounts are deleted
+      const sessions = await prisma.session.findMany({ where: { userId: memberId } });
+      expect(sessions.length).toBe(0);
+    });
+  });
 });
 
 import { isEligibleToVote } from "./members.service";

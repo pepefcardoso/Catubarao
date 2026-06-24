@@ -3,6 +3,8 @@ import { NotFoundError, ForbiddenError } from "../../lib/errors";
 import type { UpdateMemberProfileSchema } from "@repo/schemas/member";
 import type { z } from "zod";
 import { generateCardToken } from "../../lib/qr";
+import { cancelSubscription } from "./subscriptions.service";
+import crypto from "crypto";
 
 type UpdateMemberProfileInput = z.infer<typeof UpdateMemberProfileSchema>;
 
@@ -295,4 +297,101 @@ export async function updateAdminNotes(id: string, notes: string | null, db: Pri
     where: { id },
     data: { adminNotes: notes },
   });
+}
+
+export async function exportMemberData(memberId: string, db: PrismaClient) {
+  const member = await db.member.findUnique({
+    where: { id: memberId },
+    include: {
+      subscriptions: {
+        include: {
+          payments: true,
+          plan: true,
+        },
+      },
+      orders: {
+        include: {
+          items: true,
+          payments: true,
+        },
+      },
+      gamificationEvents: true,
+    },
+  });
+
+  if (!member) {
+    throw new NotFoundError("Member not found");
+  }
+
+  await db.auditLog.create({
+    data: {
+      action: "DATA_EXPORT",
+      memberId,
+      performedBy: memberId,
+    },
+  });
+
+  return member;
+}
+
+export async function anonymizeMember(memberId: string, db: PrismaClient) {
+  const member = await db.member.findUnique({
+    where: { id: memberId },
+    include: {
+      subscriptions: {
+        where: {
+          status: "ACTIVE",
+        },
+      },
+    },
+  });
+
+  if (!member) {
+    throw new NotFoundError("Member not found");
+  }
+
+  // Cancel active subscriptions via MP API
+  for (const sub of member.subscriptions) {
+    await cancelSubscription(sub.id, db);
+  }
+
+  // Anonymize the member profile
+  const anonymizedEmail = crypto.createHash("sha256").update(member.email).digest("hex");
+  const anonymizedCpf = member.cpf ? crypto.createHash("sha256").update(member.cpf).digest("hex") : null;
+
+  await db.$transaction(async (tx) => {
+    await tx.member.update({
+      where: { id: memberId },
+      data: {
+        name: "Sócio Removido",
+        email: anonymizedEmail,
+        cpf: anonymizedCpf,
+        phone: null,
+        address: null,
+        birthDate: null,
+        image: null,
+        referralCode: null,
+        isAnonymized: true,
+        isActive: false,
+      },
+    });
+
+    await tx.session.deleteMany({
+      where: { userId: memberId },
+    });
+
+    await tx.account.deleteMany({
+      where: { userId: memberId },
+    });
+
+    await tx.auditLog.create({
+      data: {
+        action: "ACCOUNT_ANONYMIZED",
+        memberId,
+        performedBy: memberId,
+      },
+    });
+  });
+
+  return { success: true };
 }

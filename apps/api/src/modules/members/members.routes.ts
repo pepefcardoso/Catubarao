@@ -1,6 +1,6 @@
 import type { FastifyPluginAsyncZod } from "fastify-type-provider-zod";
 import { UpdateMemberProfileSchema, MeResponseSchema, MembershipCardResponseSchema, MemberReferralResponseSchema, PaginatedPaymentsResponseSchema, PaginatedMembersResponseSchema, ListMembersQuerySchema, AdminMemberDetailResponseSchema, UpdateAdminNoteSchema } from "@repo/schemas/member";
-import { getMe, updateMe, generateMembershipCard, getMemberReferral, getMemberPayments, listMembers, getMemberAdminDetail, updateAdminNotes } from "./members.service";
+import { getMe, updateMe, generateMembershipCard, getMemberReferral, getMemberPayments, listMembers, getMemberAdminDetail, updateAdminNotes, exportMemberData, anonymizeMember } from "./members.service";
 import { prisma } from "@repo/db";
 import { z } from "zod";
 
@@ -203,6 +203,45 @@ export const membersRoutes: FastifyPluginAsyncZod = async (fastify) => {
       const { page, limit } = request.query as { page: number; limit: number };
       const payments = await getMemberPayments(memberId, page, limit, prisma);
       return reply.status(200).send(payments);
+    }
+  );
+
+  fastify.get(
+    "/me/export",
+    {
+      schema: {
+        tags: ["members"],
+        response: {
+          200: z.any(), // Export returns a dynamic JSON structure
+        },
+      },
+      preHandler: [fastify.authenticate],
+    },
+    async (request, reply) => {
+      const memberId = request.user.id;
+      const data = await exportMemberData(memberId, prisma);
+      
+      reply.header("Content-Disposition", `attachment; filename="member-data-${memberId}.json"`);
+      reply.header("Content-Type", "application/json");
+      return reply.status(200).send(data);
+    }
+  );
+
+  fastify.delete(
+    "/me",
+    {
+      schema: {
+        tags: ["members"],
+        response: {
+          200: z.object({ success: z.boolean() }),
+        },
+      },
+      preHandler: [fastify.authenticate],
+    },
+    async (request, reply) => {
+      const memberId = request.user.id;
+      const result = await anonymizeMember(memberId, prisma);
+      return reply.status(200).send(result);
     }
   );
 };

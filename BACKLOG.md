@@ -2339,10 +2339,10 @@ All templates: club logo, responsive layout, unsubscribe footer (transactional e
 
 **Acceptance criteria:**
 
-- [ ] Post-anonymization, `GET /members/:id` returns no PII (name shows "Sócio Removido")
-- [ ] Anonymized member cannot log in
-- [ ] Payment records still exist post-anonymization with anonymized memberId reference
-- [ ] Data export includes all data and downloads as a `.json` file
+- [x] Post-anonymization, `GET /members/:id` returns no PII (name shows "Sócio Removido")
+- [x] Anonymized member cannot log in
+- [x] Payment records still exist post-anonymization with anonymized memberId reference
+- [x] Data export includes all data and downloads as a `.json` file
 
 ---
 

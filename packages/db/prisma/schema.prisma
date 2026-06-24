@@ -39,8 +39,11 @@ model Member {
   referredBy   Member?  @relation("MemberReferrals", fields: [referredById], references: [id])
   referrals    Member[] @relation("MemberReferrals")
 
+  isAnonymized Boolean  @default(false)
+
   sessions            Session[]
   accounts            Account[]
+  auditLogs           AuditLog[]
   subscriptions       Subscription[]
   gamificationEvents  GamificationEvent[]
   membershipCards     MembershipCard[]
@@ -603,3 +606,19 @@ model OrderItem {
 
   @@map("order_items")
 }
+
+model AuditLog {
+  id          String   @id @default(uuid())
+  action      String
+  memberId    String?
+  performedBy String?
+  metadata    Json?
+  createdAt   DateTime @default(now())
+
+  member Member? @relation(fields: [memberId], references: [id], onDelete: SetNull)
+
+  @@index([memberId])
+  @@index([action])
+  @@map("audit_logs")
+}
+

@@ -13,10 +13,32 @@ export async function registerMember(
 ) {
   const input = request.body;
 
-  // Check CPF uniqueness
+  // Check Email uniqueness against plain and hashed
+  const hashedEmail = crypto.createHash("sha256").update(input.email).digest("hex");
+  const existingEmail = await db.member.findFirst({
+    where: {
+      OR: [
+        { email: input.email },
+        { email: hashedEmail }
+      ]
+    }
+  });
+  if (existingEmail) {
+    throw new ConflictError("Email already registered");
+  }
+
+  // Check CPF uniqueness against plain and hashed
   if (input.cpf) {
-    const existing = await db.member.findUnique({ where: { cpf: input.cpf } });
-    if (existing) {
+    const hashedCpf = crypto.createHash("sha256").update(input.cpf).digest("hex");
+    const existingCpf = await db.member.findFirst({ 
+      where: { 
+        OR: [
+          { cpf: input.cpf },
+          { cpf: hashedCpf }
+        ]
+      } 
+    });
+    if (existingCpf) {
       throw new ConflictError("CPF already registered");
     }
   }
