@@ -52,25 +52,89 @@ export async function recordGamificationEvent(
 }
 
 export async function getMemberPoints(memberId: string, db: PrismaClient) {
-  const events = await db.gamificationEvent.findMany({
+  const recentEvents = await db.gamificationEvent.findMany({
     where: { memberId },
-    select: { type: true, points: true },
+    orderBy: { createdAt: 'desc' },
+    take: 5,
   });
 
-  let totalPoints = 0;
-  const breakdownMap: Record<string, number> = {};
+  const totalPointsRes = await db.gamificationEvent.aggregate({
+    where: { memberId },
+    _sum: { points: true }
+  });
+  const total = totalPointsRes._sum.points || 0;
 
-  for (const event of events) {
-    totalPoints += event.points;
-    breakdownMap[event.type] = (breakdownMap[event.type] || 0) + event.points;
+  const member = await db.member.findUnique({
+    where: { id: memberId },
+    select: { showOnLeaderboard: true }
+  });
+
+  let rank: number | null = null;
+  if (member?.showOnLeaderboard) {
+    const rankRaw = await db.$queryRaw<Array<{ rank: bigint }>>`
+      WITH RankedMembers AS (
+        SELECT 
+          m.id, 
+          RANK() OVER (ORDER BY COALESCE(SUM(g.points), 0) DESC) as rank
+        FROM members m
+        LEFT JOIN gamification_events g ON m.id = g."memberId"
+        WHERE m."showOnLeaderboard" = true
+        GROUP BY m.id
+      )
+      SELECT rank FROM RankedMembers WHERE id = ${memberId}
+    `;
+    if (rankRaw.length > 0) {
+      rank = Number(rankRaw[0].rank);
+    }
   }
 
-  const breakdown = Object.entries(breakdownMap).map(([type, points]) => ({
-    type: type as GamificationEventType,
-    points,
-  }));
+  const checkinCount = await db.gamificationEvent.count({
+    where: { memberId, type: 'CHECKIN' }
+  });
+  
+  const referralCount = await db.gamificationEvent.count({
+    where: { memberId, type: 'REFERRAL' }
+  });
+  
+  const streak12m = await db.gamificationEvent.findFirst({
+    where: { memberId, type: 'STREAK_12M' }
+  });
+  
+  const voteCount = await db.pollVote.count({
+    where: { memberId }
+  });
 
-  return { totalPoints, breakdown };
+  const badges = [
+    {
+      id: "first_checkin",
+      name: "1º Check-in",
+      description: "Compareceu ao seu primeiro jogo.",
+      isUnlocked: checkinCount > 0,
+    },
+    {
+      id: "five_referrals",
+      name: "Embaixador",
+      description: "Indicou 5 novos sócios.",
+      isUnlocked: referralCount >= 5,
+    },
+    {
+      id: "streak_12m",
+      name: "Sócio Fiel 12M",
+      description: "12 meses de adimplência.",
+      isUnlocked: !!streak12m,
+    },
+    {
+      id: "first_vote",
+      name: "Voz Ativa",
+      description: "Participou de uma votação.",
+      isUnlocked: voteCount > 0,
+    }
+  ];
+
+  return { total, rank, recentEvents: recentEvents.map(e => ({
+    ...e,
+    createdAt: e.createdAt.toISOString()
+  })), badges };
 }
 
 export async function getLeaderboard(limit: number, db: PrismaClient) {

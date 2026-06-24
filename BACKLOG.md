@@ -540,12 +540,12 @@ Copy replacements per page (exact placements are in `strategic_analysis.md §3.2
 
 **Acceptance criteria:**
 
-- [ ] Correct tier name and color for a member with 150 points (Camisa 10)
-- [ ] Progress bar percentage is accurate (`(150-100)/(500-100) = 12.5%`)
-- [ ] Recent activity feed shows at most 5 events
-- [ ] Locked badges are visually distinct from earned badges
-- [ ] Leaderboard teaser is absent when `showOnLeaderboard === false`
-- [ ] `pnpm --filter web typecheck` passes
+- [x] Correct tier name and color for a member with 150 points (Camisa 10)
+- [x] Progress bar percentage is accurate (`(150-100)/(500-100) = 12.5%`)
+- [x] Recent activity feed shows at most 5 events
+- [x] Locked badges are visually distinct from earned badges
+- [x] Leaderboard teaser is absent when `showOnLeaderboard === false`
+- [x] `pnpm --filter web typecheck` passes
 
 ---
 

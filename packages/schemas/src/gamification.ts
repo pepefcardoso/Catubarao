@@ -13,14 +13,19 @@ export const GamificationEventSchema = z.object({
   createdAt: z.string().datetime(),
 });
 
+export const BadgeSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  description: z.string(),
+  isUnlocked: z.boolean(),
+  unlockedAt: z.string().datetime().optional()
+});
+
 export const MemberPointsResponseSchema = z.object({
-  totalPoints: z.number().int().nonnegative(),
-  breakdown: z.array(
-    z.object({
-      type: z.enum(["CHECKIN", "REFERRAL", "ANNIVERSARY", "STREAK_6M", "STREAK_12M"]),
-      points: z.number().int().nonnegative(),
-    })
-  ),
+  total: z.number().int().nonnegative(),
+  rank: z.number().int().positive().nullable(),
+  recentEvents: z.array(GamificationEventSchema),
+  badges: z.array(BadgeSchema),
 });
 
 export const LeaderboardEntrySchema = z.object({

@@ -296,8 +296,9 @@ export function ProductSheet({ open, onOpenChange, product, onSaved }: ProductSh
               ) : (
                 <div className="space-y-4">
                   {variantFields.map((field, index) => (
-                    <div key={field.id} className="grid grid-cols-12 gap-3 items-end bg-background/30 p-3 rounded-lg border border-white/5">
-                      <FormField
+                    <div key={field.id} className="bg-background/30 p-3 rounded-lg border border-white/5">
+                      <div className="grid grid-cols-12 gap-3 items-end">
+                        <FormField
                         control={form.control}
                         name={`variants.${index}.sku`}
                         render={({ field: inputField }) => (
