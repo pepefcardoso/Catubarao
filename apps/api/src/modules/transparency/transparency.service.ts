@@ -120,7 +120,44 @@ export async function getPostById(id: string, db: PrismaClient) {
     throw new NotFoundError("Post not found");
   }
 
-  return post;
+  const backwardChain = [];
+  let currentPost = await db.transparencyPost.findUnique({
+    where: { id },
+    include: { versions: { select: { id: true, version: true, publishedAt: true } } },
+  });
+  
+  while (currentPost && currentPost.versions && currentPost.versions.length > 0) {
+    const older = currentPost.versions[0];
+    backwardChain.push(older);
+    currentPost = await db.transparencyPost.findUnique({
+      where: { id: older.id },
+      include: { versions: { select: { id: true, version: true, publishedAt: true } } },
+    });
+  }
+
+  const forwardChain = [];
+  let forwardCurrent = post;
+  while (forwardCurrent.supersededById) {
+    const newer = await db.transparencyPost.findUnique({
+      where: { id: forwardCurrent.supersededById },
+      select: { id: true, version: true, supersededById: true, publishedAt: true },
+    });
+    if (!newer) break;
+    forwardChain.push({ id: newer.id, version: newer.version, publishedAt: newer.publishedAt });
+    forwardCurrent = newer as any;
+  }
+
+  backwardChain.reverse();
+  const versionChain = [
+    ...backwardChain,
+    { id: post.id, version: post.version, publishedAt: post.publishedAt },
+    ...forwardChain,
+  ];
+
+  return {
+    ...post,
+    versionChain,
+  };
 }
 
 export async function createPost(

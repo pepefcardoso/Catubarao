@@ -407,11 +407,11 @@ Copy replacements per page (exact placements are in `strategic_analysis.md §3.2
 
 **Acceptance criteria:**
 
-- [ ] Badge is present on every published post detail page
-- [ ] Tooltip renders the full immutability explanation
-- [ ] Superseded warning links to the correct successor post
-- [ ] Version history shows the correct chain for a post with at least 2 versions
-- [ ] `pnpm --filter web typecheck` passes
+- [x] Badge is present on every published post detail page
+- [x] Tooltip renders the full immutability explanation
+- [x] Superseded warning links to the correct successor post
+- [x] Version history shows the correct chain for a post with at least 2 versions
+- [x] `pnpm --filter web typecheck` passes
 
 ---
 

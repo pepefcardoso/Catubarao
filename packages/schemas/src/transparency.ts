@@ -58,6 +58,11 @@ export const TransparencyPostResponseSchema = CreateTransparencyPostBaseSchema.e
   createdBy: z.string().uuid(),
   createdAt: z.union([z.string(), z.date()]),
   updatedAt: z.union([z.string(), z.date()]),
+  versionChain: z.array(z.object({
+    id: z.string().uuid(),
+    version: z.number().int(),
+    publishedAt: z.union([z.string(), z.date()]),
+  })).optional(),
 });
 
 export type TransparencyPostResponse = z.infer<typeof TransparencyPostResponseSchema>;

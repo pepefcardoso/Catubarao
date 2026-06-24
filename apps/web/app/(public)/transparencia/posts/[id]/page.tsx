@@ -6,7 +6,9 @@ import { TransparencyPostResponse } from "@repo/schemas/transparency";
 import { Card, CardContent, CardHeader, CardTitle } from "@repo/ui/components/card";
 import { Badge } from "@repo/ui/components/badge";
 import { Button } from "@repo/ui/components/button";
-import { Download, FileText, ArrowLeft, History } from "lucide-react";
+import { ImmutabilityBadge } from "@/components/transparency/ImmutabilityBadge";
+import { Alert, AlertDescription, AlertTitle } from "@repo/ui/components/alert";
+import { Download, FileText, ArrowLeft, History, TriangleAlert } from "lucide-react";
 import Link from "next/link";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -93,7 +95,9 @@ export default async function PostDetailPage({ params }: { params: Promise<{ id:
               <Badge variant="secondary" className="w-fit">{categoryLabel}</Badge>
               <h1 className="text-3xl font-extrabold tracking-tight sm:text-4xl">{post.title}</h1>
               
-              <div className="flex items-center gap-2 text-sm text-muted-foreground">
+              <ImmutabilityBadge publishedAt={post.publishedAt} />
+
+              <div className="flex items-center gap-2 text-sm text-muted-foreground mt-2">
                 <span className="flex items-center gap-1">
                   <FileText className="h-4 w-4" />
                   Publicado em {dateLabel}
@@ -111,6 +115,18 @@ export default async function PostDetailPage({ params }: { params: Promise<{ id:
       </div>
 
       <div className="container mx-auto px-4 py-12 max-w-4xl">
+        {post.supersededById && (
+          <Alert variant="warning" className="mb-6">
+            <TriangleAlert className="h-4 w-4" />
+            <AlertTitle>Atenção: Este documento foi substituído por uma versão mais recente</AlertTitle>
+            <AlertDescription>
+              Você está visualizando uma versão antiga.{" "}
+              <Link href={`/transparencia/posts/${post.versionChain?.[post.versionChain.length - 1]?.id || post.supersededById}`} className="font-medium underline hover:text-amber-800 dark:hover:text-amber-200">
+                Ver versão atual
+              </Link>
+            </AlertDescription>
+          </Alert>
+        )}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2">
             <Card className="bg-card shadow-sm border-border/50">
@@ -140,17 +156,44 @@ export default async function PostDetailPage({ params }: { params: Promise<{ id:
                 ) : (
                   <p className="text-sm text-muted-foreground">Este documento não possui anexos.</p>
                 )}
-                
-                {post.supersededById && (
-                  <Button asChild className="w-full justify-start" variant="outline">
-                    <Link href={`/transparencia/posts/${post.supersededById}`}>
-                      <History className="mr-2 h-4 w-4" />
-                      Ver Versão Anterior
-                    </Link>
-                  </Button>
-                )}
               </CardContent>
             </Card>
+
+            {post.versionChain && post.versionChain.length > 1 && (
+              <Card className="bg-card shadow-sm border-border/50">
+                <CardHeader>
+                  <CardTitle className="text-lg flex items-center gap-2">
+                    <History className="h-5 w-5" />
+                    Histórico de Versões
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="relative border-l-2 border-muted ml-3 pl-4 space-y-4">
+                    {post.versionChain.map((v, index) => {
+                      const isCurrent = v.id === post.id;
+                      const isOriginal = index === 0;
+                      return (
+                        <div key={v.id} className="relative">
+                          <div className={`absolute -left-[21px] top-1.5 h-2 w-2 rounded-full ring-4 ring-background ${isCurrent ? 'bg-primary' : 'bg-muted-foreground'}`} />
+                          {isCurrent ? (
+                            <div className="font-medium text-sm text-foreground">
+                              Versão {v.version} (atual)
+                            </div>
+                          ) : (
+                            <Link href={`/transparencia/posts/${v.id}`} className="block text-sm text-muted-foreground hover:text-primary hover:underline transition-colors">
+                              Versão {v.version} {isOriginal && "(original)"}
+                            </Link>
+                          )}
+                          <div className="text-xs text-muted-foreground mt-0.5">
+                            {new Intl.DateTimeFormat('pt-BR', { dateStyle: 'short', timeStyle: 'short' }).format(new Date(v.publishedAt))}
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </CardContent>
+              </Card>
+            )}
             
             {post.isArchived && (
               <Card className="bg-destructive/10 border-destructive/20 text-destructive shadow-sm">
