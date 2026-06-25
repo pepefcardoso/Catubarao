@@ -1,6 +1,6 @@
 import type { FastifyPluginAsyncZod } from "fastify-type-provider-zod";
-import { UpdateMemberProfileSchema, MeResponseSchema, MembershipCardResponseSchema, MemberReferralResponseSchema, PaginatedPaymentsResponseSchema, PaginatedMembersResponseSchema, ListMembersQuerySchema, AdminMemberDetailResponseSchema, UpdateAdminNoteSchema } from "@repo/schemas/member";
-import { getMe, updateMe, generateMembershipCard, getMemberReferral, getMemberPayments, listMembers, getMemberAdminDetail, updateAdminNotes, exportMemberData, anonymizeMember } from "./members.service";
+import { UpdateMemberProfileSchema, MeResponseSchema, MembershipCardResponseSchema, MemberReferralResponseSchema, PaginatedPaymentsResponseSchema, PaginatedMembersResponseSchema, ListMembersQuerySchema, AdminMemberDetailResponseSchema, UpdateAdminNoteSchema, MonumentResponseSchema } from "@repo/schemas/member";
+import { getMe, updateMe, generateMembershipCard, getMemberReferral, getMemberPayments, listMembers, getMemberAdminDetail, updateAdminNotes, exportMemberData, anonymizeMember, getMonumentMembers } from "./members.service";
 import { prisma } from "@repo/db";
 import { z } from "zod";
 
@@ -21,6 +21,23 @@ export const membersRoutes: FastifyPluginAsyncZod = async (fastify) => {
       const query = request.query;
       const result = await listMembers(query, prisma);
       return reply.status(200).send(result);
+    }
+  );
+
+  fastify.get(
+    "/monument",
+    {
+      schema: {
+        tags: ["members"],
+        response: {
+          200: MonumentResponseSchema,
+        },
+      },
+      // No preHandler — public endpoint
+    },
+    async (_request, reply) => {
+      const data = await getMonumentMembers(prisma);
+      return reply.status(200).send(data);
     }
   );
 

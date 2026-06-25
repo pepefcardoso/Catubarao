@@ -416,3 +416,45 @@ export async function anonymizeMember(memberId: string, db: PrismaClient) {
 
   return { success: true };
 }
+
+export async function getMonumentMembers(db: PrismaClient) {
+  const members = await db.member.findMany({
+    where: {
+      showOnMonument: true,
+      isActive: true,
+      subscriptions: {
+        some: {
+          status: "ACTIVE",
+        },
+      },
+    },
+    select: {
+      name: true,
+      createdAt: true,
+      subscriptions: {
+        where: { status: "ACTIVE" },
+        orderBy: { createdAt: "desc" },
+        take: 1,
+        select: {
+          plan: { select: { name: true } },
+        },
+      },
+    },
+    orderBy: { createdAt: "asc" },
+  });
+
+  return members.map((m) => {
+    const nameParts = m.name.trim().split(/\s+/);
+    const firstName = nameParts[0] ?? "";
+    const lastName = nameParts[nameParts.length - 1] ?? "";
+    const lastInitial =
+      nameParts.length > 1 ? (lastName[0]?.toUpperCase() ?? "") : "";
+    const tier = m.subscriptions[0]?.plan?.name ?? "Sócio";
+    return {
+      firstName,
+      lastInitial,
+      tier,
+      joinedAt: m.createdAt.toISOString(),
+    };
+  });
+}

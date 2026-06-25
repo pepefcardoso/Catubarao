@@ -293,3 +293,13 @@ export const GamificationEventResponseSchema = z.object({
   metadata: z.any().nullable(),
   createdAt: z.date(),
 });
+
+export const MonumentMemberSchema = z.object({
+  firstName: z.string(),
+  lastInitial: z.string().length(1).or(z.string().length(0)),
+  tier: z.string(),
+  joinedAt: z.string().datetime(), // ISO string
+});
+
+export const MonumentResponseSchema = z.array(MonumentMemberSchema);
+export type MonumentMember = z.infer<typeof MonumentMemberSchema>;

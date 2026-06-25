@@ -853,11 +853,11 @@ Copy replacements per page (exact placements are in `strategic_analysis.md §3.2
 
 **Acceptance criteria:**
 
-- [ ] Only members with `showOnMonument: true` and `ACTIVE` subscription appear
-- [ ] Logged-in member's brick is highlighted correctly
-- [ ] Opt-in CTA updates `showOnMonument` and adds the brick optimistically
-- [ ] Page is accessible without authentication
-- [ ] `pnpm --filter web typecheck` passes
+- [x] Only members with `showOnMonument: true` and `ACTIVE` subscription appear
+- [x] Logged-in member's brick is highlighted correctly
+- [x] Opt-in CTA updates `showOnMonument` and adds the brick optimistically
+- [x] Page is accessible without authentication
+- [x] `pnpm --filter web typecheck` passes
 
 ---
 
