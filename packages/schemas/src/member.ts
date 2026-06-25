@@ -107,6 +107,7 @@ export const MeResponseSchema = MemberResponseSchema.extend({
   adimplenciaStreak: z.number().int().nonnegative(),
   memberNumber: z.number().int(),
   daysSincePeriodEnd: z.number().int().nullable(),
+  isFounder: z.boolean(),
 });
 
 export const ListMembersQuerySchema = z.object({

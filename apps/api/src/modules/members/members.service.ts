@@ -49,6 +49,18 @@ export async function getMe(memberId: string, db: PrismaClient) {
     daysSincePeriodEnd = Math.floor(diffTime / (1000 * 60 * 60 * 24));
   }
 
+  let isFounder = false;
+  const cutoff = process.env.FOUNDER_CUTOFF_DATE ? new Date(process.env.FOUNDER_CUTOFF_DATE) : null;
+  if (cutoff) {
+    const firstSub = await db.subscription.findFirst({
+      where: { memberId },
+      orderBy: { createdAt: 'asc' }
+    });
+    if (firstSub && firstSub.createdAt < cutoff) {
+      isFounder = true;
+    }
+  }
+
   return {
     ...memberData,
     subscriptionStatus: sub?.status ?? null,
@@ -56,6 +68,7 @@ export async function getMe(memberId: string, db: PrismaClient) {
     adimplenciaStreak: member.adimplenciaStreakMonths,
     memberNumber,
     daysSincePeriodEnd,
+    isFounder,
   };
 }
 

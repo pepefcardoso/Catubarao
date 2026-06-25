@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { Home, CreditCard, ShoppingBag, BarChart3, LogOut, User } from "lucide-react";
 import { cn } from "@repo/ui/lib/utils";
 import { Button } from "@repo/ui/components/button";
+import { MemberAvatar } from "../shared/MemberAvatar";
 
 export const memberNavItems = [
   { name: "Dashboard", href: "/dashboard", icon: Home },
@@ -55,9 +56,7 @@ export function MemberSidebar() {
 
       <div className="p-4 border-t space-y-2">
         <div className="flex items-center gap-3 px-3 py-2 mb-2 rounded-lg bg-secondary/50">
-          <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold">
-            U
-          </div>
+          <MemberAvatar size="sm" />
           <div className="flex flex-col overflow-hidden">
             <span className="text-sm font-medium truncate">Sócio Torcedor</span>
             <span className="text-xs text-muted-foreground truncate">socio@tubarao.com</span>

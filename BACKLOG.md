@@ -934,11 +934,11 @@ Copy replacements per page (exact placements are in `strategic_analysis.md §3.2
 
 **Acceptance criteria:**
 
-- [ ] Avatar shows tier color for members without a photo
-- [ ] "Fundador" badge appears for members who joined within the first 6 months
-- [ ] "Fundador" badge is absent for members who joined later
-- [ ] Leaderboard entries include tier and tenure information
-- [ ] `pnpm --filter web typecheck` passes
+- [x] Avatar shows tier color for members without a photo
+- [x] "Fundador" badge appears for members who joined within the first 6 months
+- [x] "Fundador" badge is absent for members who joined later
+- [x] Leaderboard entries include tier and tenure information
+- [x] `pnpm --filter web typecheck` passes
 
 ---
 

@@ -33,6 +33,9 @@ export const LeaderboardEntrySchema = z.object({
   name: z.string(),
   totalPoints: z.number().int().nonnegative(),
   rank: z.number().int().positive(),
+  tier: z.string(),
+  memberSince: z.number().int(),
+  isFounder: z.boolean(),
 });
 
 export const LeaderboardResponseSchema = z.array(LeaderboardEntrySchema);

@@ -139,24 +139,50 @@ export async function getMemberPoints(memberId: string, db: PrismaClient) {
 
 export async function getLeaderboard(limit: number, db: PrismaClient) {
   const leaderboardRaw = await db.$queryRaw<
-    Array<{ memberId: string; name: string; totalPoints: number }>
+    Array<{ memberId: string; name: string; totalPoints: number; memberSince: number }>
   >`
     SELECT 
       m.id as "memberId", 
       m.name, 
+      EXTRACT(YEAR FROM m."createdAt")::int as "memberSince",
       COALESCE(SUM(g.points), 0)::int as "totalPoints"
     FROM members m
     LEFT JOIN gamification_events g ON m.id = g."memberId"
     WHERE m."showOnLeaderboard" = true
-    GROUP BY m.id, m.name
+    GROUP BY m.id, m.name, m."createdAt"
     ORDER BY "totalPoints" DESC
     LIMIT ${limit}
   `;
 
-  return leaderboardRaw.map((entry, index) => ({
-    memberId: entry.memberId,
-    name: entry.name,
-    totalPoints: entry.totalPoints,
-    rank: index + 1,
-  }));
+  const cutoff = process.env.FOUNDER_CUTOFF_DATE ? new Date(process.env.FOUNDER_CUTOFF_DATE) : null;
+
+  return await Promise.all(
+    leaderboardRaw.map(async (entry, index) => {
+      const activeSub = await db.subscription.findFirst({
+        where: { memberId: entry.memberId, status: "ACTIVE" },
+        orderBy: { createdAt: 'desc' },
+        include: { plan: true }
+      });
+
+      const firstSub = await db.subscription.findFirst({
+        where: { memberId: entry.memberId },
+        orderBy: { createdAt: 'asc' }
+      });
+
+      let isFounder = false;
+      if (cutoff && firstSub && firstSub.createdAt < cutoff) {
+        isFounder = true;
+      }
+
+      return {
+        memberId: entry.memberId,
+        name: entry.name,
+        totalPoints: entry.totalPoints,
+        rank: index + 1,
+        tier: activeSub?.plan?.name ?? "Sócio",
+        memberSince: entry.memberSince,
+        isFounder
+      };
+    })
+  );
 }

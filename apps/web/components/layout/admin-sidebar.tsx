@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { LayoutDashboard, Users, Shield, Receipt, LogOut, Settings, Calendar } from "lucide-react";
 import { cn } from "@repo/ui/lib/utils";
 import { Button } from "@repo/ui/components/button";
+import { MemberAvatar } from "../shared/MemberAvatar";
 
 export const adminNavItems = [
   { name: "Dashboard", href: "/admin", icon: LayoutDashboard },
@@ -58,9 +59,7 @@ export function AdminSidebar() {
 
       <div className="p-4 border-t space-y-2">
         <div className="flex items-center gap-3 px-3 py-2 mb-2 rounded-lg bg-secondary/50">
-          <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold">
-            A
-          </div>
+          <MemberAvatar size="sm" />
           <div className="flex flex-col overflow-hidden">
             <span className="text-sm font-medium truncate">Administrador</span>
             <span className="text-xs text-muted-foreground truncate">admin@tubarao.com</span>

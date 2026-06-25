@@ -14,6 +14,7 @@ import {
 } from "@repo/ui/components/sheet";
 import { cn } from "@repo/ui/lib/utils";
 import { adminNavItems } from "./admin-sidebar";
+import { MemberAvatar } from "../shared/MemberAvatar";
 
 export function AdminHeader() {
   const pathname = usePathname();
@@ -76,9 +77,7 @@ export function AdminHeader() {
 
             <div className="p-4 border-t space-y-2 bg-muted/20">
               <div className="flex items-center gap-3 px-3 py-2 mb-4 rounded-lg bg-background border shadow-sm">
-                <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold">
-                  A
-                </div>
+                <MemberAvatar size="md" />
                 <div className="flex flex-col overflow-hidden">
                   <span className="text-sm font-medium truncate">Administrador</span>
                   <span className="text-xs text-muted-foreground truncate">admin@tubarao.com</span>
