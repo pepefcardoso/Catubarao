@@ -13,6 +13,7 @@ import { copy } from "@/lib/copy";
 import { ReferralCard } from "@/components/member/ReferralCard";
 import { DelinquencyBanner } from "@/components/member/DelinquencyBanner";
 import { VotingRightsWidget } from "@/components/member/VotingRightsWidget";
+import { WhatsAppOptInPrompt } from "@/components/member/WhatsAppOptInPrompt";
 import { cn } from "@repo/ui/lib/utils";
 
 // Mock Data for testing the UI
@@ -97,6 +98,8 @@ export function DashboardClient() {
       <Suspense fallback={null}>
         <DelinquencyBanner status={status} daysSincePeriodEnd={days} activePlanId={MOCK_MEMBER.activePlanId} />
       </Suspense>
+
+      <WhatsAppOptInPrompt />
 
       <VotingRightsWidget 
         memberId={MOCK_MEMBER.id} 

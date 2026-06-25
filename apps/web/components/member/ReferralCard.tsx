@@ -1,10 +1,11 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Copy, Share2 } from "lucide-react";
+import { Copy } from "lucide-react";
 import { Button } from "@repo/ui/components/button";
 import { copy } from "@/lib/copy";
 import { apiFetch } from "@/lib/api";
+import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
 
 type ReferralData = {
   code: string | null;
@@ -55,9 +56,9 @@ export function ReferralCard() {
         <p className="text-sm text-green-600 font-medium mb-4 text-center">Copiado!</p>
       )}
 
-      <Button asChild className="w-full mb-4" variant="default">
+      <Button asChild className="w-full mb-4 bg-[#25D366] hover:bg-[#1ebe5d] text-white" variant="default">
         <a href={whatsappUrl} target="_blank" rel="noopener noreferrer">
-          <Share2 className="mr-2 h-4 w-4" />
+          <WhatsAppIcon className="mr-2 h-4 w-4" />
           Compartilhar no WhatsApp
         </a>
       </Button>

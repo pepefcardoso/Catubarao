@@ -66,6 +66,11 @@ export async function processDelinquencyJob(job: Job) {
         }
 
         let props: any = { name: sub.member.name };
+        
+        if (typeToSend === "DELINQUENCY_D7" || typeToSend === "DELINQUENCY_D15") {
+          props.whatsappSupportUrl = `https://wa.me/${env.WHATSAPP_SUPPORT_NUMBER}`;
+        }
+        
         if (typeToSend === "SUSPENSION") {
           props.reactivationLink = `${env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/member/dashboard`;
         }

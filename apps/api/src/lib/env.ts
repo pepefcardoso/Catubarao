@@ -23,6 +23,7 @@ const envSchema = z.object({
   QR_PUBLIC_KEY: z.string(),
   RESEND_API_KEY: z.string(),
   RESEND_FROM: z.string(),
+  WHATSAPP_SUPPORT_NUMBER: z.string().min(1),
   SENTRY_DSN: z.string().url().optional(),
   SENTRY_ENVIRONMENT: z.string().optional(),
   SENTRY_AUTH_TOKEN: z.string().optional(),
@@ -48,6 +49,7 @@ const dummyTestEnv = {
   QR_PUBLIC_KEY: "test-public-key",
   RESEND_API_KEY: "re_test_123456789",
   RESEND_FROM: "onboarding@resend.dev",
+  WHATSAPP_SUPPORT_NUMBER: "5548999990000",
 };
 
 if (process.env.NODE_ENV === "test") {

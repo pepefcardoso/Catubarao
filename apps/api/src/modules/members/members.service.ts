@@ -75,12 +75,14 @@ export async function updateMe(memberId: string, data: UpdateMemberProfileInput,
   }
 
   // Clean the data just in case
-  const { name, phone, address, showOnMonument } = data;
+  const { name, phone, address, showOnMonument, whatsappOptIn, whatsappOptInDismissedAt } = data;
   const updateData: any = {};
   if (name !== undefined) updateData.name = name;
   if (phone !== undefined) updateData.phone = phone;
   if (address !== undefined) updateData.address = address;
   if (showOnMonument !== undefined) updateData.showOnMonument = showOnMonument;
+  if (whatsappOptIn !== undefined) updateData.whatsappOptIn = whatsappOptIn;
+  if (whatsappOptInDismissedAt !== undefined) updateData.whatsappOptInDismissedAt = whatsappOptInDismissedAt;
 
   const updatedMember = await db.member.update({
     where: { id: memberId },

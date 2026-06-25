@@ -76,6 +76,7 @@ export const MemberResponseSchema = z.object({
   isActive: z.boolean(),
   marketingConsent: z.boolean(),
   whatsappOptIn: z.boolean(),
+  whatsappOptInDismissedAt: z.date().nullable(),
   showOnMonument: z.boolean(),
   address: z.any().nullable(),
   referredById: z.string().nullable(),
@@ -93,6 +94,8 @@ export const UpdateMemberProfileSchema = z
       .optional(),
     address: z.any().optional(),
     showOnMonument: z.boolean().optional(),
+    whatsappOptIn: z.boolean().optional(),
+    whatsappOptInDismissedAt: z.coerce.date().optional(),
   })
   .passthrough(); // passthrough to detect if they send cpf/email and return 403
 

@@ -50,6 +50,7 @@
   "devDependencies": {
     "@repo/config": "workspace:*",
     "@types/canvas-confetti": "^1.6.4",
+    "@types/html2canvas": "^1.0.0",
     "@types/node": "^22.0.0",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",

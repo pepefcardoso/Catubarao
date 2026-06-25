@@ -717,11 +717,11 @@ Copy replacements per page (exact placements are in `strategic_analysis.md §3.2
 
 **Acceptance criteria:**
 
-- [ ] Opt-in prompt appears for members active > 7 days with `whatsappOptIn: false`
-- [ ] Dismissing the prompt sets `whatsappOptInDismissedAt` and hides it permanently
-- [ ] WhatsApp share is the first/primary button on the referral card
-- [ ] Delinquency D+7 email includes the WhatsApp support link
-- [ ] `pnpm --filter web typecheck` passes
+- [x] Opt-in prompt appears for members active > 7 days with `whatsappOptIn: false`
+- [x] Dismissing the prompt sets `whatsappOptInDismissedAt` and hides it permanently
+- [x] WhatsApp share is the first/primary button on the referral card
+- [x] Delinquency D+7 email includes the WhatsApp support link
+- [x] `pnpm --filter web typecheck` passes
 
 ---
 

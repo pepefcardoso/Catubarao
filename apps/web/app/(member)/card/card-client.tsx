@@ -8,6 +8,7 @@ import { Badge } from "@repo/ui/components/badge";
 import { Button } from "@repo/ui/components/button";
 import { ClubCrest } from "@repo/ui/components/ClubCrest";
 import html2canvas from "html2canvas";
+import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
 
 const MOCK_MEMBER = {
   id: "123",
@@ -88,7 +89,7 @@ export function CardClient() {
           backgroundColor: null 
         });
         
-        canvas.toBlob(async (blob) => {
+        canvas.toBlob(async (blob: Blob | null) => {
           if (!blob) return;
           const file = new File([blob], "carteirinha.png", { type: "image/png" });
           if (navigator.canShare && navigator.canShare({ files: [file] })) {
@@ -119,6 +120,10 @@ export function CardClient() {
   };
 
   const isSuspended = status === "SUSPENDED";
+  
+  const referralCode = "MOCK-REF-123"; // TODO: Use real member referral code
+  const cardText = `Sou sócio do Tubarão SAF! 🦈 Venha fazer parte também: ${typeof window !== 'undefined' ? window.location.origin : ''}/signup?ref=${referralCode}`;
+  const whatsappShareUrl = `https://wa.me/?text=${encodeURIComponent(cardText)}`;
 
   return (
     <div className="fixed inset-0 z-[100] flex flex-col bg-slate-950 text-white overflow-hidden">
@@ -247,14 +252,24 @@ export function CardClient() {
 
         {/* Action Buttons */}
         {!isSuspended && !isFullscreen && (
-          <div className="mt-8 flex gap-4 w-full max-w-sm flex-col sm:flex-row">
-            <Button onClick={handleFullscreen} className="flex-1 bg-white/10 hover:bg-white/20 text-white border-white/20 border backdrop-blur-md">
+          <div className="mt-8 flex gap-4 w-full max-w-sm flex-col sm:flex-row flex-wrap">
+            <Button onClick={handleFullscreen} className="flex-1 min-w-[45%] bg-white/10 hover:bg-white/20 text-white border-white/20 border backdrop-blur-md">
               <Maximize className="w-4 h-4 mr-2" />
               Mostrar na entrada
             </Button>
-            <Button onClick={handleShare} disabled={isSharing} className="flex-1 bg-white/10 hover:bg-white/20 text-white border-white/20 border backdrop-blur-md">
+            <Button onClick={handleShare} disabled={isSharing} className="flex-1 min-w-[45%] bg-white/10 hover:bg-white/20 text-white border-white/20 border backdrop-blur-md">
               <Share2 className="w-4 h-4 mr-2" />
               Mostre com orgulho 📸
+            </Button>
+            <Button
+              asChild
+              variant="outline"
+              className="w-full bg-[#25D366] hover:bg-[#1ebe5d] text-white border-0 mt-2"
+            >
+              <a href={whatsappShareUrl} target="_blank" rel="noopener noreferrer">
+                <WhatsAppIcon className="mr-2 h-4 w-4" />
+                Compartilhar carteirinha
+              </a>
             </Button>
           </div>
         )}

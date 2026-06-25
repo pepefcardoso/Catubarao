@@ -28,6 +28,7 @@ model Member {
   isActive                Boolean   @default(true)
   marketingConsent        Boolean   @default(false)
   whatsappOptIn           Boolean   @default(false)
+  whatsappOptInDismissedAt DateTime?
   address                 Json?
   showOnMonument          Boolean   @default(false)
   showOnLeaderboard       Boolean   @default(false)
