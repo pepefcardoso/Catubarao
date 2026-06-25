@@ -769,10 +769,10 @@ Copy replacements per page (exact placements are in `strategic_analysis.md §3.2
 
 **Acceptance criteria:**
 
-- [ ] Timestamp is visible on all `/transparencia/*` sub-pages
-- [ ] Amber warning renders when last publication is > 45 days ago (testable by mocking the date)
-- [ ] Date format is `DD/MM/YYYY` (Brazilian locale — use `toLocaleDateString("pt-BR")`)
-- [ ] `pnpm --filter web typecheck` passes
+- [x] Timestamp is visible on all `/transparencia/*` sub-pages
+- [x] Amber warning renders when last publication is > 45 days ago (testable by mocking the date)
+- [x] Date format is `DD/MM/YYYY` (Brazilian locale — use `toLocaleDateString("pt-BR")`)
+- [x] `pnpm --filter web typecheck` passes
 
 ---
 
