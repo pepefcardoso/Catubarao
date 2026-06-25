@@ -132,6 +132,31 @@ export async function processPaymentEventJob(job: Job) {
 
       if (mappedStatus === "PAID") {
         await updateSubscriptionStatus(sub.id, "ACTIVE", prisma);
+        
+        const MEMBER_MILESTONES = [100, 250, 500, 1000] as const;
+        const activeCount = await prisma.subscription.count({
+          where: { status: "ACTIVE" }
+        });
+
+        for (const milestone of MEMBER_MILESTONES) {
+          if (activeCount < milestone) continue;
+          const existing = await prisma.announcementBanner.findFirst({
+            where: { milestone: -milestone },
+          });
+          if (existing) continue;
+
+          const expiresAt = new Date();
+          expiresAt.setDate(expiresAt.getDate() + 30);
+
+          await prisma.announcementBanner.create({
+            data: {
+              text: `🦈 O Tubarão chegou a ${milestone.toLocaleString("pt-BR")} sócios ativos! Obrigado pela força, torcida!`,
+              color: "brand-primary",
+              milestone: -milestone,
+              expiresAt,
+            },
+          });
+        }
       } else if (mappedStatus === "FAILED" || mappedStatus === "REFUNDED") {
         await updateSubscriptionStatus(sub.id, "PENDING", prisma);
       }

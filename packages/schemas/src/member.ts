@@ -283,6 +283,9 @@ export const GamificationEventTypeSchema = z.enum([
   "ANNIVERSARY",
   "STREAK_6M",
   "STREAK_12M",
+  "STREAK_24M",
+  "STREAK_36M",
+  "STREAK_60M",
 ]);
 
 export const GamificationEventResponseSchema = z.object({

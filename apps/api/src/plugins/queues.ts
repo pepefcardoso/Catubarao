@@ -87,6 +87,10 @@ export default fp(
             const { cancelAbandonedOrderJob } = await import("../jobs/cancel-abandoned-order.js");
             return cancelAbandonedOrderJob(job);
           }
+          if (job.name === "anniversary-check") {
+            const { anniversaryCheckJob } = await import("../jobs/anniversary-check.js");
+            return anniversaryCheckJob(job);
+          }
         },
         { connection },
       ),
@@ -166,6 +170,18 @@ export default fp(
             tz: "America/Sao_Paulo",
           },
           jobId: "check-expiring-deals-job",
+        }
+      );
+
+      await queues.scheduled.add(
+        "anniversary-check",
+        {},
+        {
+          repeat: {
+            pattern: "0 8 * * *",
+            tz: "America/Sao_Paulo",
+          },
+          jobId: "anniversary-check-job",
         }
       );
     });

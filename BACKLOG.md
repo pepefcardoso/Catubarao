@@ -907,12 +907,12 @@ Copy replacements per page (exact placements are in `strategic_analysis.md §3.2
 
 **Acceptance criteria:**
 
-- [ ] A member whose subscription created date matches today receives an anniversary email
-- [ ] 6-month streak milestone records a `STREAK_MILESTONE` event exactly once
-- [ ] Collective milestone banner appears on the transparency portal after 500 members activate
-- [ ] Milestone toast fires on the dashboard the day the event is recorded
-- [ ] Toast does not fire again on subsequent visits (localStorage check)
-- [ ] `pnpm --filter web typecheck` passes
+- [x] A member whose subscription created date matches today receives an anniversary email
+- [x] 6-month streak milestone records a `STREAK_MILESTONE` event exactly once
+- [x] Collective milestone banner appears on the transparency portal after 500 members activate
+- [x] Milestone toast fires on the dashboard the day the event is recorded
+- [x] Toast does not fire again on subsequent visits (localStorage check)
+- [x] `pnpm --filter web typecheck` passes
 
 ---
 

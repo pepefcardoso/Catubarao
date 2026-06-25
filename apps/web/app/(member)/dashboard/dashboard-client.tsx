@@ -17,6 +17,7 @@ import { WhatsAppOptInPrompt } from "@/components/member/WhatsAppOptInPrompt";
 import { cn } from "@repo/ui/lib/utils";
 
 import { MatchDayWidget } from "@/components/member/MatchDayWidget";
+import { MilestoneToast } from "@/components/member/MilestoneToast";
 
 // Mock Data for testing the UI
 const MOCK_MEMBER = {
@@ -77,6 +78,8 @@ export function DashboardClient() {
 
   return (
     <div className="space-y-6 max-w-5xl mx-auto">
+      <MilestoneToast />
+      
       {/* Dev toggle for testing states */}
       {process.env.NODE_ENV === "development" && (
         <div className="flex flex-wrap gap-2 p-4 bg-muted rounded-md mb-6">

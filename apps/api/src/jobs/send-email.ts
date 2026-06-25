@@ -12,6 +12,9 @@ import { PollOpenEmail } from "../emails/PollOpenEmail";
 import { DealExpirationEmail } from "../emails/DealExpirationEmail";
 import { LowStockEmail } from "../emails/LowStockEmail";
 
+import { StreakMilestoneEmail } from "../emails/StreakMilestoneEmail";
+import { AnniversaryEmail } from "../emails/AnniversaryEmail";
+
 const templates: Record<string, React.FC<any>> = {
   DealExpirationEmail,
   WelcomeEmail,
@@ -23,6 +26,8 @@ const templates: Record<string, React.FC<any>> = {
   ReactivationEmail,
   PollOpenEmail,
   LowStockEmail,
+  StreakMilestoneEmail,
+  AnniversaryEmail,
 };
 
 export interface SendEmailJobData {

@@ -151,6 +151,9 @@ enum GamificationEventType {
   ANNIVERSARY
   STREAK_6M
   STREAK_12M
+  STREAK_24M
+  STREAK_36M
+  STREAK_60M
 }
 
 enum PollStatus {

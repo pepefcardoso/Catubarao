@@ -1,6 +1,7 @@
 import type { Job } from "bullmq";
 import { prisma } from "@repo/db";
 import { recordGamificationEvent } from "../modules/members/gamification.service";
+import { checkStreakMilestone } from "./streak-milestone-check";
 
 export async function incrementStreakJob(job: Job) {
   const batchSize = 100;
@@ -19,6 +20,8 @@ export async function incrementStreakJob(job: Job) {
       select: {
         id: true,
         adimplenciaStreakMonths: true,
+        email: true,
+        name: true,
       },
       take: batchSize,
       ...(cursor ? { skip: 1, cursor: { id: cursor } } : {}),
@@ -37,30 +40,7 @@ export async function incrementStreakJob(job: Job) {
         data: { adimplenciaStreakMonths: newStreak },
       });
 
-      try {
-        if (newStreak === 6) {
-          await recordGamificationEvent(
-            member.id,
-            "STREAK_6M",
-            prisma,
-            null,
-            `STREAK_6M_${member.id}`
-          );
-        } else if (newStreak === 12) {
-          await recordGamificationEvent(
-            member.id,
-            "STREAK_12M",
-            prisma,
-            null,
-            `STREAK_12M_${member.id}`
-          );
-        }
-      } catch (err: any) {
-        // Ignore errors for missing rules or duplicates
-        if (err.name !== "NotFoundError" && err.name !== "ConflictError") {
-          console.error(`Failed to record streak gamification event for member ${member.id}:`, err);
-        }
-      }
+      await checkStreakMilestone(member.id, member.email, member.name, newStreak, prisma);
     }
 
     processedCount += members.length;
