@@ -823,12 +823,12 @@ Copy replacements per page (exact placements are in `strategic_analysis.md §3.2
 
 **Acceptance criteria:**
 
-- [ ] `axe-core` reports zero `critical` violations on `/(public)`, `/(public)/transparencia`, `/(public)/socios`, and `/(public)/signup`
-- [ ] Tab navigation reaches all interactive elements visibly
-- [ ] Skip-to-content link is the first focusable element on all public pages
-- [ ] Screen reader announces live member count updates
-- [ ] Debt table has correct semantic structure
-- [ ] `pnpm --filter web typecheck` passes
+- [x] `axe-core` reports zero `critical` violations on `/(public)`, `/(public)/transparencia`, `/(public)/socios`, and `/(public)/signup`
+- [x] Tab navigation reaches all interactive elements visibly
+- [x] Skip-to-content link is the first focusable element on all public pages
+- [x] Screen reader announces live member count updates
+- [x] Debt table has correct semantic structure
+- [x] `pnpm --filter web typecheck` passes
 
 ---
 

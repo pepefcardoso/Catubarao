@@ -103,12 +103,17 @@ export default function DocumentList({ initialDocuments }: { initialDocuments: T
                   </div>
                 </div>
                 {doc.attachmentUrl && (
-                  <Button asChild variant="outline" size="sm" className="w-full sm:w-auto shrink-0">
-                    <a href={doc.attachmentUrl} target="_blank" rel="noopener noreferrer">
-                      <Download className="h-4 w-4 mr-2" />
-                      Baixar
-                    </a>
-                  </Button>
+                  <div className="w-full sm:w-auto shrink-0 flex flex-col gap-2">
+                    <Button asChild variant="outline" size="sm" className="w-full">
+                      <a href={doc.attachmentUrl} target="_blank" rel="noopener noreferrer">
+                        <Download className="h-4 w-4 mr-2" />
+                        Baixar
+                      </a>
+                    </Button>
+                    <p className="text-[10px] text-muted-foreground max-w-[200px] text-center sm:text-left">
+                      Documentos em PDF podem não ser acessíveis a leitores de tela. Contate-nos para solicitar formato alternativo.
+                    </p>
+                  </div>
                 )}
               </CardContent>
             </Card>

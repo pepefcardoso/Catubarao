@@ -96,7 +96,7 @@ export function LiveCounter({ initialData }: LiveCounterProps) {
           <CardTitle className="text-2xl text-muted-foreground font-medium">Sócios Ativos</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="flex flex-col items-center justify-center relative z-10">
+          <div className="flex flex-col items-center justify-center relative z-10" aria-live="polite" aria-atomic="true">
             <span className="text-7xl font-black tabular-nums tracking-tighter sm:text-9xl text-primary">
               {animatedTotal}
             </span>
@@ -183,6 +183,10 @@ export function LiveCounter({ initialData }: LiveCounterProps) {
                         <div
                           className="h-full bg-primary transition-all duration-1000 ease-out"
                           style={{ width: `${percentage}%` }}
+                          role="progressbar"
+                          aria-valuenow={current}
+                          aria-valuemin={0}
+                          aria-valuemax={goal.target}
                         />
                       </div>
                     </div>

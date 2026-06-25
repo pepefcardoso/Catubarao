@@ -67,7 +67,7 @@ export function DelinquencyBanner({ status, daysSincePeriodEnd, activePlanId }: 
   if (days >= 1 && days <= 14) {
     const countdown = 30 - days;
     return (
-      <div className="bg-yellow-100 border border-yellow-200 text-yellow-800 px-6 py-4 rounded-xl flex flex-col sm:flex-row items-center gap-4 justify-between mb-6">
+      <div className="bg-yellow-100 border border-yellow-200 text-yellow-800 px-6 py-4 rounded-xl flex flex-col sm:flex-row items-center gap-4 justify-between mb-6" aria-live="polite" aria-atomic="true">
         <div className="flex items-center gap-3">
           <AlertCircle className="w-6 h-6 text-yellow-600 shrink-0" />
           <div>
@@ -89,7 +89,7 @@ export function DelinquencyBanner({ status, daysSincePeriodEnd, activePlanId }: 
   if (days >= 15 && days <= 29) {
     const countdown = 30 - days;
     return (
-      <div className="bg-orange-100 border border-orange-200 text-orange-800 px-6 py-4 rounded-xl flex flex-col sm:flex-row items-center gap-4 justify-between mb-6">
+      <div className="bg-orange-100 border border-orange-200 text-orange-800 px-6 py-4 rounded-xl flex flex-col sm:flex-row items-center gap-4 justify-between mb-6" aria-live="polite" aria-atomic="true">
         <div className="flex items-center gap-3">
           <AlertCircle className="w-6 h-6 text-orange-600 shrink-0" />
           <div>
@@ -110,7 +110,7 @@ export function DelinquencyBanner({ status, daysSincePeriodEnd, activePlanId }: 
 
   if (days >= 30 || status === "SUSPENDED") {
     return (
-      <div className="bg-red-100 border border-red-200 text-red-800 px-6 py-4 rounded-xl flex flex-col sm:flex-row items-start sm:items-center gap-4 justify-between mb-6">
+      <div className="bg-red-100 border border-red-200 text-red-800 px-6 py-4 rounded-xl flex flex-col sm:flex-row items-start sm:items-center gap-4 justify-between mb-6" aria-live="polite" aria-atomic="true">
         <div className="flex items-start gap-3">
           <XCircle className="w-6 h-6 text-red-600 shrink-0 mt-0.5" />
           <div>
@@ -132,7 +132,7 @@ export function DelinquencyBanner({ status, daysSincePeriodEnd, activePlanId }: 
   }
 
   return (
-    <div className="bg-yellow-100 border border-yellow-200 text-yellow-800 px-6 py-4 rounded-xl flex flex-col sm:flex-row items-center gap-4 justify-between mb-6">
+    <div className="bg-yellow-100 border border-yellow-200 text-yellow-800 px-6 py-4 rounded-xl flex flex-col sm:flex-row items-center gap-4 justify-between mb-6" aria-live="polite" aria-atomic="true">
       <div className="flex items-center gap-3">
         <AlertCircle className="w-6 h-6 text-yellow-600 shrink-0" />
         <div>

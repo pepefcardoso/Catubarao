@@ -147,12 +147,17 @@ export default async function PostDetailPage({ params }: { params: Promise<{ id:
               </CardHeader>
               <CardContent className="space-y-4">
                 {post.attachmentUrl ? (
-                  <Button asChild className="w-full justify-start" variant="default">
-                    <a href={post.attachmentUrl} target="_blank" rel="noopener noreferrer">
-                      <Download className="mr-2 h-4 w-4" />
-                      Baixar Documento (PDF)
-                    </a>
-                  </Button>
+                  <div className="space-y-2">
+                    <Button asChild className="w-full justify-start" variant="default">
+                      <a href={post.attachmentUrl} target="_blank" rel="noopener noreferrer">
+                        <Download className="mr-2 h-4 w-4" />
+                        Baixar Documento (PDF)
+                      </a>
+                    </Button>
+                    <p className="text-xs text-muted-foreground">
+                      Documentos em PDF podem não ser acessíveis a leitores de tela. Contate-nos para solicitar formato alternativo.
+                    </p>
+                  </div>
                 ) : (
                   <p className="text-sm text-muted-foreground">Este documento não possui anexos.</p>
                 )}

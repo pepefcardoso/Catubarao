@@ -15,6 +15,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
+  TableCaption,
 } from "@repo/ui/components/table";
 import { Skeleton } from "@repo/ui/components/skeleton";
 import {
@@ -150,7 +151,7 @@ export function DebtDashboard() {
   return (
     <div className="space-y-8">
       {/* Summary Cards */}
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-4" aria-live="polite" aria-atomic="true">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
             <CardTitle className="text-sm font-medium">Total Original</CardTitle>
@@ -314,14 +315,15 @@ export function DebtDashboard() {
         </CardHeader>
         <CardContent>
           <Table>
+            <TableCaption className="sr-only">Dívidas e Credores</TableCaption>
             <TableHeader>
               <TableRow>
-                <TableHead>Credor / Grupo</TableHead>
-                <TableHead>Valor Original</TableHead>
-                <TableHead>Valor Negociado</TableHead>
-                <TableHead>Pago</TableHead>
-                <TableHead>Restante</TableHead>
-                <TableHead>Status</TableHead>
+                <TableHead scope="col">Credor / Grupo</TableHead>
+                <TableHead scope="col">Valor Original</TableHead>
+                <TableHead scope="col">Valor Negociado</TableHead>
+                <TableHead scope="col">Pago</TableHead>
+                <TableHead scope="col">Restante</TableHead>
+                <TableHead scope="col">Status</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
