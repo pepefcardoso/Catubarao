@@ -1,9 +1,9 @@
 import type { FastifyPluginAsyncZod } from "fastify-type-provider-zod";
 import { CheckinBodySchema, BulkCheckinBodySchema } from "@repo/schemas/gamification";
-import { CreateMatchEventSchema, MatchEventResponseSchema, PaginatedMatchEventsResponseSchema } from "@repo/schemas/events";
+import { CreateMatchEventSchema, MatchEventResponseSchema, PaginatedMatchEventsResponseSchema, UpcomingEventResponseSchema } from "@repo/schemas/events";
 import { verifyCardToken } from "../../lib/qr";
 import { recordGamificationEvent } from "./gamification.service";
-import { createMatchEvent, listMatchEvents } from "./events.service";
+import { createMatchEvent, listMatchEvents, getUpcomingEventForMember } from "./events.service";
 import { UnauthorizedError } from "../../lib/errors";
 import { z } from "zod";
 
@@ -44,6 +44,21 @@ export const eventsRoutes: FastifyPluginAsyncZod = async (fastify) => {
     async (request, reply) => {
       const { page, limit } = request.query;
       const result = await listMatchEvents(page, limit, fastify.prisma);
+      return reply.send(result);
+    }
+  );
+
+  fastify.get(
+    "/upcoming",
+    {
+      schema: {
+        tags: ["events"],
+        response: { 200: UpcomingEventResponseSchema },
+      },
+      preHandler: [fastify.authenticate],
+    },
+    async (request, reply) => {
+      const result = await getUpcomingEventForMember(request.user.id, fastify.prisma);
       return reply.send(result);
     }
   );

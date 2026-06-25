@@ -23,3 +23,15 @@ export const PaginatedMatchEventsResponseSchema = z.object({
   limit: z.number().int(),
   totalPages: z.number().int(),
 });
+
+export const UpcomingEventResponseSchema = z.object({
+  state: z.enum(["PREMATCH", "MATCHDAY", "POSTMATCH"]).nullable(),
+  event: MatchEventResponseSchema.nullable(),
+  baseCheckinPoints: z.number().int(),
+  memberCheckin: z
+    .object({ points: z.number().int(), createdAt: z.string() })
+    .nullable(),
+  checkinStreak: z.number().int(),
+});
+
+export type UpcomingEventResponse = z.infer<typeof UpcomingEventResponseSchema>;

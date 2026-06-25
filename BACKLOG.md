@@ -881,12 +881,12 @@ Copy replacements per page (exact placements are in `strategic_analysis.md §3.2
 
 **Acceptance criteria:**
 
-- [ ] Pre-match widget shows the correct opponent and countdown for the next event
-- [ ] Match-day CTA appears only on the event date
-- [ ] Post-match widget shows correct points for members who checked in
-- [ ] Streak count is correct (verified for a member with 3 consecutive check-ins)
-- [ ] Widget is absent when no upcoming events exist (no empty state visible)
-- [ ] `pnpm --filter web typecheck` passes
+- [x] Pre-match widget shows the correct opponent and countdown for the next event
+- [x] Match-day CTA appears only on the event date
+- [x] Post-match widget shows correct points for members who checked in
+- [x] Streak count is correct (verified for a member with 3 consecutive check-ins)
+- [x] Widget is absent when no upcoming events exist (no empty state visible)
+- [x] `pnpm --filter web typecheck` passes
 
 ---
 

@@ -16,6 +16,8 @@ import { VotingRightsWidget } from "@/components/member/VotingRightsWidget";
 import { WhatsAppOptInPrompt } from "@/components/member/WhatsAppOptInPrompt";
 import { cn } from "@repo/ui/lib/utils";
 
+import { MatchDayWidget } from "@/components/member/MatchDayWidget";
+
 // Mock Data for testing the UI
 const MOCK_MEMBER = {
   id: "123",
@@ -137,6 +139,8 @@ export function DashboardClient() {
               </CardFooter>
             </Card>
           )}
+
+          <MatchDayWidget />
 
           {/* Points & Gamification */}
           <Card>
