@@ -14,6 +14,17 @@ CREATE TYPE "DeliverableFrequency" AS ENUM ('UNICO', 'POR_JOGO', 'MENSAL');
 CREATE TYPE "EvidenceType" AS ENUM ('FOTO', 'PRINT_POST', 'LINK', 'NOTA');
 
 -- CreateTable
+CREATE TABLE "match_events" (
+    "id" TEXT NOT NULL,
+    "date" TIMESTAMP(3) NOT NULL,
+    "opponent" TEXT NOT NULL,
+    "competition" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "match_events_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "partners" (
     "id" TEXT NOT NULL,
     "legalName" TEXT NOT NULL,
@@ -75,6 +86,19 @@ CREATE TABLE "delivery_proofs" (
     CONSTRAINT "delivery_proofs_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
+CREATE TABLE "pending_deliveries" (
+    "id" TEXT NOT NULL,
+    "deliverableId" TEXT NOT NULL,
+    "matchEventId" TEXT,
+    "month" INTEGER,
+    "year" INTEGER,
+    "isFulfilled" BOOLEAN NOT NULL DEFAULT false,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "pending_deliveries_pkey" PRIMARY KEY ("id")
+);
+
 -- CreateIndex
 CREATE INDEX "sponsorship_deals_endDate_idx" ON "sponsorship_deals"("endDate");
 
@@ -99,3 +123,8 @@ ALTER TABLE "delivery_proofs" ADD CONSTRAINT "delivery_proofs_matchEventId_fkey"
 -- AddForeignKey
 ALTER TABLE "delivery_proofs" ADD CONSTRAINT "delivery_proofs_createdBy_fkey" FOREIGN KEY ("createdBy") REFERENCES "members"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
+-- AddForeignKey
+ALTER TABLE "pending_deliveries" ADD CONSTRAINT "pending_deliveries_deliverableId_fkey" FOREIGN KEY ("deliverableId") REFERENCES "deliverables"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "pending_deliveries" ADD CONSTRAINT "pending_deliveries_matchEventId_fkey" FOREIGN KEY ("matchEventId") REFERENCES "match_events"("id") ON DELETE CASCADE ON UPDATE CASCADE;

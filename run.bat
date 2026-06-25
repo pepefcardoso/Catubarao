@@ -1,0 +1,9 @@
+@echo off
+echo Starting infrastructure...
+docker compose up postgres pgbouncer redis -d
+
+echo Running database migrations...
+call npx.cmd pnpm db:migrate
+
+echo Starting development server...
+call npx.cmd pnpm dev

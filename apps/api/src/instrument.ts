@@ -9,7 +9,7 @@ if (env.SENTRY_DSN) {
     // integrations: [nodeProfilingIntegration()],
     tracesSampler: (samplingContext) => {
       // Set up transaction tracing for specific critical endpoints
-      const name = samplingContext.transactionContext.name || samplingContext.name;
+      const name = samplingContext.name || samplingContext.transactionContext?.name;
       if (
         name?.includes("POST /webhooks/mercadopago") ||
         name?.includes("POST /store/orders")
