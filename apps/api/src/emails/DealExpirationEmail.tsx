@@ -34,46 +34,40 @@ export const DealExpirationEmail = ({
   deliverables,
 }: DealExpirationEmailProps) => {
   return (
-    <Html>
-      <Head />
-      <Preview>Aviso: Contrato com {partnerName} expira em {daysRemaining} dias</Preview>
-      <Body style={main}>
-        <EmailLayout>
-          <Container style={container}>
-            <Heading style={h1}>Renovação de Contrato</Heading>
-            <Text style={text}>
-              O contrato de patrocínio com a empresa <strong>{partnerName}</strong> expira em {daysRemaining} dias (em {new Date(endDate).toLocaleDateString('pt-BR')}).
-            </Text>
-            
-            {deliverables && deliverables.length > 0 && (
-              <Section style={section}>
-                <Text style={subTitle}>Entregas do Contrato:</Text>
-                <ul style={list}>
-                  {deliverables.map((d) => (
-                    <li key={d.id} style={listItem}>
-                      {d.description} ({d.frequency})
-                    </li>
-                  ))}
-                </ul>
-              </Section>
-            )}
+    <EmailLayout previewText={`Aviso: Contrato com ${partnerName} expira em ${daysRemaining} dias`}>
+      <Container style={container}>
+        <Heading style={h1}>Renovação de Contrato</Heading>
+        <Text style={text}>
+          O contrato de patrocínio com a empresa <strong>{partnerName}</strong> expira em {daysRemaining} dias (em {new Date(endDate).toLocaleDateString('pt-BR')}).
+        </Text>
+        
+        {deliverables && deliverables.length > 0 && (
+          <Section style={section}>
+            <Text style={subTitle}>Entregas do Contrato:</Text>
+            <ul style={list}>
+              {deliverables.map((d) => (
+                <li key={d.id} style={listItem}>
+                  {d.description} ({d.frequency})
+                </li>
+              ))}
+            </ul>
+          </Section>
+        )}
 
-            <Text style={text}>
-              Por favor, entre em contato com o parceiro para iniciar as tratativas de renovação.
-            </Text>
-            
-            <Section style={buttonContainer}>
-              <Link
-                style={button}
-                href={`${process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/admin/partners/deals/${dealId}`}
-              >
-                Acessar Contrato
-              </Link>
-            </Section>
-          </Container>
-        </EmailLayout>
-      </Body>
-    </Html>
+        <Text style={text}>
+          Por favor, entre em contato com o parceiro para iniciar as tratativas de renovação.
+        </Text>
+        
+        <Section style={buttonContainer}>
+          <Link
+            style={button}
+            href={`${process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/admin/partners/deals/${dealId}`}
+          >
+            Acessar Contrato
+          </Link>
+        </Section>
+      </Container>
+    </EmailLayout>
   );
 };
 

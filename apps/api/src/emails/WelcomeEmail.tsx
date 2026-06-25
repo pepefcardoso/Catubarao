@@ -10,11 +10,11 @@ export interface WelcomeEmailProps {
 
 export const WelcomeEmail = ({ name, planName, cardDownloadLink }: WelcomeEmailProps) => {
   return (
-    <EmailLayout previewText="Bem-vindo ao Clube Atlético Tubarão">
-      <Heading className="text-2xl font-bold text-gray-800 my-0">Bem-vindo, {name}!</Heading>
+    <EmailLayout previewText={`Bem-vindo à família, ${name}! 🦈`}>
+      <Heading className="text-2xl font-bold text-gray-800 my-0">Bem-vindo à família, {name}! 🦈</Heading>
       
-      <Text className="text-sm text-gray-700 mt-4 leading-relaxed">
-        Estamos muito felizes em ter você como parte do Clube Atlético Tubarão.
+      <Text className="text-sm text-gray-700 mt-4 leading-relaxed font-medium">
+        A torcida ficou maior. Você agora é parte da reconstrução.
       </Text>
       
       <Text className="text-sm text-gray-700 mt-2 leading-relaxed">

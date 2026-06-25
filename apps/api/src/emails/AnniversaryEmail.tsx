@@ -1,7 +1,6 @@
 import { Heading, Text, Section, Button } from "@react-email/components";
 import * as React from "react";
 import { EmailLayout } from "./EmailLayout";
-import { env } from "../lib/env";
 
 export interface AnniversaryEmailProps {
   name: string;
@@ -9,16 +8,16 @@ export interface AnniversaryEmailProps {
 }
 
 export const AnniversaryEmail = ({ name, yearsSince }: AnniversaryEmailProps) => {
-  const dashboardLink = `${env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/dashboard`;
+  const dashboardLink = `${process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/dashboard`;
   
   const yearsText = yearsSince > 1 ? `${yearsSince} anos` : "1 ano";
 
   return (
-    <EmailLayout previewText={`Feliz aniversário de ${yearsText} como Sócio Tubarão!`}>
-      <Heading className="text-2xl font-bold text-gray-800 my-0">Feliz Aniversário, {name}! 🎉</Heading>
+    <EmailLayout previewText={`${yearsText} juntos, ${name}! 🦈`}>
+      <Heading className="text-2xl font-bold text-gray-800 my-0">{yearsText} juntos, {name}! 🦈</Heading>
       
-      <Text className="text-sm text-gray-700 mt-4 leading-relaxed">
-        Hoje é um dia especial! Celebramos o seu aniversário de {yearsText} como Sócio-Torcedor do Clube Atlético Tubarão.
+      <Text className="text-sm text-gray-700 mt-4 leading-relaxed font-medium">
+        {yearsText} de reconstrução. Você é parte da história do Tubarão.
       </Text>
       
       <Text className="text-sm text-gray-700 mt-2 leading-relaxed">

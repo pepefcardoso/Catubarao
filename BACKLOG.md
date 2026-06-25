@@ -974,12 +974,12 @@ Emotional copy per template:
 
 **Acceptance criteria:**
 
-- [ ] All 9 templates render without error in `pnpm email:preview`
-- [ ] All templates are mobile-responsive at 375px width (verified in preview)
-- [ ] Club crest is visible in all templates (not broken image)
-- [ ] Unsubscribe link is present in all templates
-- [ ] `{name}`, `{amount}`, `{suspensionDate}` etc. are properly typed via TypeScript template props
-- [ ] `pnpm --filter api typecheck` passes
+- [x] All 9 templates render without error in `pnpm email:preview`
+- [x] All templates are mobile-responsive at 375px width (verified in preview)
+- [x] Club crest is visible in all templates (not broken image)
+- [x] Unsubscribe link is present in all templates
+- [x] `{name}`, `{amount}`, `{suspensionDate}` etc. are properly typed via TypeScript template props
+- [x] `pnpm --filter api typecheck` passes
 
 ---
 

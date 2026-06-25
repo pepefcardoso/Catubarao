@@ -1,7 +1,6 @@
 import { Heading, Text, Section, Button } from "@react-email/components";
 import * as React from "react";
 import { EmailLayout } from "./EmailLayout";
-import { env } from "../lib/env";
 
 export interface StreakMilestoneEmailProps {
   name: string;
@@ -9,7 +8,7 @@ export interface StreakMilestoneEmailProps {
 }
 
 export const StreakMilestoneEmail = ({ name, streakMonths }: StreakMilestoneEmailProps) => {
-  const dashboardLink = `${env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/dashboard`;
+  const dashboardLink = `${process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/dashboard`;
 
   let title = "Obrigado pela fidelidade!";
   let message = `Parabéns pelos seus ${streakMonths} meses de adimplência.`;
