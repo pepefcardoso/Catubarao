@@ -744,11 +744,11 @@ Copy replacements per page (exact placements are in `strategic_analysis.md §3.2
 
 **Acceptance criteria:**
 
-- [ ] Toggle defaults to annual on page load
-- [ ] Annual price is displayed as monthly equivalent with correct math
-- [ ] Savings badge shows the correct annual saving
-- [ ] Switching to monthly shows the correct monthly price
-- [ ] `pnpm --filter web typecheck` passes
+- [x] Toggle defaults to annual on page load
+- [x] Annual price is displayed as monthly equivalent with correct math
+- [x] Savings badge shows the correct annual saving
+- [x] Switching to monthly shows the correct monthly price
+- [x] `pnpm --filter web typecheck` passes
 
 ---
 

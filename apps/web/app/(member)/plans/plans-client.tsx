@@ -31,7 +31,7 @@ interface PlansClientProps {
 
 export function PlansClient({ initialPlans }: PlansClientProps) {
   const router = useRouter();
-  const [interval, setInterval] = useState<"MONTHLY" | "ANNUAL">("MONTHLY");
+  const [interval, setInterval] = useState<"MONTHLY" | "ANNUAL">("ANNUAL");
   const [me, setMe] = useState<MeResponse | null>(null);
   const [isLoadingMe, setIsLoadingMe] = useState(true);
 
@@ -93,13 +93,28 @@ export function PlansClient({ initialPlans }: PlansClientProps) {
         </p>
       </div>
 
-      <div className="flex justify-center">
+      <div className="flex flex-col items-center">
         <Tabs value={interval} onValueChange={(v) => setInterval(v as "MONTHLY" | "ANNUAL")} className="w-[400px]">
           <TabsList className="grid w-full grid-cols-2">
             <TabsTrigger value="MONTHLY">Mensal</TabsTrigger>
-            <TabsTrigger value="ANNUAL">Anual</TabsTrigger>
+            <TabsTrigger value="ANNUAL" className="gap-1.5">
+              Anual
+              <Badge className="bg-green-500 text-white text-[10px] px-1.5 py-0 h-4 font-bold pointer-events-none hover:bg-green-500">
+                Melhor Custo-Benefício
+              </Badge>
+            </TabsTrigger>
           </TabsList>
         </Tabs>
+        {interval === "ANNUAL" && (
+          <div className="text-center mt-2">
+            <button
+              onClick={() => setInterval("MONTHLY")}
+              className="text-xs text-muted-foreground underline underline-offset-2 hover:text-foreground transition-colors"
+            >
+              Preferir mensal
+            </button>
+          </div>
+        )}
       </div>
 
       <div className="grid md:grid-cols-3 gap-6 pt-8 items-end">
@@ -143,13 +158,20 @@ export function PlansClient({ initialPlans }: PlansClientProps) {
                     </div>
                   )}
                   {interval === "ANNUAL" && annualSavings > 0 && (
-                    <div className="text-sm text-green-600 font-semibold mb-1">
+                    <Badge className="bg-green-100 text-green-700 border-green-200 hover:bg-green-100 mb-2 font-semibold text-xs">
                       Economize {formatPrice(annualSavings)}/ano
-                    </div>
+                    </Badge>
                   )}
-                  <div className="flex items-baseline gap-2">
-                    <span className="text-3xl font-bold text-foreground">{formatPrice(plan.price)}</span>
-                    <span className="text-muted-foreground">/{interval === "MONTHLY" ? "mês" : "ano"}</span>
+                  <div className="flex flex-col mb-2">
+                    <div className="flex items-baseline gap-2">
+                      <span className="text-3xl font-bold text-foreground">
+                        {interval === "ANNUAL" ? formatPrice(plan.price / 12) : formatPrice(plan.price)}
+                      </span>
+                      <span className="text-muted-foreground">/mês</span>
+                    </div>
+                    {interval === "ANNUAL" && (
+                      <div className="text-xs text-muted-foreground mt-1">cobrado anualmente</div>
+                    )}
                   </div>
                   {interval === "ANNUAL" && annualSavings > 0 && (
                     <div className="text-xs text-muted-foreground line-through mt-1">
@@ -198,9 +220,16 @@ export function PlansClient({ initialPlans }: PlansClientProps) {
                 Não pode pagar? Sem problema. Você ainda faz parte.
               </CardDescription>
               <div className="mt-4">
-                <div className="flex items-baseline gap-2">
-                  <span className="text-2xl font-bold text-foreground">{formatPrice(solidarioPlan.price)}</span>
-                  <span className="text-muted-foreground">/{interval === "MONTHLY" ? "mês" : "ano"}</span>
+                <div className="flex flex-col">
+                  <div className="flex items-baseline gap-2">
+                    <span className="text-2xl font-bold text-foreground">
+                      {interval === "ANNUAL" ? formatPrice(solidarioPlan.price / 12) : formatPrice(solidarioPlan.price)}
+                    </span>
+                    <span className="text-muted-foreground">/mês</span>
+                  </div>
+                  {interval === "ANNUAL" && (
+                    <div className="text-xs text-muted-foreground mt-1">cobrado anualmente</div>
+                  )}
                 </div>
               </div>
             </CardHeader>
