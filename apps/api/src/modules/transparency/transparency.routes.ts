@@ -8,6 +8,7 @@ import {
   UpdateDebtRecordSchema,
   DebtRecordResponseSchema,
   DebtSnapshotResponseSchema,
+  AnnouncementBannerResponseSchema,
 } from "@repo/schemas/transparency";
 import {
   getPosts,
@@ -22,6 +23,7 @@ import {
   updateDebtRecord,
   createDebtSnapshot,
   generateFeedXml,
+  getActiveAnnouncements,
 } from "./transparency.service";
 import { env } from "../../lib/env";
 import { getUploadUrl, buildStorageKey } from "../../lib/storage";
@@ -48,6 +50,23 @@ export const transparencyRoutes: FastifyPluginAsyncZod = async (fastify) => {
       return reply.type("application/rss+xml; charset=utf-8").send(xml);
     }
   );
+
+  fastify.get(
+    "/announcements",
+    {
+      schema: {
+        tags: ["transparency"],
+        response: {
+          200: z.array(AnnouncementBannerResponseSchema),
+        },
+      },
+    },
+    async (_request, reply) => {
+      const banners = await getActiveAnnouncements(fastify.prisma);
+      return reply.send(banners);
+    }
+  );
+
   fastify.get(
     "/posts",
     {
@@ -308,6 +327,7 @@ export const transparencyRoutes: FastifyPluginAsyncZod = async (fastify) => {
     },
     async (request, reply) => {
       const snapshot = await createDebtSnapshot(fastify.prisma, request.user.id);
+      await fastify.queues.scheduled.add("debt-milestone-check", { snapshotId: snapshot.id });
       return reply.status(201).send(snapshot);
     }
   );

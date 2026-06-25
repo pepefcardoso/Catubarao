@@ -109,3 +109,15 @@ export const DebtSnapshotResponseSchema = CreateDebtSnapshotSchema.extend({
 });
 
 export type DebtSnapshotResponse = z.infer<typeof DebtSnapshotResponseSchema>;
+
+export const AnnouncementBannerResponseSchema = z.object({
+  id: z.string().uuid(),
+  text: z.string(),
+  color: z.string(),
+  milestone: z.number().nullable(),
+  isActive: z.boolean(),
+  expiresAt: z.union([z.string(), z.date()]).nullable(),
+  createdAt: z.union([z.string(), z.date()]),
+});
+
+export type AnnouncementBannerResponse = z.infer<typeof AnnouncementBannerResponseSchema>;

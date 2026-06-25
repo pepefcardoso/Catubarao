@@ -385,3 +385,45 @@ export async function createDebtSnapshot(db: PrismaClient, userId?: string) {
     });
   });
 }
+
+export async function getActiveAnnouncements(db: PrismaClient) {
+  return db.announcementBanner.findMany({
+    where: {
+      isActive: true,
+      OR: [{ expiresAt: null }, { expiresAt: { gt: new Date() } }],
+    },
+    orderBy: { createdAt: "desc" },
+  });
+}
+
+const MILESTONES = [25, 50, 75, 100] as const;
+
+export async function checkAndCreateMilestoneBanner(
+  snapshot: { totalPaid: any; totalOriginal: any },
+  db: PrismaClient
+) {
+  const pctPaid = snapshot.totalOriginal.isZero()
+    ? 0
+    : snapshot.totalPaid.div(snapshot.totalOriginal).mul(100).toNumber();
+
+  for (const milestone of MILESTONES) {
+    if (pctPaid < milestone) continue;
+
+    const already = await db.announcementBanner.findFirst({
+      where: { milestone },
+    });
+    if (already) continue;
+
+    const expiresAt = new Date();
+    expiresAt.setDate(expiresAt.getDate() + 30);
+
+    await db.announcementBanner.create({
+      data: {
+        text: `🎉 O Tubarão já pagou ${milestone}% da dívida total!`,
+        color: "brand-primary",
+        milestone,
+        expiresAt,
+      },
+    });
+  }
+}

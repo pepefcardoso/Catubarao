@@ -794,12 +794,12 @@ Copy replacements per page (exact placements are in `strategic_analysis.md §3.2
 
 **Acceptance criteria:**
 
-- [ ] AnnouncementBanner is created when `pctPaid` crosses 25% for the first time
-- [ ] Same milestone does not create duplicate banners (check before creating)
-- [ ] Banner renders on the transparency portal homepage
-- [ ] Banner expires after 30 days (does not render after `expiresAt`)
-- [ ] Share text is pre-filled and accurate
-- [ ] `pnpm --filter web typecheck` passes
+- [x] AnnouncementBanner is created when `pctPaid` crosses 25% for the first time
+- [x] Same milestone does not create duplicate banners (check before creating)
+- [x] Banner renders on the transparency portal homepage
+- [x] Banner expires after 30 days (does not render after `expiresAt`)
+- [x] Share text is pre-filled and accurate
+- [x] `pnpm --filter web typecheck` passes
 
 ---
 

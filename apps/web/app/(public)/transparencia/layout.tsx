@@ -1,7 +1,8 @@
 import { apiFetch } from "@/lib/api";
-import { TransparencyPostResponse } from "@repo/schemas/transparency";
+import { TransparencyPostResponse, AnnouncementBannerResponse } from "@repo/schemas/transparency";
 import { Alert, AlertDescription, AlertTitle } from "@repo/ui/components/alert";
 import { Clock, AlertTriangle } from "lucide-react";
+import { AnnouncementBanner } from "@/components/transparency/AnnouncementBanner";
 
 export const revalidate = 3600; // 1 hour
 
@@ -17,11 +18,31 @@ async function getLatestPost() {
   }
 }
 
+async function getAnnouncements() {
+  try {
+    const banners = await apiFetch<AnnouncementBannerResponse[]>("/transparency/announcements", {
+      next: { revalidate: 300 }, // 5 mins
+    });
+    return banners || [];
+  } catch (error) {
+    console.error("Failed to fetch announcements", error);
+    return [];
+  }
+}
+
 export default async function TransparenciaLayout({ children }: { children: React.ReactNode }) {
-  const latestPost = await getLatestPost();
+  const [latestPost, announcements] = await Promise.all([
+    getLatestPost(),
+    getAnnouncements()
+  ]);
   
   if (!latestPost) {
-    return <>{children}</>;
+    return (
+      <>
+        {announcements.length > 0 && <AnnouncementBanner banners={announcements} />}
+        {children}
+      </>
+    );
   }
 
   const publishedAt = new Date(latestPost.publishedAt);
@@ -35,6 +56,7 @@ export default async function TransparenciaLayout({ children }: { children: Reac
 
   return (
     <>
+      {announcements.length > 0 && <AnnouncementBanner banners={announcements} />}
       <div className="bg-muted/30 border-b">
         <div className="container mx-auto px-4 max-w-7xl">
           {diffDays > 45 ? (

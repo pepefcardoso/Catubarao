@@ -69,7 +69,11 @@ export default fp(
           }
           if (job.name === "create-debt-snapshot") {
             const { createDebtSnapshotJob } = await import("../jobs/create-debt-snapshot.js");
-            return createDebtSnapshotJob(job, fastify.log);
+            return createDebtSnapshotJob(job, fastify.log, queues.scheduled);
+          }
+          if (job.name === "debt-milestone-check") {
+            const { debtMilestoneCheckJob } = await import("../jobs/debt-milestone-check.js");
+            return debtMilestoneCheckJob(job, fastify.log);
           }
           if (job.name === "publish-scheduled-post") {
             const { publishScheduledPostJob } = await import("../jobs/publish-scheduled-post.js");
@@ -147,6 +151,7 @@ export default fp(
         {
           repeat: {
             pattern: "0 10 1 * *",
+            tz: "America/Sao_Paulo",
           },
           jobId: "create-debt-snapshot-job",
         }
