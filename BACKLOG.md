@@ -1203,9 +1203,9 @@ At minimum 3 scenarios per feature file (21 total scenarios across 7 files).
 
 **Acceptance criteria:**
 
-- [ ] All 8 KPIs are present with formulas and targets
-- [ ] Each KPI includes a data source reference
-- [ ] Anti-Metrics section exists with at least 3 examples
+- [x] All 8 KPIs are present with formulas and targets
+- [x] Each KPI includes a data source reference
+- [x] Anti-Metrics section exists with at least 3 examples
 
 ---
 
