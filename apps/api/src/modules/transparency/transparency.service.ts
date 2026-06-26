@@ -323,12 +323,41 @@ export async function getDebtSnapshots(db: PrismaClient) {
   });
 }
 
+function slugify(text: string) {
+  return text.toString().toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/[^\w\-]+/g, '')
+    .replace(/\-\-+/g, '-')
+    .replace(/^-+/, '')
+    .replace(/-+$/, '');
+}
+
+export async function getDebtBySlug(slug: string, db: PrismaClient) {
+  const debt = await db.debtRecord.findUnique({ where: { slug } });
+  if (!debt) {
+    throw new NotFoundError("Debt record not found");
+  }
+  return debt;
+}
+
 export async function createDebtRecord(
   input: CreateDebtRecordInput,
   db: PrismaClient
 ) {
+  const slug = input.slug || slugify(input.creditorName);
+  
+  const existing = await db.debtRecord.findUnique({ where: { slug } });
+  if (existing) {
+    throw new ConflictError("Slug already in use");
+  }
+
   return db.debtRecord.create({
-    data: input,
+    data: {
+      ...input,
+      slug,
+    },
   });
 }
 
@@ -340,6 +369,13 @@ export async function updateDebtRecord(
   const debt = await db.debtRecord.findUnique({ where: { id } });
   if (!debt) {
     throw new NotFoundError("Debt record not found");
+  }
+
+  if (input.slug && input.slug !== debt.slug) {
+    const existing = await db.debtRecord.findUnique({ where: { slug: input.slug } });
+    if (existing) {
+      throw new ConflictError("Slug already in use");
+    }
   }
 
   return db.debtRecord.update({

@@ -1001,11 +1001,11 @@ Emotional copy per template:
 
 **Acceptance criteria:**
 
-- [ ] `GET /transparency/debts/prefeitura-municipal` returns the correct debt record
-- [ ] Page renders at `/(public)/transparencia/dividas/prefeitura-municipal`
-- [ ] Creditor names in the debt dashboard table are clickable links
-- [ ] Duplicate slugs are rejected with a `409` error on creation
-- [ ] `pnpm --filter web typecheck` passes
+- [x] `GET /transparency/debts/prefeitura-municipal` returns the correct debt record
+- [x] Page renders at `/(public)/transparencia/dividas/prefeitura-municipal`
+- [x] Creditor names in the debt dashboard table are clickable links
+- [x] Duplicate slugs are rejected with a `409` error on creation
+- [x] `pnpm --filter web typecheck` passes
 
 ---
 

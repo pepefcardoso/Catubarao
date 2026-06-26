@@ -68,6 +68,7 @@ export const TransparencyPostResponseSchema = CreateTransparencyPostBaseSchema.e
 export type TransparencyPostResponse = z.infer<typeof TransparencyPostResponseSchema>;
 
 export const CreateDebtRecordSchema = z.object({
+  slug: z.string().min(1).max(255).optional(),
   creditorName: z.string().min(1).max(255),
   creditorGroup: z.string().max(255).optional().nullable(),
   originalAmount: z.number().nonnegative(),
@@ -85,6 +86,7 @@ export type UpdateDebtRecordInput = z.infer<typeof UpdateDebtRecordSchema>;
 
 export const DebtRecordResponseSchema = CreateDebtRecordSchema.extend({
   id: z.string().uuid(),
+  slug: z.string(),
   createdAt: z.union([z.string(), z.date()]),
   updatedAt: z.union([z.string(), z.date()]),
 });

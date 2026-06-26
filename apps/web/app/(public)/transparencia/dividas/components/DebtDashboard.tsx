@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, useRef } from "react";
+import Link from "next/link";
 import {
   Card,
   CardContent,
@@ -333,7 +334,9 @@ export function DebtDashboard() {
                 return (
                   <TableRow key={debt.id}>
                     <TableCell>
-                      <div className="font-medium">{debt.creditorName}</div>
+                      <Link href={`/transparencia/dividas/${debt.slug}`} className="font-medium hover:underline text-primary">
+                        {debt.creditorName}
+                      </Link>
                       {debt.creditorGroup && (
                         <div className="text-xs text-muted-foreground">
                           {debt.creditorGroup}

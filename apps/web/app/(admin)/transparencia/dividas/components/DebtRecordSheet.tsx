@@ -80,6 +80,15 @@ export function DebtRecordSheet({ open, onOpenChange, onSaved }: DebtRecordSheet
           </div>
 
           <div className="space-y-2">
+            <label className="text-sm font-medium">Slug (opcional)</label>
+            <Input {...register("slug")} placeholder="Ex: joao-da-silva" />
+            <p className="text-xs text-muted-foreground">Deixe em branco para gerar automaticamente.</p>
+            {errors.slug && (
+              <p className="text-xs text-red-500">{errors.slug.message}</p>
+            )}
+          </div>
+
+          <div className="space-y-2">
             <label className="text-sm font-medium">Grupo do Credor</label>
             <Input {...register("creditorGroup")} placeholder="Ex: Trabalhista, Fornecedor" />
             {errors.creditorGroup && (

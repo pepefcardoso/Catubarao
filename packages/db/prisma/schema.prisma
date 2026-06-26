@@ -367,6 +367,7 @@ model TransparencyPost {
 
 model DebtRecord {
   id               String     @id @default(uuid())
+  slug             String     @unique
   creditorName     String
   creditorGroup    String?
   originalAmount   Decimal

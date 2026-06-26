@@ -19,6 +19,7 @@ import {
   archivePost,
   getDebts,
   getDebtSnapshots,
+  getDebtBySlug,
   createDebtRecord,
   updateDebtRecord,
   createDebtSnapshot,
@@ -274,6 +275,29 @@ export const transparencyRoutes: FastifyPluginAsyncZod = async (fastify) => {
     async (request, reply) => {
       const snapshots = await getDebtSnapshots(fastify.prisma);
       return reply.send(snapshots);
+    }
+  );
+
+  fastify.get(
+    "/debts/:slug",
+    {
+      config: {
+        rateLimit: {
+          max: 60,
+          timeWindow: 60 * 1000,
+        },
+      },
+      schema: {
+        tags: ["transparency", "debts"],
+        params: z.object({ slug: z.string() }),
+        response: {
+          200: DebtRecordResponseSchema,
+        },
+      },
+    },
+    async (request, reply) => {
+      const debt = await getDebtBySlug(request.params.slug, fastify.prisma);
+      return reply.send(debt);
     }
   );
 
