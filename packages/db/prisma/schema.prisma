@@ -571,6 +571,7 @@ enum OrderStatus {
 
 model Product {
   id                  String           @id @default(uuid())
+  slug                String           @unique
   name                String
   description         String
   category            String
@@ -579,6 +580,7 @@ model Product {
   stockType           StockType
   membersOnly         Boolean          @default(false)
   isActive            Boolean          @default(true)
+  isFeatured          Boolean          @default(false)
   createdAt           DateTime         @default(now())
   updatedAt           DateTime         @updatedAt
 

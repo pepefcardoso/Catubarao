@@ -9,8 +9,8 @@ export async function getProducts(): Promise<ProductResponse[]> {
   });
 }
 
-export async function getProductById(id: string): Promise<ProductResponse> {
-  return apiFetch<ProductResponse>(`/store/products/${id}`, {
+export async function getProductByIdOrSlug(identifier: string): Promise<ProductResponse> {
+  return apiFetch<ProductResponse>(`/store/products/${identifier}`, {
     next: {
       revalidate: 300, // 5 minutes
     },

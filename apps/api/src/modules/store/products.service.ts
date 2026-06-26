@@ -2,9 +2,24 @@ import type { PrismaClient } from "@repo/db";
 import type { CreateProductInput, UpdateProductInput } from "@repo/schemas/store";
 import { NotFoundError, ConflictError } from "../../lib/errors";
 
-export async function listProducts(db: PrismaClient) {
+export function generateSlug(text: string): string {
+  return text
+    .toString()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9 -]/g, "")
+    .replace(/\s+/g, "-")
+    .replace(/-+/g, "-");
+}
+
+export async function listProducts(db: PrismaClient, isFeatured?: boolean) {
   return db.product.findMany({
-    where: { isActive: true },
+    where: {
+      isActive: true,
+      ...(isFeatured !== undefined ? { isFeatured } : {}),
+    },
     include: { variants: true },
     orderBy: { createdAt: "desc" },
   });
@@ -17,9 +32,11 @@ export async function listAdminProducts(db: PrismaClient) {
   });
 }
 
-export async function getProductById(id: string, db: PrismaClient) {
-  const product = await db.product.findUnique({
-    where: { id },
+export async function getProductByIdOrSlug(identifier: string, db: PrismaClient) {
+  const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(identifier);
+
+  const product = await db.product.findFirst({
+    where: isUuid ? { id: identifier } : { slug: identifier },
     include: { variants: true },
   });
 
@@ -31,22 +48,33 @@ export async function getProductById(id: string, db: PrismaClient) {
 }
 
 export async function createProduct(input: CreateProductInput, db: PrismaClient) {
-  return db.product.create({
-    data: {
-      name: input.name,
-      description: input.description,
-      category: input.category,
-      images: input.images,
-      basePrice: input.basePrice,
-      stockType: input.stockType,
-      membersOnly: input.membersOnly,
-      isActive: input.isActive,
-      variants: {
-        create: input.variants,
+  const slug = input.slug || generateSlug(input.name);
+
+  try {
+    return await db.product.create({
+      data: {
+        name: input.name,
+        slug,
+        description: input.description,
+        category: input.category,
+        images: input.images,
+        basePrice: input.basePrice,
+        stockType: input.stockType,
+        membersOnly: input.membersOnly,
+        isActive: input.isActive,
+        isFeatured: input.isFeatured,
+        variants: {
+          create: input.variants,
+        },
       },
-    },
-    include: { variants: true },
-  });
+      include: { variants: true },
+    });
+  } catch (error: any) {
+    if (error.code === "P2002" && error.meta?.target?.includes("slug")) {
+      throw new ConflictError("Product slug already exists");
+    }
+    throw error;
+  }
 }
 
 export async function updateProduct(id: string, input: UpdateProductInput, db: PrismaClient) {
@@ -57,7 +85,8 @@ export async function updateProduct(id: string, input: UpdateProductInput, db: P
 
   const { variants, ...productData } = input;
 
-  return db.$transaction(async (tx) => {
+  try {
+    return await db.$transaction(async (tx) => {
     const updatedProduct = await tx.product.update({
       where: { id },
       data: productData,
@@ -130,6 +159,12 @@ export async function updateProduct(id: string, input: UpdateProductInput, db: P
       include: { variants: true },
     });
   });
+  } catch (error: any) {
+    if (error.code === "P2002" && error.meta?.target?.includes("slug")) {
+      throw new ConflictError("Product slug already exists");
+    }
+    throw error;
+  }
 }
 
 export async function deleteProduct(id: string, db: PrismaClient) {

@@ -22,6 +22,7 @@ export const CreateProductVariantSchema = z.object({
 
 export const CreateProductSchema = z.object({
   name: z.string().min(2).max(200),
+  slug: z.string().min(1).optional(),
   description: z.string().min(1),
   category: z.string().min(1),
   images: z.array(z.string().url()).default([]),
@@ -29,6 +30,7 @@ export const CreateProductSchema = z.object({
   stockType: StockTypeEnum,
   membersOnly: z.boolean().default(false),
   isActive: z.boolean().default(true),
+  isFeatured: z.boolean().default(false),
   variants: z.array(CreateProductVariantSchema).default([]),
 });
 
@@ -54,6 +56,7 @@ export type ProductVariantResponse = z.infer<typeof ProductVariantResponseSchema
 
 export const ProductResponseSchema = z.object({
   id: z.string().uuid(),
+  slug: z.string(),
   name: z.string(),
   description: z.string(),
   category: z.string(),
@@ -62,6 +65,7 @@ export const ProductResponseSchema = z.object({
   stockType: StockTypeEnum,
   membersOnly: z.boolean(),
   isActive: z.boolean(),
+  isFeatured: z.boolean(),
   createdAt: z.union([z.string(), z.date()]).transform((v) => new Date(v)),
   updatedAt: z.union([z.string(), z.date()]).transform((v) => new Date(v)),
   variants: z.array(ProductVariantResponseSchema).optional(),

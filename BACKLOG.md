@@ -1324,11 +1324,11 @@ Each ADR follows the standard format: Status, Context, Decision, Consequences.
 
 **Acceptance criteria:**
 
-- [ ] Migration applies cleanly
-- [ ] `GET /store/products?isFeatured=true` returns only featured products
-- [ ] Duplicate slug returns `409` on `POST /admin/store/products`
-- [ ] `/(store)/produtos/camisa-do-centenario` resolves correctly
-- [ ] `pnpm typecheck` passes
+- [x] Migration applies cleanly
+- [x] `GET /store/products?isFeatured=true` returns only featured products
+- [x] Duplicate slug returns `409` on `POST /admin/store/products`
+- [x] `/(store)/produtos/camisa-do-centenario` resolves correctly
+- [x] `pnpm typecheck` passes
 
 ---
 

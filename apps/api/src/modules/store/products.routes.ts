@@ -9,7 +9,7 @@ import {
 import {
   listProducts,
   listAdminProducts,
-  getProductById,
+  getProductByIdOrSlug,
   createProduct,
   updateProduct,
   deleteProduct,
@@ -30,13 +30,15 @@ export const productsRoutes: FastifyPluginAsyncZod = async (fastify) => {
       },
       schema: {
         tags: ["store", "products"],
+        querystring: z.object({ isFeatured: z.coerce.boolean().optional() }),
         response: {
           200: z.array(ProductResponseSchema),
         },
       },
     },
     async (request, reply) => {
-      const products = await listProducts(fastify.prisma);
+      const { isFeatured } = request.query as any;
+      const products = await listProducts(fastify.prisma, isFeatured);
       return reply.send(products);
     }
   );
@@ -52,14 +54,14 @@ export const productsRoutes: FastifyPluginAsyncZod = async (fastify) => {
       },
       schema: {
         tags: ["store", "products"],
-        params: z.object({ id: z.string().uuid() }),
+        params: z.object({ id: z.string() }),
         response: {
           200: ProductResponseSchema,
         },
       },
     },
     async (request, reply) => {
-      const product = await getProductById(request.params.id, fastify.prisma);
+      const product = await getProductByIdOrSlug(request.params.id, fastify.prisma);
       return reply.send(product);
     }
   );
