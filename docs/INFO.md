@@ -59,3 +59,73 @@ Established by Law No. 14,193/2021 (SAF Law), Articles 10 and 13–17.
 - Bylaw reform, financial statement disclosure, live-streamed assemblies, and direct member voting.
 - **Real Oviedo (Spain):** A dispersed ownership model among thousands of small shareholders—already detailed previously—currently maintaining more than 18,000 members/shareholders.
 - **Addition:** For Tubarão, where the SAF and association still coexist, it would be prudent to formalize—before any new fundraising effort—a member advisory council with veto power over strategic asset decisions (asset sales, naming rights agreements, new investors). This reduces the political and legal risk of repeating the current governance challenges (a majority investor without sufficient funding capacity and an immobilized association) while also serving as a credibility signal to attract the small-scale contributions described in Item 3.
+
+# 8. Brand Voice
+
+The voice of Clube Atlético Tubarão SAF adapts according to the audience while maintaining a consistent undercurrent of transparency and determination.
+
+- **Formal Register (Creditors, Press, B2B):** Clear, objective, transparent, respectful. Focuses on accountability, process, and long-term viability. Avoids emotional appeals in favor of hard facts and governance.
+- **Passionate Register (Fan-facing, Members, Community):** Evocative, urgent, inclusive, historical. Focuses on redemption, belonging, and the collective effort to rebuild the club "one brick at a time."
+
+**Phrase Rewrites:**
+
+| Generic SaaS / Corporate Phrase | Tubarão Brand Voice (Fan-facing) |
+| :--- | :--- |
+| "Sign up for a subscription." | "Join the rescue operation. Claim your place in our history." |
+| "Your payment has been processed." | "Your contribution just fueled our rebuild. Thank you." |
+| "Click here for more information." | "See our radical transparency in action." |
+| "Welcome to the portal." | "Welcome home. This is your club." |
+| "We are experiencing technical difficulties." | "We've hit a bump in the road. Our team is working to get us back on track." |
+
+# 9. Visual Identity
+
+Our visual identity reflects our history, our fighting spirit, and our commitment to a modern, transparent future.
+
+- **Colors:** (Reference UX-001 tokens in `packages/config/design/tokens.ts`)
+  - Primary: `TODO` (Official value to be defined)
+  - Secondary: `TODO` (Official value to be defined)
+  - Accent/Action: `TODO` (Official value to be defined)
+  - Background (Dark/Light): `TODO` (Official value to be defined)
+- **Typography:**
+  - Headlines & Display: `--font-display` (Provides bold, impactful presence).
+  - Body & UI: `Inter` (Ensures high readability and clean, modern aesthetics).
+- **Logo Usage:**
+  - **Clear Space:** Always maintain a minimum clear space around the logo equivalent to 50% of the logo's width to ensure prominence.
+  - **Minimum Size:** Never reproduce the logo smaller than 24px (digital) or 15mm (print) to preserve legibility.
+  - **Prohibited Uses:** Do not stretch, skew, or alter the logo's proportions. Do not apply unauthorized drop shadows or gradients. Do not place the logo on busy backgrounds without adequate contrast.
+
+# 10. Photography & Imagery Direction
+
+Our imagery must capture the authentic, raw, and community-driven reality of the club's reconstruction.
+
+- **Approved Subjects:**
+  - Wide angles of the stadium emphasizing scale and potential.
+  - Fans holding scarves, showing authentic passion and belonging.
+  - Youth players training, symbolizing the future and grassroots rebuilding.
+- **Prohibited Imagery:**
+  1. Generic, polished stock photos (lack authenticity).
+  2. Competitor imagery or indistinguishable football generic shots.
+  3. Low-resolution, blurry, or poorly lit images (undermines credibility).
+- **Recommended Sources:** Official club photographers, community/fan submissions (with permission and high quality), curated local archives.
+
+# 11. Content Calendar Template
+
+This framework ensures consistent communication across transparency, community engagement, and commercial efforts.
+
+| Week | Focus Area | Key Content/Action | Channels |
+| :--- | :--- | :--- | :--- |
+| **Week 1** | Transparency | Monthly Financial Snapshot, Debt Amortization Update | Portal, Email, LinkedIn |
+| **Week 2** | Community | "Hero of the Week" (Fan/Sponsor feature), Youth Academy highlight | Instagram, WhatsApp |
+| **Week 3** | Matchday/Event | Pre-game build-up, lineup announcements, fan plaza promos | All Social, App |
+| **Week 4** | Commercial | Partner spotlight, Membership push, new merchandise drop | Email, App, Instagram |
+
+*Adjust dynamically based on the match calendar and specific seasonal campaigns (e.g., anniversary, major milestones).*
+
+# 12. Tone by Channel
+
+Different channels require specific adaptations of our brand voice to maximize engagement and respect user context.
+
+- **WhatsApp:** Casual, urgent, and community-driven. Emojis are encouraged (🦈, 🏟️, 💪). Short messages.
+- **Email:** Formal-passionate hybrid. Use a professional structure but maintain the emotional narrative of rebuilding. Clear calls to action.
+- **In-App Copy (Member Dashboard):** Concise, action-oriented, empowering. Focus on utility and making the user feel in control.
+- **Admin Panel:** Neutral, efficient, precise. No marketing fluff. Focus on data accuracy, clarity, and rapid task completion.

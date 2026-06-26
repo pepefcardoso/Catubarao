@@ -1135,10 +1135,10 @@ Emotional copy per template:
 
 **Acceptance criteria:**
 
-- [ ] All 5 new sections are present in `docs/INFO.md`
-- [ ] Existing content is unchanged
-- [ ] Color token references point to `packages/config/design/tokens.ts`
-- [ ] Photography section explicitly lists at least 3 prohibited image types
+- [x] All 5 new sections are present in `docs/INFO.md`
+- [x] Existing content is unchanged
+- [x] Color token references point to `packages/config/design/tokens.ts`
+- [x] Photography section explicitly lists at least 3 prohibited image types
 
 ---
 
