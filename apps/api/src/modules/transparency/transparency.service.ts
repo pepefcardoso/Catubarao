@@ -422,10 +422,11 @@ export async function createDebtSnapshot(db: PrismaClient, userId?: string) {
   });
 }
 
-export async function getActiveAnnouncements(db: PrismaClient) {
+export async function getActiveAnnouncements(db: PrismaClient, type?: "ANNOUNCEMENT" | "BADGE") {
   return db.announcementBanner.findMany({
     where: {
       isActive: true,
+      ...(type ? { type } : {}),
       OR: [{ expiresAt: null }, { expiresAt: { gt: new Date() } }],
     },
     orderBy: { createdAt: "desc" },

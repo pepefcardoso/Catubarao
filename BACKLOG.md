@@ -1053,10 +1053,10 @@ Emotional copy per template:
 
 **Acceptance criteria:**
 
-- [ ] At least the internal audit badge renders on the transparency portal homepage
-- [ ] `<Tooltip>` shows the full description on hover
-- [ ] Broken logo URL falls back to text-only badge gracefully
-- [ ] `pnpm --filter web typecheck` passes
+- [x] At least the internal audit badge renders on the transparency portal homepage
+- [x] `<Tooltip>` shows the full description on hover
+- [x] Broken logo URL falls back to text-only badge gracefully
+- [x] `pnpm --filter web typecheck` passes
 
 ---
 

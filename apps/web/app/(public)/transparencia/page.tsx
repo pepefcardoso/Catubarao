@@ -3,9 +3,10 @@ import { Button } from "@repo/ui/components/button";
 import Link from "next/link";
 import { env } from "@/lib/env";
 import { apiFetch } from "@/lib/api";
-import { DebtRecordResponse, TransparencyPostResponse } from "@repo/schemas/transparency";
+import { DebtRecordResponse, TransparencyPostResponse, AnnouncementBannerResponse } from "@repo/schemas/transparency";
 import { FileText, ArrowRight, TrendingDown, DollarSign, Handshake } from "lucide-react";
 import { copy } from "@/lib/copy";
+import { ValidationBadge } from "@/components/transparency/ValidationBadge";
 
 import { Metadata } from "next";
 
@@ -42,11 +43,24 @@ async function getLatestPosts(category: string) {
   }
 }
 
+async function getValidationBadges() {
+  try {
+    const res = await apiFetch<AnnouncementBannerResponse[]>(`${env.NEXT_PUBLIC_API_URL}/transparency/announcements?type=BADGE`, {
+      next: { revalidate: 300 }, // 5 mins
+    });
+    return res || [];
+  } catch (error) {
+    console.error("Failed to fetch validation badges", error);
+    return [];
+  }
+}
+
 export default async function TransparenciaPage() {
-  const [debts, balancos, atas] = await Promise.all([
+  const [debts, balancos, atas, badges] = await Promise.all([
     getDebts(),
     getLatestPosts("BALANCO_MENSAL"),
     getLatestPosts("ATA_ASSEMBLEIA"),
+    getValidationBadges(),
   ]);
 
   let totalOriginal = 0;
@@ -95,6 +109,22 @@ export default async function TransparenciaPage() {
       </section>
 
       <div className="container mx-auto px-4 py-16 space-y-20 max-w-7xl">
+        {/* Validation Badges */}
+        <section className="flex flex-wrap items-center justify-center gap-4">
+          <ValidationBadge
+            label="Dados auditados internamente"
+            description="Relatório completo disponível para download nos balanços mensais."
+          />
+          {badges.map((badge) => (
+            <ValidationBadge
+              key={badge.id}
+              label={badge.text}
+              description={badge.description ?? undefined}
+              logoUrl={badge.logoUrl ?? undefined}
+            />
+          ))}
+        </section>
+
         {/* Summary Cards */}
         <section className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <Card className="relative overflow-hidden group hover:shadow-md transition-all duration-300 border-border/50">

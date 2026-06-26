@@ -20,7 +20,7 @@ async function getLatestPost() {
 
 async function getAnnouncements() {
   try {
-    const banners = await apiFetch<AnnouncementBannerResponse[]>("/transparency/announcements", {
+    const banners = await apiFetch<AnnouncementBannerResponse[]>("/transparency/announcements?type=ANNOUNCEMENT", {
       next: { revalidate: 300 }, // 5 mins
     });
     return banners || [];

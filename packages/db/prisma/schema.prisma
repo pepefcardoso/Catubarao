@@ -395,15 +395,23 @@ model DebtSnapshot {
   @@map("debt_snapshots")
 }
 
+enum BadgeType {
+  ANNOUNCEMENT
+  BADGE
+}
+
 model AnnouncementBanner {
-  id         String    @id @default(uuid())
-  text       String
-  color      String    @default("brand-primary")
-  milestone  Int?
-  isActive   Boolean   @default(true)
-  expiresAt  DateTime?
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @updatedAt
+  id          String    @id @default(uuid())
+  type        BadgeType @default(ANNOUNCEMENT)
+  text        String
+  color       String    @default("brand-primary")
+  milestone   Int?
+  logoUrl     String?
+  description String?
+  isActive    Boolean   @default(true)
+  expiresAt   DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
 
   @@map("announcement_banners")
 }

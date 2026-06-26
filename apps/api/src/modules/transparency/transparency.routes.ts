@@ -9,6 +9,7 @@ import {
   DebtRecordResponseSchema,
   DebtSnapshotResponseSchema,
   AnnouncementBannerResponseSchema,
+  BadgeTypeSchema,
 } from "@repo/schemas/transparency";
 import {
   getPosts,
@@ -57,13 +58,16 @@ export const transparencyRoutes: FastifyPluginAsyncZod = async (fastify) => {
     {
       schema: {
         tags: ["transparency"],
+        querystring: z.object({
+          type: BadgeTypeSchema.optional(),
+        }),
         response: {
           200: z.array(AnnouncementBannerResponseSchema),
         },
       },
     },
-    async (_request, reply) => {
-      const banners = await getActiveAnnouncements(fastify.prisma);
+    async (request, reply) => {
+      const banners = await getActiveAnnouncements(fastify.prisma, request.query.type);
       return reply.send(banners);
     }
   );
