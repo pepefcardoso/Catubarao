@@ -1236,10 +1236,10 @@ At minimum 3 scenarios per feature file (21 total scenarios across 7 files).
 
 **Acceptance criteria:**
 
-- [ ] Document exists at `docs/webhooks/mercadopago.md`
-- [ ] All 4 event types have example payloads
-- [ ] Mermaid state machine diagram renders correctly in GitHub
-- [ ] Signature verification section matches the implementation in MEMBER-007 exactly
+- [x] Document exists at `docs/webhooks/mercadopago.md`
+- [x] All 4 event types have example payloads
+- [x] Mermaid state machine diagram renders correctly in GitHub
+- [x] Signature verification section matches the implementation in MEMBER-007 exactly
 
 ---
 
