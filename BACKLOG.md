@@ -1083,9 +1083,9 @@ Emotional copy per template:
 
 **Acceptance criteria:**
 
-- [ ] JTBD table is present for all 4 personas in `spec.md`
-- [ ] Cross-reference link to `docs/ux-strategy.md` is working
-- [ ] No existing spec content is removed or modified (append-only)
+- [x] JTBD table is present for all 4 personas in `spec.md`
+- [x] Cross-reference link to `docs/ux-strategy.md` is working
+- [x] No existing spec content is removed or modified (append-only)
 
 ---
 

@@ -48,11 +48,23 @@ Construir uma plataforma digital que:
 - Espera transparência sobre para onde vai o dinheiro.
 - Tem baixa tolerância a promessas não cumpridas — muitos já foram lesados antes.
 
+**Jobs-to-be-done (JTBD):**
+
+| Funcional | Emocional | Social |
+| :--- | :--- | :--- |
+| Participar de um plano, pagar mensalmente | Sentir que estou _salvando_ meu clube, não apenas assinando | Dizer aos amigos que faço parte do resgate |
+
 ### 2.2 Administrador do Clube (`admin`)
 
 - Equipe interna (1–3 pessoas no MVP).
 - Precisa de painel para gerenciar sócios, publicar conteúdo de transparência, acompanhar inadimplência, registrar parceiros e emitir provas de entrega.
 - Não necessariamente técnico — interface deve ser operável sem treinamento extenso.
+
+**Jobs-to-be-done (JTBD):**
+
+| Funcional | Emocional | Social |
+| :--- | :--- | :--- |
+| Gerenciar sócios e publicar relatórios | Sentir-se capacitado para gerir bem o clube, apesar da equipe reduzida | Demonstrar boa governança aos stakeholders |
 
 ### 2.3 Parceiro Comercial / Permutante (`partner`)
 
@@ -61,12 +73,30 @@ Construir uma plataforma digital que:
 - Precisa de prova de que a contrapartida foi entregue para justificar internamente a renovação.
 - Historicamente desconfia do clube — prova de entrega é o ponto de virada.
 
+**Jobs-to-be-done (JTBD):**
+
+| Funcional | Emocional | Social |
+| :--- | :--- | :--- |
+| Receber prova de entrega de publicidade | Sentir-se como um herói local, não apenas um fornecedor | Ser visto como "salvador de um patrimônio cultural" |
+
 ### 2.4 Visitante do Portal de Transparência (`visitor`)
 
 - Credor, jornalista, torcedor cético, potencial investidor.
 - Acessa sem cadastro.
 - Quer dados objetivos: balanço, status das dívidas, atas, composição societária.
 - Não tem paciência para PDFs enterrados — precisa de informação acessível e datada.
+
+**Jobs-to-be-done (JTBD):**
+
+| Funcional | Emocional | Social |
+| :--- | :--- | :--- |
+| Verificar dados financeiros | Sentir-se seguro de que não é mais uma promessa vazia | Compartilhar dados confiáveis com outros céticos |
+
+### 2.5 Princípios de Design Comportamental (Behavioral Design)
+
+Todas as decisões de interface e experiência (UX) nesta plataforma seguem estritamente uma estratégia de design comportamental focada em persuasão e engajamento emocional. O objetivo é evitar implementações genéricas e garantir que cada módulo cumpra não apenas suas funções técnicas, mas também aborde as necessidades emocionais e sociais dos usuários descritos acima (Jobs-to-be-done).
+
+Para a lista detalhada de gatilhos mentais aplicados (como Escassez, Prova Social, Unidade), mapa do funil de conversão e regras de copy ("Sem Segredos", "Operação Resgate"), os desenvolvedores devem consultar obrigatoriamente o documento [`docs/ux-strategy.md`](docs/ux-strategy.md) como o guia de autoridade para o produto.
 
 ---
 
