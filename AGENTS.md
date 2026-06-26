@@ -949,5 +949,12 @@ Before marking any task complete, verify:
 
 ---
 
+## 14. Documentation
+
+All user-facing copy (routes, error messages, emails) must adhere strictly to the club's "Operation Rescue" narrative. Never write generic SaaS copy.
+Before modifying or creating any user-facing surface, you **MUST** consult `docs/narrative-touchpoints.md` for guidance on emotional register, allowed anchor phrases, and forbidden patterns.
+
+---
+
 _Last updated: 2026-06. Review and update this file whenever the stack, conventions, or
 hard rules change. An outdated AGENTS.md is worse than no AGENTS.md._

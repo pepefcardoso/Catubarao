@@ -1108,10 +1108,10 @@ Emotional copy per template:
 
 **Acceptance criteria:**
 
-- [ ] Document covers all routes in the `(public)` and `(member)` route groups
-- [ ] All 9 email templates are mapped
-- [ ] Forbidden patterns section lists at least 10 specific phrases to avoid
-- [ ] Document is referenced from `AGENTS.md` §Documentation
+- [x] Document covers all routes in the `(public)` and `(member)` route groups
+- [x] All 9 email templates are mapped
+- [x] Forbidden patterns section lists at least 10 specific phrases to avoid
+- [x] Document is referenced from `AGENTS.md` §Documentation
 
 ---
 
