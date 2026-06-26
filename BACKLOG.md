@@ -1028,11 +1028,11 @@ Emotional copy per template:
 
 **Acceptance criteria:**
 
-- [ ] JSON-LD for a post page validates without errors at `https://validator.schema.org/`
-- [ ] `<meta name="description">` content is the first 160 chars of `body` (no markdown syntax)
-- [ ] Canonical tag is present and points to the absolute URL
-- [ ] OG image renders correctly when a post URL is shared in WhatsApp (test via WhatsApp link preview)
-- [ ] `pnpm --filter web typecheck` passes
+- [x] JSON-LD for a post page validates without errors at `https://validator.schema.org/`
+- [x] `<meta name="description">` content is the first 160 chars of `body` (no markdown syntax)
+- [x] Canonical tag is present and points to the absolute URL
+- [x] OG image renders correctly when a post URL is shared in WhatsApp (test via WhatsApp link preview)
+- [x] `pnpm --filter web typecheck` passes
 
 ---
 

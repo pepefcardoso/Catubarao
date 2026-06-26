@@ -13,7 +13,7 @@ import Link from "next/link";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
-export const revalidate = 3600; // 1 hour
+export const revalidate = 300; // 5 minutes
 
 const CATEGORY_LABELS: Record<string, string> = {
   BALANCO_MENSAL: "Balanço Mensal",
@@ -46,11 +46,15 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
     };
   }
 
-  const description = post.body.slice(0, 160) + (post.body.length > 160 ? "..." : "");
+  const plainTextBody = post.body.replace(/<\/?[^>]+(>|$)/g, "").replace(/[#*`~_\[\]()]/g, "").trim();
+  const description = plainTextBody.substring(0, 160) + (plainTextBody.length > 160 ? "..." : "");
 
   return {
     title: `${post.title} | Portal de Transparência`,
     description,
+    alternates: {
+      canonical: `${env.NEXT_PUBLIC_APP_URL}/transparencia/posts/${post.id}`,
+    },
     openGraph: {
       title: post.title,
       description,
@@ -83,6 +87,27 @@ export default async function PostDetailPage({ params }: { params: Promise<{ id:
 
   return (
     <div className="min-h-screen bg-background pb-20">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Article",
+            headline: post.title,
+            description: post.body.replace(/<\/?[^>]+(>|$)/g, "").replace(/[#*`~_\[\]()]/g, "").trim().substring(0, 160),
+            datePublished: new Date(post.publishedAt).toISOString(),
+            dateModified: new Date(post.updatedAt || post.publishedAt).toISOString(),
+            author: {
+              "@type": "Organization",
+              name: "Associação Desportiva Tubarão",
+            },
+            publisher: {
+              "@type": "Organization",
+              name: "Associação Desportiva Tubarão",
+            },
+          }),
+        }}
+      />
       <div className="bg-muted/30 py-8 border-b">
         <div className="container mx-auto px-4 max-w-4xl">
           <Link href="/transparencia/posts" className="inline-flex items-center text-sm font-medium text-muted-foreground hover:text-foreground transition-colors mb-6">
