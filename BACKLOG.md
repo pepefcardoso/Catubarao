@@ -1168,10 +1168,10 @@ At minimum 3 scenarios per feature file (21 total scenarios across 7 files).
 
 **Acceptance criteria:**
 
-- [ ] All 7 feature files exist in `docs/acceptance/`
-- [ ] Each file has at least 3 scenarios
-- [ ] Gherkin syntax is valid (no step-definition code — only `.feature` files)
-- [ ] `social-proof.feature` includes the scenario from `strategic_analysis.md §4.5` verbatim
+- [x] All 7 feature files exist in `docs/acceptance/`
+- [x] Each file has at least 3 scenarios
+- [x] Gherkin syntax is valid (no step-definition code — only `.feature` files)
+- [x] `social-proof.feature` includes the scenario from `strategic_analysis.md §4.5` verbatim
 
 ---
 
