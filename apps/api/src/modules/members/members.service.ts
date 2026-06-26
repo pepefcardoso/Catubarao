@@ -59,10 +59,9 @@ export async function getMe(memberId: string, db: PrismaClient) {
 
   return {
     ...memberData,
-    subscriptionStatus: sub?.status ?? null,
-    activePlanId: sub?.planId ?? null,
-    adimplenciaStreak: member.adimplenciaStreakMonths,
-
+    subscriptionStatus: activeSub?.status ?? null,
+    activePlanId: activeSub?.planId || null,
+    adimplenciaStreakMonths: member.adimplenciaStreakMonths,
     daysSincePeriodEnd,
     isFounder,
   };
@@ -255,12 +254,13 @@ export async function listMembers(
   return {
     data: members.map((member) => {
       const { subscriptions, ...memberData } = member;
+      const activeSub = member.subscriptions[0];
       return {
         ...memberData,
-        subscriptionStatus: member.subscriptions[0]?.status ?? null,
-        activePlanId: member.subscriptions[0]?.planId ?? null,
-        activePlanName: member.subscriptions[0]?.plan?.name ?? null,
-        adimplenciaStreak: member.adimplenciaStreakMonths,
+        subscriptionStatus: activeSub?.status ?? null,
+        activePlanId: activeSub?.planId || null,
+        activePlanName: activeSub?.plan.name || null,
+        adimplenciaStreakMonths: member.adimplenciaStreakMonths,
         adminNotes: member.adminNotes,
       };
     }),
@@ -298,6 +298,7 @@ export async function getMemberAdminDetail(id: string, db: PrismaClient) {
   }
 
   const { subscriptions, gamificationEvents, membershipCards, ...memberData } = member;
+  const activeSub = subscriptions[0];
 
   const payments = await db.payment.findMany({
     where: { subscription: { memberId: id } },
@@ -306,10 +307,10 @@ export async function getMemberAdminDetail(id: string, db: PrismaClient) {
 
   return {
     ...memberData,
-    subscriptionStatus: subscriptions[0]?.status ?? null,
-    activePlanId: subscriptions[0]?.planId ?? null,
-    activePlanName: subscriptions[0]?.plan?.name ?? null,
-    adimplenciaStreak: member.adimplenciaStreakMonths,
+    subscriptionStatus: activeSub?.status ?? null,
+    activePlanId: activeSub?.planId || null,
+    activePlanName: activeSub?.plan.name || null,
+    adimplenciaStreakMonths: member.adimplenciaStreakMonths,
     adminNotes: member.adminNotes,
     subscriptions,
     gamificationEvents,

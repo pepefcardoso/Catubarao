@@ -1376,10 +1376,10 @@ Each ADR follows the standard format: Status, Context, Decision, Consequences.
 
 **Acceptance criteria:**
 
-- [ ] `pnpm typecheck` passes with zero references to the old `adimplenciaStreak` name
-- [ ] `AddressSchema` is exported from `@repo/schemas` (via `packages/schemas/src/common.ts`)
-- [ ] `PATCH /members/me { address: { invalidField: "x" } }` throws a `422` validation error
-- [ ] `PATCH /members/me { address: { street: "...", city: "...", ... } }` (valid shape) succeeds
+- [x] `pnpm typecheck` passes with zero references to the old `adimplenciaStreak` name
+- [x] `AddressSchema` is exported from `@repo/schemas` (via `packages/schemas/src/common.ts`)
+- [x] `PATCH /members/me { address: { invalidField: "x" } }` throws a `422` validation error
+- [x] `PATCH /members/me { address: { street: "...", city: "...", ... } }` (valid shape) succeeds
 
 ---
 

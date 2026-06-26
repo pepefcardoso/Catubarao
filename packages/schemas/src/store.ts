@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { AddressSchema } from "./common";
 
 export const StockTypeEnum = z.enum(["SOB_DEMANDA", "ESTOQUE_FIXO"]);
 export const OrderStatusEnum = z.enum([
@@ -79,15 +80,6 @@ export const CreateOrderItemSchema = z.object({
   quantity: z.number().int().positive("Quantity must be positive"),
 });
 
-export const AddressSchema = z.object({
-  street: z.string().min(1),
-  number: z.string().min(1),
-  complement: z.string().optional().nullable(),
-  neighborhood: z.string().min(1),
-  city: z.string().min(1),
-  state: z.string().length(2),
-  zipCode: z.string().min(8),
-});
 
 export const CreateOrderSchema = z.object({
   customerId: z.string().uuid().optional().nullable(),

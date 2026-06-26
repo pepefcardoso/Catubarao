@@ -87,7 +87,7 @@ export default function AdminMembersPage() {
         m.email,
         m.activePlanName || "N/A",
         m.subscriptionStatus || "N/A",
-        m.adimplenciaStreak,
+        m.adimplenciaStreakMonths,
         new Date(m.createdAt).toLocaleDateString("pt-BR")
       ])
     ];
@@ -191,7 +191,7 @@ export default function AdminMembersPage() {
                       {member.subscriptionStatus || "NONE"}
                     </Badge>
                   </TableCell>
-                  <TableCell>{member.adimplenciaStreak} mo.</TableCell>
+                  <TableCell>{member.adimplenciaStreakMonths} mo.</TableCell>
                   <TableCell>{new Date(member.createdAt).toLocaleDateString("pt-BR")}</TableCell>
                 </TableRow>
               ))

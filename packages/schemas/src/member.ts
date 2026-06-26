@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { AddressSchema } from "./common";
 
 const isCpfValid = (cpf: string) => {
   if (!/^\d{11}$/.test(cpf)) return false;
@@ -35,7 +36,7 @@ export const CreateMemberSchema = z.object({
   referralCode: z.string().optional(),
   marketingConsent: z.boolean().default(false),
   whatsappOptIn: z.boolean().default(false),
-  address: z.any().optional(),
+  address: AddressSchema.optional(),
   showOnMonument: z.boolean().default(false),
   showOnLeaderboard: z.boolean().default(false),
 });
@@ -81,7 +82,7 @@ export const MemberResponseSchema = z.object({
   showOnMonument: z.boolean(),
   showOnLeaderboard: z.boolean(),
   memberNumber: z.number().int(),
-  address: z.any().nullable(),
+  address: AddressSchema.nullable(),
   referredById: z.string().nullable(),
 });
 
@@ -95,7 +96,7 @@ export const UpdateMemberProfileSchema = z
       .transform(normalizePhone)
       .refine((val: string) => /^\+[1-9]\d{1,14}$/.test(val), { message: "Invalid phone number format" })
       .optional(),
-    address: z.any().optional(),
+    address: AddressSchema.optional(),
     showOnMonument: z.boolean().optional(),
     showOnLeaderboard: z.boolean().optional(),
     whatsappOptIn: z.boolean().optional(),
@@ -108,7 +109,7 @@ export const SubscriptionStatusSchema = z.enum(["ACTIVE", "PENDING", "SUSPENDED"
 export const MeResponseSchema = MemberResponseSchema.extend({
   subscriptionStatus: SubscriptionStatusSchema.nullable(),
   activePlanId: z.string().nullable(),
-  adimplenciaStreak: z.number().int().nonnegative(),
+  adimplenciaStreakMonths: z.number().int().nonnegative(),
   daysSincePeriodEnd: z.number().int().nullable(),
   isFounder: z.boolean(),
 });
@@ -125,7 +126,7 @@ export const AdminMemberListItemSchema = MemberResponseSchema.extend({
   subscriptionStatus: SubscriptionStatusSchema.nullable(),
   activePlanId: z.string().nullable(),
   activePlanName: z.string().nullable().optional(),
-  adimplenciaStreak: z.number().int().nonnegative(),
+  adimplenciaStreakMonths: z.number().int().nonnegative(),
   adminNotes: z.string().nullable().optional(),
 });
 

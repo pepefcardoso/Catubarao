@@ -116,7 +116,7 @@ export default function AdminMemberDetailPage({ params }: { params: Promise<{ id
     );
   }
 
-  const isEligibleToVote = member.adimplenciaStreak >= 12;
+  const isEligibleToVote = member.adimplenciaStreakMonths >= 12;
 
   return (
     <div className="space-y-8">
@@ -162,7 +162,7 @@ export default function AdminMemberDetailPage({ params }: { params: Promise<{ id
             </div>
             <div>
               <p className="text-muted-foreground">Adimplência Streak</p>
-              <p className="font-medium">{member.adimplenciaStreak} months</p>
+              <p className="font-medium">{member.adimplenciaStreakMonths} months</p>
             </div>
           </div>
 

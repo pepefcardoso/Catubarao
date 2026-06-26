@@ -66,7 +66,7 @@ describe("Members Profile Routes", () => {
     expect(res.status).toBe(200);
     expect(res.body).toHaveProperty("id", memberId);
     expect(res.body).toHaveProperty("name", "Test Member");
-    expect(res.body).toHaveProperty("adimplenciaStreak", 0);
+    expect(res.body).toHaveProperty("adimplenciaStreakMonths", 0);
   });
 
   it("PATCH /members/me without authentication returns 401", async () => {
