@@ -163,15 +163,19 @@ enum PollStatus {
 }
 
 model MembershipPlan {
-  id          String               @id @default(uuid())
-  name        String
-  price       Decimal
-  interval    SubscriptionInterval
-  benefits    String[]
-  isCorporate Boolean              @default(false)
-  maxCards    Int?
-  isActive    Boolean              @default(true)
-  createdAt   DateTime             @default(now())
+  id                   String               @id @default(uuid())
+  slug                 String               @unique
+  name                 String
+  price                Decimal
+  interval             SubscriptionInterval
+  benefits             String[]
+  isCorporate          Boolean              @default(false)
+  maxCards             Int?
+  highlightLabel       String?
+  accentColor          String?
+  marketingDescription String?
+  isActive             Boolean              @default(true)
+  createdAt            DateTime             @default(now())
 
   subscriptions Subscription[]
 

@@ -1296,11 +1296,11 @@ Each ADR follows the standard format: Status, Context, Decision, Consequences.
 
 **Acceptance criteria:**
 
-- [ ] Migration applies cleanly to a fresh database
-- [ ] `CreateMembershipPlanSchema.parse({ accentColor: "not-a-hex" })` throws
-- [ ] `CreateMembershipPlanSchema.parse({ accentColor: "#006847" })` passes
-- [ ] `GET /plans` response includes the new fields
-- [ ] `pnpm typecheck` passes
+- [x] Migration applies cleanly to a fresh database
+- [x] `CreateMembershipPlanSchema.parse({ accentColor: "not-a-hex" })` throws
+- [x] `CreateMembershipPlanSchema.parse({ accentColor: "#006847" })` passes
+- [x] `GET /plans` response includes the new fields
+- [x] `pnpm typecheck` passes
 
 ---
 

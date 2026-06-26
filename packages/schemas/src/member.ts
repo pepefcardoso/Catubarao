@@ -154,12 +154,16 @@ export const MemberReferralResponseSchema = z.object({
 export const SubscriptionIntervalSchema = z.enum(["MONTHLY", "ANNUAL"]);
 
 export const CreateMembershipPlanSchema = z.object({
+  slug: z.string().min(1),
   name: z.string().min(1),
   price: z.number().positive(),
   interval: SubscriptionIntervalSchema,
   benefits: z.array(z.string()),
   isCorporate: z.boolean().default(false),
   maxCards: z.number().int().positive().nullable().optional(),
+  highlightLabel: z.string().nullable().optional(),
+  accentColor: z.string().regex(/^#[0-9A-Fa-f]{6}$/, "Must be a valid hex color code").nullable().optional(),
+  marketingDescription: z.string().nullable().optional(),
   isActive: z.boolean().default(true),
 });
 
@@ -169,12 +173,16 @@ export type UpdateMembershipPlanInput = z.infer<typeof UpdateMembershipPlanSchem
 
 export const MembershipPlanResponseSchema = z.object({
   id: z.string(),
+  slug: z.string(),
   name: z.string(),
   price: z.union([z.number(), z.string(), z.any()]),
   interval: SubscriptionIntervalSchema,
   benefits: z.array(z.string()),
   isCorporate: z.boolean(),
   maxCards: z.number().int().nullable(),
+  highlightLabel: z.string().nullable(),
+  accentColor: z.string().nullable(),
+  marketingDescription: z.string().nullable(),
   isActive: z.boolean(),
   createdAt: z.date(),
   subscriberCount: z.number().int().nonnegative().optional(),

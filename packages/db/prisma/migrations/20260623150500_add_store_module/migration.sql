@@ -5,7 +5,7 @@ CREATE TYPE "StockType" AS ENUM ('SOB_DEMANDA', 'ESTOQUE_FIXO');
 CREATE TYPE "OrderStatus" AS ENUM ('AGUARDANDO_PAGAMENTO', 'PAGO', 'EM_PRODUCAO', 'ENVIADO', 'ENTREGUE', 'CANCELADO');
 
 -- AlterTable
-ALTER TABLE "payments" ADD COLUMN     "orderId" TEXT;
+-- (orderId already exists in payments from add_member_module)
 
 -- CreateTable
 CREATE TABLE "products" (
