@@ -1264,10 +1264,10 @@ Each ADR follows the standard format: Status, Context, Decision, Consequences.
 
 **Acceptance criteria:**
 
-- [ ] All 4 ADRs exist in `docs/adr/`
-- [ ] Each follows the Status / Context / Decision / Consequences format
-- [ ] ADR-002 and ADR-003 cite the behavioral psychology principle by name
-- [ ] ADR-004 explicitly documents the trade-off (not just the decision)
+- [x] All 4 ADRs exist in `docs/adr/`
+- [x] Each follows the Status / Context / Decision / Consequences format
+- [x] ADR-002 and ADR-003 cite the behavioral psychology principle by name
+- [x] ADR-004 explicitly documents the trade-off (not just the decision)
 
 ---
 
