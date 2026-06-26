@@ -37,10 +37,6 @@ export async function getMe(memberId: string, db: PrismaClient) {
   // Remove subscriptions from return to match MemberResponseSchema
   const { subscriptions, ...memberData } = member;
 
-  const memberNumber = await db.member.count({
-    where: { createdAt: { lte: member.createdAt } }
-  });
-
   const sub = member.subscriptions[0];
   let daysSincePeriodEnd = null;
 
@@ -66,7 +62,7 @@ export async function getMe(memberId: string, db: PrismaClient) {
     subscriptionStatus: sub?.status ?? null,
     activePlanId: sub?.planId ?? null,
     adimplenciaStreak: member.adimplenciaStreakMonths,
-    memberNumber,
+
     daysSincePeriodEnd,
     isFounder,
   };
@@ -88,12 +84,13 @@ export async function updateMe(memberId: string, data: UpdateMemberProfileInput,
   }
 
   // Clean the data just in case
-  const { name, phone, address, showOnMonument, whatsappOptIn, whatsappOptInDismissedAt } = data;
+  const { name, phone, address, showOnMonument, showOnLeaderboard, whatsappOptIn, whatsappOptInDismissedAt } = data;
   const updateData: any = {};
   if (name !== undefined) updateData.name = name;
   if (phone !== undefined) updateData.phone = phone;
   if (address !== undefined) updateData.address = address;
   if (showOnMonument !== undefined) updateData.showOnMonument = showOnMonument;
+  if (showOnLeaderboard !== undefined) updateData.showOnLeaderboard = showOnLeaderboard;
   if (whatsappOptIn !== undefined) updateData.whatsappOptIn = whatsappOptIn;
   if (whatsappOptInDismissedAt !== undefined) updateData.whatsappOptInDismissedAt = whatsappOptInDismissedAt;
 

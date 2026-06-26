@@ -1352,11 +1352,11 @@ Each ADR follows the standard format: Status, Context, Decision, Consequences.
 
 **Acceptance criteria:**
 
-- [ ] New members receive a unique, sequential `memberNumber` on registration
-- [ ] `memberNumber` never changes (immutable after creation)
-- [ ] `PATCH /members/me { showOnLeaderboard: true }` updates correctly
-- [ ] Existing members all have a `memberNumber` after migration (no NULLs)
-- [ ] `pnpm typecheck` passes
+- [x] New members receive a unique, sequential `memberNumber` on registration
+- [x] `memberNumber` never changes (immutable after creation)
+- [x] `PATCH /members/me { showOnLeaderboard: true }` updates correctly
+- [x] Existing members all have a `memberNumber` after migration (no NULLs)
+- [x] `pnpm typecheck` passes
 
 ---
 

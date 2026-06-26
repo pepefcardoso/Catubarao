@@ -37,6 +37,7 @@ export const CreateMemberSchema = z.object({
   whatsappOptIn: z.boolean().default(false),
   address: z.any().optional(),
   showOnMonument: z.boolean().default(false),
+  showOnLeaderboard: z.boolean().default(false),
 });
 
 export const UpdateMemberSchema = CreateMemberSchema.partial().extend({
@@ -78,6 +79,8 @@ export const MemberResponseSchema = z.object({
   whatsappOptIn: z.boolean(),
   whatsappOptInDismissedAt: z.date().nullable(),
   showOnMonument: z.boolean(),
+  showOnLeaderboard: z.boolean(),
+  memberNumber: z.number().int(),
   address: z.any().nullable(),
   referredById: z.string().nullable(),
 });
@@ -94,6 +97,7 @@ export const UpdateMemberProfileSchema = z
       .optional(),
     address: z.any().optional(),
     showOnMonument: z.boolean().optional(),
+    showOnLeaderboard: z.boolean().optional(),
     whatsappOptIn: z.boolean().optional(),
     whatsappOptInDismissedAt: z.coerce.date().optional(),
   })
@@ -105,7 +109,6 @@ export const MeResponseSchema = MemberResponseSchema.extend({
   subscriptionStatus: SubscriptionStatusSchema.nullable(),
   activePlanId: z.string().nullable(),
   adimplenciaStreak: z.number().int().nonnegative(),
-  memberNumber: z.number().int(),
   daysSincePeriodEnd: z.number().int().nullable(),
   isFounder: z.boolean(),
 });
