@@ -37,14 +37,11 @@ export function MemberHeader() {
             <SheetTitle className="sr-only">Navegação do Membro</SheetTitle>
             <div className="p-6 border-b">
               <SheetClose asChild>
-                <Link
-                  href="/dashboard"
-                  className="flex items-center gap-2 font-bold text-xl tracking-tight"
-                >
+                <Link href="/dashboard" className="flex items-center gap-2">
                   <div className="bg-primary/10 p-2 rounded-xl">
-                    <span className="text-primary font-bold">TS</span>
+                    <img src="/assets/logo.png" alt="Logo" width={24} height={24} className="w-6 h-6 object-contain" />
                   </div>
-                  Tubarão SAF
+                  Atlético Tubarão
                 </Link>
               </SheetClose>
             </div>

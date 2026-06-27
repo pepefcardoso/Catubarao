@@ -5,11 +5,11 @@ export const ClubHeader = () => {
   return (
     <Section className="bg-black text-center py-6 px-4">
       <Img
-        src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Clube_Atl%C3%A9tico_Tubar%C3%A3o_2020.png"
+        src={`${process.env.FRONTEND_URL || 'https://tubaraosaf.com.br'}/assets/logo.png`}
         width="64"
         height="64"
         alt="Clube Atlético Tubarão"
-        className="mx-auto"
+        className="mx-auto object-contain"
       />
       <Text className="text-white text-xl font-bold uppercase tracking-widest mt-4 mb-0 font-sans">
         Clube Atlético Tubarão

@@ -122,7 +122,7 @@ export function CardClient() {
   const isSuspended = status === "SUSPENDED";
   
   const referralCode = "MOCK-REF-123"; // TODO: Use real member referral code
-  const cardText = `Sou sócio do Tubarão SAF! 🦈 Venha fazer parte também: ${typeof window !== 'undefined' ? window.location.origin : ''}/signup?ref=${referralCode}`;
+  const cardText = `Sou sócio do Atlético Tubarão! 🦈 Venha fazer parte também: ${typeof window !== 'undefined' ? window.location.origin : ''}/signup?ref=${referralCode}`;
   const whatsappShareUrl = `https://wa.me/?text=${encodeURIComponent(cardText)}`;
 
   return (

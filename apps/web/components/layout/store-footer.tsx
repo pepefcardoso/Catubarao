@@ -196,7 +196,7 @@ export function StoreFooter() {
 
         <div className="pt-8 border-t border-border/50 flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-sm text-muted-foreground text-center md:text-left">
-            © {new Date().getFullYear()} Tubarão Store - Clube Atlético Tubarão SAF. Todos os
+            © {new Date().getFullYear()} Tubarão Store - Clube Atlético Tubarão. Todos os
             direitos reservados.
           </p>
           <div className="flex items-center gap-6">

@@ -11,12 +11,12 @@ export function BenefitStripSection() {
     {
       icon: <Landmark className="w-10 h-10 text-brand-primary" />,
       title: "Voto em Assembleias",
-      description: "Tenha voz ativa nas decisões cruciais para o futuro do Tubarão SAF.",
+      description: "Tenha voz ativa nas decisões cruciais para o futuro do Atlético Tubarão.",
     },
     {
       icon: <Users className="w-10 h-10 text-brand-primary" />,
       title: "Muro dos Fundadores",
-      description: "Seu nome eternizado na entrada do estádio como um dos reconstrutores.",
+      description: "Seu nome eternizado na entrada da Vila como um dos reconstrutores.",
     },
   ];
 

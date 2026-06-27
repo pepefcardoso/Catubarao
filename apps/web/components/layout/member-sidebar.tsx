@@ -21,14 +21,11 @@ export function MemberSidebar() {
   return (
     <aside className="hidden md:flex flex-col w-64 border-r bg-card h-screen sticky top-0">
       <div className="p-6">
-        <Link
-          href="/dashboard"
-          className="flex items-center gap-2 font-bold text-xl tracking-tight"
-        >
+        <Link href="/dashboard" className="flex items-center gap-2">
           <div className="bg-primary/10 p-2 rounded-xl">
-            <span className="text-primary font-bold">TS</span>
+            <img src="/assets/logo.png" alt="Logo" width={24} height={24} className="w-6 h-6 object-contain" />
           </div>
-          Tubarão SAF
+          Atlético Tubarão
         </Link>
       </div>
 

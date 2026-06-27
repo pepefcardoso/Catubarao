@@ -2,10 +2,11 @@
 
 import * as React from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { Button } from "@repo/ui/components/button";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@repo/ui/components/sheet";
-import { Menu, Waves } from "lucide-react";
+import { Menu } from "lucide-react";
 import { cn } from "@repo/ui/lib/utils";
 
 const navItems = [
@@ -39,9 +40,9 @@ export function PublicHeader() {
       <div className="container mx-auto px-4 md:px-6 h-16 md:h-20 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-2 group">
           <div className="bg-primary/10 p-2 rounded-xl group-hover:bg-primary/20 transition-colors">
-            <Waves className="w-6 h-6 text-primary" />
+            <Image src="/assets/logo.png" alt="Logo" width={24} height={24} className="w-6 h-6 object-contain" />
           </div>
-          <span className="font-bold text-xl tracking-tight">Tubarão SAF</span>
+          <span className="font-bold text-xl tracking-tight">Atlético Tubarão</span>
         </Link>
 
         {/* Desktop Nav */}
@@ -93,9 +94,9 @@ export function PublicHeader() {
               <div className="flex flex-col gap-8 mt-8 h-full">
                 <Link href="/" className="flex items-center gap-2">
                   <div className="bg-primary/10 p-2 rounded-xl">
-                    <Waves className="w-6 h-6 text-primary" />
+                    <Image src="/assets/logo.png" alt="Logo" width={24} height={24} className="w-6 h-6 object-contain" />
                   </div>
-                  <span className="font-bold text-xl tracking-tight">Tubarão</span>
+                  <span className="font-bold text-xl tracking-tight">Atlético Tubarão</span>
                 </Link>
                 <nav className="flex flex-col gap-2">
                   {navItems.map((item) => {

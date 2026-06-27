@@ -60,7 +60,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
       description,
       type: "article",
       url: `${env.NEXT_PUBLIC_APP_URL}/transparencia/posts/${post.id}`,
-      siteName: "Clube Atlético Tubarão SAF",
+      siteName: "Clube Atlético Tubarão",
     },
   };
 }
@@ -99,11 +99,11 @@ export default async function PostDetailPage({ params }: { params: Promise<{ id:
             dateModified: new Date(post.updatedAt || post.publishedAt).toISOString(),
             author: {
               "@type": "Organization",
-              name: "Associação Desportiva Tubarão",
+              name: "Clube Atlético Tubarão",
             },
             publisher: {
               "@type": "Organization",
-              name: "Associação Desportiva Tubarão",
+              name: "Clube Atlético Tubarão",
             },
           }),
         }}

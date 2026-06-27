@@ -18,11 +18,11 @@ export function HeroSection() {
 
       <div className="relative z-20 text-center px-4 max-w-4xl mx-auto space-y-8 mt-16">
         <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-heading tracking-tighter text-white uppercase leading-[0.9]">
-          O Tubarão <br className="hidden sm:block" /> é nosso. <br />
+          O Peixe <br className="hidden sm:block" /> é nosso. <br />
           <span className="text-brand-primary">A reconstrução <br className="hidden sm:block" /> é agora.</span>
         </h1>
         <p className="text-lg md:text-2xl text-zinc-300 font-medium max-w-2xl mx-auto leading-relaxed">
-          O resgate do nosso orgulho começa aqui. Faça parte da história e ajude a reerguer o clube da nossa cidade.
+          O resgate do nosso orgulho começa aqui. Faça parte da história e ajude a reerguer o Atlético Tubarão, o time da cidade azul.
         </p>
         
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">

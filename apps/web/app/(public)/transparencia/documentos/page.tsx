@@ -7,7 +7,7 @@ import { Metadata } from "next";
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
-    title: "Documentos e Balanços | Portal de Transparência | Tubarão SAF",
+    title: "Documentos e Balanços | Portal de Transparência | Atlético Tubarão",
     description: "Consulte os documentos públicos, atas e balanços do Clube Atlético Tubarão.",
   };
 }

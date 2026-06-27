@@ -17,7 +17,7 @@ export const EmailFooter = () => {
       </Text>
 
       <Text className="text-xs text-gray-500 mb-2 mt-4">
-        Este e-mail foi enviado porque você é sócio-torcedor do Clube Atlético Tubarão.
+        Este e-mail foi enviado porque você é sócio-torcedor do Clube Atlético Tubarão, o time da cidade azul.
         Nós respeitamos a sua privacidade e os seus dados são tratados de acordo com a LGPD (Lei Geral de Proteção de Dados).
       </Text>
       <Text className="text-xs text-gray-500 mt-0">

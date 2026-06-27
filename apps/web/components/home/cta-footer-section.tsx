@@ -22,6 +22,10 @@ export function CtaFooterSection({ initialData }: CtaFooterSectionProps) {
           Junte-se a <strong className="text-white">{initialData.total.toLocaleString('pt-BR')}</strong> tubarões que já vestiram a camisa e estão mudando a história do nosso clube. Não fique de fora.
         </p>
 
+        <div className="py-8 italic text-zinc-400 font-serif text-lg md:text-xl border-y border-zinc-800/50 my-8">
+          <p>"Futebol se uniu a natureza / Unindo a grande força do sul / O tubarão tricolor é o time da cidade azul"</p>
+        </div>
+
         <div className="pt-4">
           <Button asChild size="lg" className="text-xl px-12 py-8 rounded-full font-black uppercase tracking-widest shadow-[0_0_40px_rgba(var(--brand-primary-rgb),0.5)] hover:scale-105 transition-transform duration-300">
             <Link href="/signup">Assinar agora</Link>

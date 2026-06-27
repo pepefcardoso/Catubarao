@@ -57,6 +57,7 @@ Marketing, behavioral psychology, and conversion optimization improvements deriv
 | DATA-004 | Schema naming unification & address normalization    | 4     | S    | MEMBER-001, MEMBER-002, STORE-002  |
 | DATA-005 | Testimonial model + admin CRUD                       | 4     | M    | FOUND-006, FOUND-008               |
 | DATA-006 | AnnouncementBanner model + frontend component        | 4     | M    | FOUND-006, FOUND-008, UX-001       |
+| BRAND-001| Identidade e Regionalismo — referências e hino       | 0     | S    | —                                  |
 
 ---
 
@@ -197,6 +198,49 @@ Copy replacements per page (exact placements are in `strategic_analysis.md §3.2
 - [x] All 7 Cialdini principles are mapped to at least one specific UI component or page
 - [x] Copy guidelines section explicitly lists at least 5 forbidden phrases and 5 required anchors
 - [x] Referenced by `AGENTS.md` in the documentation index (add one-line entry)
+
+---
+
+### BRAND-001 — Identidade e Regionalismo — referências e hino
+
+**Phase:** 0 · Marketing Foundation  
+**Size:** S  
+**Depends on:** —
+
+**Objective:** Implement the official club identity by replacing generic references, utilizing the official logo, and integrating regional elements and the club anthem to boost fan engagement and local pride.
+
+**In scope:**
+
+- Replace all generic references to the club's name across the application with the official names and nicknames: `Clube Atlético Tubarão`, `Atlético Tubarão`, `Tubarão`, `Peixe`, `Time da Cidade Azul`.
+- Ensure the official club logo (`public/assets/logo.png`) is used in all relevant components (e.g., headers, footers, membership cards, emails).
+- Insert local cultural and regional references into the copy and design, including terms like: `vila` (stadium), `cidade azul`, `peixe`.
+- Incorporate parts of the official club anthem where contextually appropriate (e.g., about us page, success screens, or promotional banners). Anthem excerpts to use:
+  > Futebol se uniu a natureza  
+  > Unindo a grande força do sul  
+  > O tubarão tricolor é o time da cidade azul  
+  > O tubarão tricolor é o time da cidade azul  
+  > 
+  > Agora ninguém segura o tubarão  
+  > Devastando a defesa inimiga  
+  > Segurando o ataque adversário  
+  > Vibrando com sua torcida  
+  > 
+  > Arrasa tubarão, arrasa Tubarão  
+  > Vibra com toda emoção  
+  > Arrasa tubarão, arrasa Tubarão  
+  > Esse é o nosso campeão  
+  > 
+  > Amantes do bom futebol  
+  > Nasceste de um povo guerreiro  
+  > A tua missão é sair da Eliseu  
+  > E ser para sempre o primeiro
+
+**Acceptance criteria:**
+
+- [x] All instances of the club name use the official terminology.
+- [x] `public/assets/logo.png` is used as the primary logo globally.
+- [x] Regional references (`vila`, `cidade azul`, `peixe`) are present in the UI copy.
+- [x] At least one section of the platform integrates verses from the official anthem.
 
 ---
 

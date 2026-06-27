@@ -10,7 +10,7 @@ const oswald = Oswald({ subsets: ["latin"], variable: "--font-display" });
 
 export const metadata: Metadata = {
   title: "Clube Atlético Tubarão",
-  description: "Clube Atlético Tubarão SAF",
+  description: "Clube Atlético Tubarão",
 };
 
 export default function RootLayout({

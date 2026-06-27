@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { Waves, MapPin, Mail, Phone } from "lucide-react";
+import Image from "next/image";
+import { MapPin, Mail, Phone } from "lucide-react";
 
 const footerLinks = {
   institucional: [
@@ -28,13 +29,13 @@ export function PublicFooter() {
           <div className="lg:col-span-2 flex flex-col gap-6">
             <Link href="/" className="flex items-center gap-2">
               <div className="bg-primary p-2 rounded-xl">
-                <Waves className="w-6 h-6 text-primary-foreground" />
+                <Image src="/assets/logo.png" alt="Logo" width={24} height={24} className="w-6 h-6 object-contain brightness-0 invert" />
               </div>
-              <span className="font-bold text-2xl tracking-tight">Tubarão SAF</span>
+              <span className="font-bold text-2xl tracking-tight">Atlético Tubarão</span>
             </Link>
             <p className="text-muted-foreground leading-relaxed max-w-sm">
               Um novo momento na história do Clube Atlético Tubarão. Transparência, paixão e
-              compromisso com o futuro.
+              compromisso com o time da cidade azul.
             </p>
             <div className="flex items-center gap-4">
               <Link
@@ -159,7 +160,7 @@ export function PublicFooter() {
 
         <div className="pt-8 border-t border-border/50 flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-sm text-muted-foreground">
-            © {new Date().getFullYear()} Clube Atlético Tubarão SAF. Todos os direitos reservados.
+            © {new Date().getFullYear()} Clube Atlético Tubarão. Todos os direitos reservados.
           </p>
           <div className="flex items-center gap-6">
             {footerLinks.legal.map((link) => (

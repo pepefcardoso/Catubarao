@@ -13,7 +13,7 @@ export const revalidate = 60;
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
-    title: "Clube Atlético Tubarão SAF",
+    title: "Clube Atlético Tubarão",
     description: "O Tubarão é nosso. A reconstrução é agora. Seja sócio-torcedor.",
   };
 }

@@ -4,7 +4,7 @@ import { apiFetch } from "@/lib/api";
 import { TransparencyPostResponse } from "@repo/schemas/transparency";
 
 export const runtime = "edge";
-export const alt = "Portal de Transparência - Clube Atlético Tubarão SAF";
+export const alt = "Portal de Transparência - Clube Atlético Tubarão";
 export const size = {
   width: 1200,
   height: 630,
@@ -109,7 +109,7 @@ export default async function Image({ params }: { params: Promise<{ id: string }
               <div style={{ fontSize: 32, color: '#e4e4e7' }}>Publicado em {dateLabel}</div>
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
-              <div style={{ fontSize: 40, fontWeight: 'bold' }}>Clube Atlético Tubarão SAF</div>
+              <div style={{ fontSize: 40, fontWeight: 'bold' }}>Clube Atlético Tubarão</div>
               <div style={{ fontSize: 24, color: '#a1a1aa', marginTop: '8px' }}>Portal de Transparência</div>
             </div>
           </div>
