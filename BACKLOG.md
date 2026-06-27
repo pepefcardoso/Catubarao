@@ -1418,11 +1418,11 @@ Each ADR follows the standard format: Status, Context, Decision, Consequences.
 
 **Acceptance criteria:**
 
-- [ ] `GET /testimonials` returns only approved testimonials
-- [ ] Unapproved testimonial does not appear in `GET /testimonials`
-- [ ] `PATCH /admin/testimonials/:id { isApproved: true }` immediately makes it visible
-- [ ] Redis cache for `GET /testimonials` is invalidated when a testimonial is approved or deleted
-- [ ] `pnpm typecheck` passes
+- [x] `GET /testimonials` returns only approved testimonials
+- [x] Unapproved testimonial does not appear in `GET /testimonials`
+- [x] `PATCH /admin/testimonials/:id { isApproved: true }` immediately makes it visible
+- [x] Redis cache for `GET /testimonials` is invalidated when a testimonial is approved or deleted
+- [x] `pnpm typecheck` passes
 
 ---
 

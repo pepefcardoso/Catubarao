@@ -9,3 +9,4 @@ export * from "./store";
 export * from "./consent";
 export * from "./waitlist";
 export * from "./common";
+export * from "./testimonial";
