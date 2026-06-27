@@ -139,6 +139,8 @@ fastify.register(waitlistRoutes);
 import { testimonialsRoutes } from "./modules/testimonials/testimonials.routes";
 fastify.register(testimonialsRoutes, { prefix: "/testimonials" });
 
+import { announcementsRoutes } from "./modules/announcements/announcements.routes";
+fastify.register(announcementsRoutes, { prefix: "/announcements" });
 
 // Health check endpoint
 

@@ -10,3 +10,4 @@ export * from "./consent";
 export * from "./waitlist";
 export * from "./common";
 export * from "./testimonial";
+export * from "./banner";

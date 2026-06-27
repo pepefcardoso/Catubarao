@@ -1464,9 +1464,9 @@ Each ADR follows the standard format: Status, Context, Decision, Consequences.
 
 **Acceptance criteria:**
 
-- [ ] Active banner renders on all `(public)` pages
-- [ ] Expired banner (past `expiresAt`) does not render
-- [ ] `type=BADGE` filter returns only badge-type records (for UX-032)
-- [ ] Redis cache is invalidated when a banner is created, updated, or deleted
-- [ ] Admin can create a banner expiring in 7 days and verify it disappears after that
-- [ ] `pnpm typecheck` passes
+- [x] Active banner renders on all `(public)` pages
+- [x] Expired banner (past `expiresAt`) does not render
+- [x] `type=BADGE` filter returns only badge-type records (for UX-032)
+- [x] Redis cache is invalidated when a banner is created, updated, or deleted
+- [x] Admin can create a banner expiring in 7 days and verify it disappears after that
+- [x] `pnpm typecheck` passes

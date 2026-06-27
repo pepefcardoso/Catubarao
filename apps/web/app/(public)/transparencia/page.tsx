@@ -3,7 +3,8 @@ import { Button } from "@repo/ui/components/button";
 import Link from "next/link";
 import { env } from "@/lib/env";
 import { apiFetch } from "@/lib/api";
-import { DebtRecordResponse, TransparencyPostResponse, AnnouncementBannerResponse } from "@repo/schemas/transparency";
+import { DebtRecordResponse, TransparencyPostResponse } from "@repo/schemas/transparency";
+import { AnnouncementBannerResponse } from "@repo/schemas/banner";
 import { FileText, ArrowRight, TrendingDown, DollarSign, Handshake } from "lucide-react";
 import { copy } from "@/lib/copy";
 import { ValidationBadge } from "@/components/transparency/ValidationBadge";
@@ -45,7 +46,7 @@ async function getLatestPosts(category: string) {
 
 async function getValidationBadges() {
   try {
-    const res = await apiFetch<AnnouncementBannerResponse[]>(`${env.NEXT_PUBLIC_API_URL}/transparency/announcements?type=BADGE`, {
+    const res = await apiFetch<AnnouncementBannerResponse[]>(`${env.NEXT_PUBLIC_API_URL}/announcements?type=BADGE`, {
       next: { revalidate: 300 }, // 5 mins
     });
     return res || [];
@@ -119,8 +120,6 @@ export default async function TransparenciaPage() {
             <ValidationBadge
               key={badge.id}
               label={badge.text}
-              description={badge.description ?? undefined}
-              logoUrl={badge.logoUrl ?? undefined}
             />
           ))}
         </section>

@@ -8,8 +8,6 @@ import {
   UpdateDebtRecordSchema,
   DebtRecordResponseSchema,
   DebtSnapshotResponseSchema,
-  AnnouncementBannerResponseSchema,
-  BadgeTypeSchema,
 } from "@repo/schemas/transparency";
 import {
   getPosts,
@@ -25,7 +23,6 @@ import {
   updateDebtRecord,
   createDebtSnapshot,
   generateFeedXml,
-  getActiveAnnouncements,
 } from "./transparency.service";
 import { env } from "../../lib/env";
 import { getUploadUrl, buildStorageKey } from "../../lib/storage";
@@ -50,25 +47,6 @@ export const transparencyRoutes: FastifyPluginAsyncZod = async (fastify) => {
     async (request, reply) => {
       const xml = await generateFeedXml(fastify.prisma, request.query.category);
       return reply.type("application/rss+xml; charset=utf-8").send(xml);
-    }
-  );
-
-  fastify.get(
-    "/announcements",
-    {
-      schema: {
-        tags: ["transparency"],
-        querystring: z.object({
-          type: BadgeTypeSchema.optional(),
-        }),
-        response: {
-          200: z.array(AnnouncementBannerResponseSchema),
-        },
-      },
-    },
-    async (request, reply) => {
-      const banners = await getActiveAnnouncements(fastify.prisma, request.query.type);
-      return reply.send(banners);
     }
   );
 

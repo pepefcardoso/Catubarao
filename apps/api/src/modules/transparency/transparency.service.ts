@@ -422,16 +422,7 @@ export async function createDebtSnapshot(db: PrismaClient, userId?: string) {
   });
 }
 
-export async function getActiveAnnouncements(db: PrismaClient, type?: "ANNOUNCEMENT" | "BADGE") {
-  return db.announcementBanner.findMany({
-    where: {
-      isActive: true,
-      ...(type ? { type } : {}),
-      OR: [{ expiresAt: null }, { expiresAt: { gt: new Date() } }],
-    },
-    orderBy: { createdAt: "desc" },
-  });
-}
+
 
 const MILESTONES = [25, 50, 75, 100] as const;
 
@@ -447,7 +438,7 @@ export async function checkAndCreateMilestoneBanner(
     if (pctPaid < milestone) continue;
 
     const already = await db.announcementBanner.findFirst({
-      where: { milestone },
+      where: { link: String(milestone), type: "MILESTONE" },
     });
     if (already) continue;
 
@@ -458,7 +449,8 @@ export async function checkAndCreateMilestoneBanner(
       data: {
         text: `🎉 O Tubarão já pagou ${milestone}% da dívida total!`,
         color: "brand-primary",
-        milestone,
+        link: String(milestone),
+        type: "MILESTONE",
         expiresAt,
       },
     });

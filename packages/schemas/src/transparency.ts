@@ -16,7 +16,6 @@ export const DebtStatusSchema = z.enum([
   "QUITADO",
 ]);
 
-export const BadgeTypeSchema = z.enum(["ANNOUNCEMENT", "BADGE"]);
 
 export const CreateTransparencyPostBaseSchema = z.object({
   title: z.string().min(1).max(255),
@@ -114,17 +113,4 @@ export const DebtSnapshotResponseSchema = CreateDebtSnapshotSchema.extend({
 
 export type DebtSnapshotResponse = z.infer<typeof DebtSnapshotResponseSchema>;
 
-export const AnnouncementBannerResponseSchema = z.object({
-  id: z.string().uuid(),
-  type: BadgeTypeSchema,
-  text: z.string(),
-  color: z.string(),
-  logoUrl: z.string().nullable().optional(),
-  description: z.string().nullable().optional(),
-  milestone: z.number().nullable(),
-  isActive: z.boolean(),
-  expiresAt: z.union([z.string(), z.date()]).nullable(),
-  createdAt: z.union([z.string(), z.date()]),
-});
 
-export type AnnouncementBannerResponse = z.infer<typeof AnnouncementBannerResponseSchema>;

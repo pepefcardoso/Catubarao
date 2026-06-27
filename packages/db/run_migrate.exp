@@ -1,0 +1,14 @@
+#!/usr/bin/expect -f
+set timeout -1
+spawn npx prisma migrate dev --name add_announcement_banners
+expect {
+    "Are you sure you want create this migration?" {
+        send "y\r"
+        exp_continue
+    }
+    "If there are existing duplicate values, this will fail." {
+        send "y\r"
+        exp_continue
+    }
+    eof
+}
