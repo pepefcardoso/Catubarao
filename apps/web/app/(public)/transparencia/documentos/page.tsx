@@ -14,7 +14,7 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function DocumentosPage() {
   // Fetch up to 1000 posts that have attachments
   const res = await apiFetch<{ posts: TransparencyPostResponse[] }>(
-    `${env.NEXT_PUBLIC_API_URL}/transparency/posts?hasAttachment=true&limit=1000`
+    `${env.NEXT_PUBLIC_API_URL}/transparency/posts?hasAttachment=true&limit=100`
   );
 
   return (

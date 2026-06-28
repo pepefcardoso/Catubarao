@@ -23,7 +23,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   try {
     const res = await apiFetch<{ posts: TransparencyPostResponse[] }>(
-      `${env.NEXT_PUBLIC_API_URL}/transparency/posts?limit=1000`
+      `${env.NEXT_PUBLIC_API_URL}/transparency/posts?limit=100`
     );
     
     if (res && res.posts) {

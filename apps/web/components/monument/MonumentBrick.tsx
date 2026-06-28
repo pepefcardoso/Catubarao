@@ -1,4 +1,4 @@
-import { cn } from "@/lib/utils";
+import { cn } from "@repo/ui/lib/utils";
 
 // TODO: replace with plan.accentColor when DATA-001 ships
 const TIER_COLORS: Record<string, string> = {

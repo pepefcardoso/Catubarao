@@ -16,7 +16,8 @@
     "./consent": "./src/consent.ts",
     "./store": "./src/store.ts",
     "./waitlist": "./src/waitlist.ts",
-    "./testimonial": "./src/testimonial.ts"
+    "./testimonial": "./src/testimonial.ts",
+    "./banner": "./src/banner.ts"
   },
   "scripts": {
     "build": "tsup src/index.ts --format cjs,esm --dts",

@@ -1,4 +1,4 @@
-import { ClubCrest } from "@/components/ClubCrest";
+import { ClubCrest } from "@repo/ui/components/ClubCrest";
 
 export function MuroHero({ count }: { count: number }) {
   return (

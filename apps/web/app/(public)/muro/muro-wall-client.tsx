@@ -5,7 +5,7 @@ import { MonumentMember } from "@repo/schemas/member";
 import { useMemberStatus } from "@/lib/use-member-status";
 import { MonumentBrick } from "@/components/monument/MonumentBrick";
 import { MonumentCTA } from "@/components/monument/MonumentCTA";
-import { useToast } from "@/components/ui/use-toast";
+import { toast } from "sonner";
 import { apiFetch } from "@/lib/api";
 
 interface MuroWallClientProps {
@@ -14,8 +14,6 @@ interface MuroWallClientProps {
 
 export function MuroWallClient({ initialMembers }: MuroWallClientProps) {
   const { isMember, isActive, profile } = useMemberStatus();
-  const { toast } = useToast();
-  
   const [members, setMembers] = useState<MonumentMember[]>(initialMembers);
   const [isPending, setIsPending] = useState(false);
   const [optimisticMember, setOptimisticMember] = useState<MonumentMember | null>(null);
@@ -53,16 +51,13 @@ export function MuroWallClient({ initialMembers }: MuroWallClientProps) {
       setMembers((prev) => [newMember, ...prev]);
       setOptimisticMember(null);
       
-      toast({
-        title: "Sucesso!",
+      toast.success("Sucesso!", {
         description: "Seu nome agora faz parte da nossa história.",
       });
     } catch (error) {
       console.error(error);
       setOptimisticMember(null);
-      toast({
-        variant: "destructive",
-        title: "Erro ao atualizar",
+      toast.error("Erro ao atualizar", {
         description: "Não foi possível adicionar seu nome. Tente novamente.",
       });
     } finally {

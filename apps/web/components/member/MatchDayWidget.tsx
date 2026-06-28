@@ -8,6 +8,7 @@ import { Skeleton } from "@repo/ui/components/skeleton";
 import { ChevronRight, Flame } from "lucide-react";
 import Link from "next/link";
 import type { UpcomingEventResponse } from "@repo/schemas/events";
+import { apiFetch } from "@/lib/api";
 
 export function MatchDayWidget() {
   const [data, setData] = useState<UpcomingEventResponse | null>(null);
@@ -15,11 +16,7 @@ export function MatchDayWidget() {
   const [error, setError] = useState(false);
 
   useEffect(() => {
-    fetch("/api/events/upcoming")
-      .then((res) => {
-        if (!res.ok) throw new Error("Failed to fetch");
-        return res.json();
-      })
+    apiFetch<UpcomingEventResponse>("/events/upcoming")
       .then((json) => {
         setData(json);
         setIsLoading(false);
